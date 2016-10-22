@@ -42,8 +42,10 @@ public class Deck {
 	/**
 	 * shuffle - shuffles a card array
 	 *
-	 * @param cards This method shuffles a card array with a very simple
-	 *              algorithm
+	 * @param cards contains a array of cards
+	 *
+	 * This method shuffles a card array with a very simple
+	 * algorithm
 	 */
 	private void shuffle(Card[] cards)
 	{
