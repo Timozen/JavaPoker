@@ -4,12 +4,14 @@ public class Player {
 	
 	private int money;
 	private List<Card> cards;
+	private String nickname;
 	
 	/**
 	 * Player constructor with std value for money
 	 */
-	public Player()
+	public Player(String nickname)
 	{
+		this.nickname = nickname;
 		this.money = 5000;
 	}
 	
@@ -17,9 +19,11 @@ public class Player {
 	 * Player constructor with adjustable money
 	 *
 	 * @param money Value of the money of the player
+	 * @param nickname The nickname of the player
 	 */
-	public Player(int money)
+	public Player(String nickname, int money)
 	{
+		this.nickname = nickname;
 		this.money = money;
 	}
 	
@@ -107,4 +111,21 @@ public class Player {
 		}
 	}
 	
+	/**
+	 * GetNickName
+	 * @return String of the nickname
+	 */
+	public String GetNickname()
+	{
+		return nickname;
+	}
+	
+	/**
+	 * SetNickName
+	 * @param nickname a new nickname
+	 */
+	public void SetNickname(String nickname)
+	{
+		this.nickname = nickname;
+	}
 }
