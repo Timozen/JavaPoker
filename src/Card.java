@@ -22,4 +22,8 @@ public class Card implements PokerCard {
 	{
 		return this.value;
 	}
+	
+	public String toString(){
+		return getColor() + " " + getValue();
+	}
 }

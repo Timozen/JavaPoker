@@ -1,5 +1,3 @@
-
-import com.sun.javafx.collections.SourceAdapterChange;
 import handChecker.PokerCard;
 
 import java.util.*;
@@ -74,7 +72,7 @@ public class Deck {
 	 *
 	 * @param cards a array of cards
 	 */
-	private void print(Card[] cards)
+	private void print(List<Card> cards)
 	{
 		System.out.println("########################");
 		for (Card card : cards) {

@@ -1,3 +1,4 @@
+import java.util.LinkedList;
 import java.util.List;
 
 public class Player {
@@ -13,6 +14,7 @@ public class Player {
 	{
 		this.nickname = nickname;
 		this.money = 5000;
+		this.cards = new LinkedList<>();
 	}
 	
 	/**
@@ -25,6 +27,7 @@ public class Player {
 	{
 		this.nickname = nickname;
 		this.money = money;
+		this.cards = new LinkedList<>();
 	}
 	
 	/**
