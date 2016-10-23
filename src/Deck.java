@@ -1,4 +1,5 @@
 
+import com.sun.javafx.collections.SourceAdapterChange;
 import handChecker.PokerCard;
 
 import java.util.*;
@@ -23,6 +24,7 @@ public class Deck {
 	 */
 	public void CreateAndShuffle()
 	{
+		/**
 		Card cards[] = new Card[52];
 		int tempColorRange = 13;
 		
@@ -33,10 +35,18 @@ public class Deck {
 							 PokerCard.Value.values()[j]);
 			}
 		}
-		//print(cards);
-		shuffle(cards);
-		//print(cards);
-		queue = new LinkedList<>(Arrays.asList(cards));
+		 **/
+		
+		LinkedList<Card> cards = new LinkedList<>();
+		for(PokerCard.Color color : PokerCard.Color.values()){
+			for(PokerCard.Value value : PokerCard.Value.values()){
+				cards.add(new Card(color, value));
+			}
+		}
+		
+		Collections.shuffle(cards);
+		
+		queue = cards;
 	}
 	
 	/**
