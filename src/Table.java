@@ -18,7 +18,7 @@ public class Table {
 	private int pot;
 	private int smallBlindValue;
 	private int bigBlindValue;
-	
+
 	public Table()
 	{
 		playersOnTable = new CircularList<>();
@@ -113,4 +113,18 @@ public class Table {
 			return super.get(index % size());
 		}
 	}
+
+	/**
+	 * IncreaseSmallBlind
+	 *
+	 * @param increaseValue Value the small blind should be increased about
+	 */
+	public void IncreaseSmallBlind(int increaseValue) { smallBlindValue = increaseValue; }
+
+	/**
+	 * IncreaseBigBlind
+	 *
+	 * @param increaseValue Value the small blind should be increased about
+	 */
+	public void IncreaseBigBlind(int increaseValue) { smallBlindValue += increaseValue; }
 }
