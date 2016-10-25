@@ -1,14 +1,16 @@
+package game;
+
 import java.util.LinkedList;
 import java.util.List;
 
-public class Player {
+class Player {
 	
 	private int money;
 	private List<Card> cards;
 	private String nickname;
 	
 	/**
-	 * Player constructor with std value for money
+	 * game.Player constructor with std value for money
 	 */
 	public Player(String nickname)
 	{
@@ -18,7 +20,7 @@ public class Player {
 	}
 	
 	/**
-	 * Player constructor with adjustable money
+	 * game.Player constructor with adjustable money
 	 *
 	 * @param money Value of the money of the player
 	 * @param nickname The nickname of the player

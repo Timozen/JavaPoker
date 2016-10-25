@@ -1,3 +1,5 @@
+package game;
+
 import handChecker.PokerCard;
 
 public class Card implements PokerCard {

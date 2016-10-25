@@ -1,3 +1,6 @@
+package game;
+
+import game.Card;
 import handChecker.PokerCard;
 
 import java.util.*;
@@ -16,20 +19,20 @@ public class Deck {
 	}
 	
 	/**
-	 * CreateAndShuffle - Creates a new shuffled Deck
+	 * CreateAndShuffle - Creates a new shuffled game.Deck
 	 * <p>
 	 * This method creates a new deck with 52 shuffled cards.
 	 */
 	public void CreateAndShuffle()
 	{
 		/**
-		Card cards[] = new Card[52];
+		game.Card cards[] = new game.Card[52];
 		int tempColorRange = 13;
 		
 		for (int i = 0; i < PokerCard.Color.values().length; i++) {
 			for (int j = 0; j < PokerCard.Value.values().length; j++) {
 				int tmpPos = i * tempColorRange + j;
-				cards[tmpPos] = new Card(PokerCard.Color.values()[i],
+				cards[tmpPos] = new game.Card(PokerCard.Color.values()[i],
 							 PokerCard.Value.values()[j]);
 			}
 		}
