@@ -12,5 +12,6 @@ public class Main {
 		table.AddPlayerToTable("Jan");
 		
 		table.StartGame();
+		
 	}
 }
