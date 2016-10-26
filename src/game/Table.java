@@ -3,6 +3,7 @@ package game;
 import game.models.RoundState;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Table {
 	private boolean gameInProgress;
@@ -18,6 +19,9 @@ public class Table {
 	private GameTable gameTable;
 	private RoundState roundState;
 	private boolean firstRound;
+	
+	private List<Card> boardCards = new ArrayList<>();
+	
 	public Table()
 	{
 		playersOnTable = new CircularList<>();
@@ -32,6 +36,10 @@ public class Table {
 	public void StartGame()
 	{
 		gameTable.PreFlop();
+		gameTable.Flop();
+		gameTable.Turn();
+		gameTable.River();
+		gameTable.Showdown();
 	}
 	
 	
@@ -39,9 +47,9 @@ public class Table {
 	 * AddPlayerToTable
 	 *
 	 * @param nickname The player name that will be placed at the table
-	 *               <p>
-	 *               Adds a new player to the table
-	 *               TODO: Add return parameter if everything went fine
+	 *                 <p>
+	 *                 Adds a new player to the table
+	 *                 TODO: Add return parameter if everything went fine
 	 */
 	public void AddPlayerToTable(String nickname)
 	{
@@ -186,4 +194,20 @@ public class Table {
 	{
 		this.firstRound = firstRound;
 	}
+	
+	public List<Card> getBoardCards()
+	{
+		return boardCards;
+	}
+	
+	public void AddBoardCard(Card card)
+	{
+		boardCards.add(card);
+	}
+	
+	public void ResetBoardCards()
+	{
+		boardCards.clear();
+	}
 }
+

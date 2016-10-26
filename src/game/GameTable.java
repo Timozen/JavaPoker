@@ -12,6 +12,7 @@ public class GameTable {
 	private Table table;
 	private Random roundRNG;
 	private int dealerIndex;
+	
 	public GameTable(Table table)
 	{
 		this.table = table;
@@ -81,27 +82,87 @@ public class GameTable {
 		return 0;
 	}
 	
-	public int FLOP()
+	/**
+	 * Flop
+	 * @return
+	 *
+	 * Burn one card and put 3 more on the board
+	 */
+	public int Flop()
 	{
+		table.SetRoundState(RoundState.FLOP);
+		
+		//burn 1 card
+		deck.Draw();
+		
+		//Put 3 cards on the board
+		table.AddBoardCard(deck.Draw());
+		table.AddBoardCard(deck.Draw());
+		table.AddBoardCard(deck.Draw());
+		
+		
 		/**
 		 * flop gameplay comes here
 		 */
 		return 0;
 	}
 	
-	public int TURN()
+	/**
+	 * Turn
+	 * @return
+	 *
+	 * Burn one card and put 1 more on the board
+	 */
+	public int Turn()
 	{
+		table.SetRoundState(RoundState.TURN);
+		
+		//burn 1 card
+		deck.Draw();
+		
+		//Put 1 card on the board
+		table.AddBoardCard(deck.Draw());
+		
 		/**
 		 * turn gameplay comes here
 		 */
 		return 0;
 	}
 	
-	public int RIVER()
+	/**
+	 * River
+	 * @return
+	 *
+	 * Burn one card and put 1 more aond the board
+	 */
+	public int River()
 	{
+		table.SetRoundState(RoundState.RIVER);
+		
+		//burn 1 card
+		deck.Draw();
+		
+		//Put 3 cards on the board
+		table.AddBoardCard(deck.Draw());
+		
 		/**
 		 * river gameplay comes here
 		 */
+		return 0;
+	}
+	
+	/**
+	 * Showdown
+	 * @return
+	 *
+	 * Compare hands
+	 */
+	public int Showdown(){
+		table.SetRoundState(RoundState.SHOWDOWN);
+		/**
+		 * Everything needed for showdown comes here
+		 */
+		
 		return 0;
 	}
 	
