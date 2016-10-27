@@ -1,5 +1,7 @@
 package game;
 
+import com.sun.org.apache.bcel.internal.generic.Select;
+import game.models.PlayerState;
 import game.models.RoundState;
 
 import java.util.List;
@@ -8,22 +10,26 @@ import java.util.Random;
 public class GameTable {
 	
 	private Table.CircularList<Player> playersInRound;
+
 	private Deck deck;
 	private Table table;
 	private Random roundRNG;
 	private int dealerIndex;
+	private int electivePlayersCount = 0;
+
+
+	private Player highestBetPlayer;	//Spieler, der in Setz Runde den höchsten Einsatz hält
+	private Player actualPlayer;		//Aktueller Spieler für Runde
 	
-	public GameTable(Table table)
-	{
+	public GameTable(Table table) {
 		this.table = table;
 		deck = new Deck();
 		deck.CreateAndShuffle();
-		
+
 		//TODO add a seed generation algorithm
 		roundRNG = new Random();
 	}
-	
-	
+
 	/**
 	 * PreFlop - Initiate the round
 	 * <p>
@@ -31,29 +37,26 @@ public class GameTable {
 	 */
 	public int PreFlop()
 	{
+		/*
+			Fuck players without money
+			we dont want to have them on our table
+			Go fuck yourself
+			Also valid for Timozen: Go fuck yourself <3
+		 */
 		table.SetRoundState(RoundState.PREFLOP);
 		table.SetPot(0);
 		playersInRound = (Table.CircularList<Player>) table.GetPlayersOnTable().clone();
-		
+		electivePlayersCount = playersInRound.size();		//Counts Players who have the right to vote
+
 		if(table.IsFirstRound()){
 			dealerIndex = roundRNG.nextInt(playersInRound.size());
 			table.SetFirstRound(false);
 		} else {
 			dealerIndex++;
 		}
-		
-		if (playersInRound.size() > 2) {
-			table.SetDealer(playersInRound.get(dealerIndex));
-			table.SetSmallBlind(playersInRound.get(dealerIndex + 1));
-			table.SetBigBlind(playersInRound.get(dealerIndex + 2));
-		} else if (playersInRound.size() == 2) {
-			//TODO 2 man regelung
-		} else {
-			return -1;
-		}
-		
-		
-		//TODO the blinds have to give the money to the pot
+
+		SelectStartPlayer();
+		PayBlinds();
 		
 		for (int i = 0; i < playersInRound.size(); i++) {
 			playersInRound.get(dealerIndex + i)
@@ -73,15 +76,13 @@ public class GameTable {
 		}
 		
 		
-		/**
-		 * PreFlop gameplay comes here
+		/*
+			Pokerrunde
 		 */
-		
-		
 		
 		return 0;
 	}
-	
+
 	/**
 	 * Flop
 	 * @return
@@ -164,6 +165,51 @@ public class GameTable {
 		 */
 		
 		return 0;
+	}
+
+	public void PayBlinds()
+	{
+		PayMoney(table.GetSmallBlindValue(), table.GetSmallBlind());
+		PayMoney(table.GetBigBlindValue(), table.GetBigBlind());
+	}
+
+	public void PayMoney(int moneyAmount, Player player)
+	{
+		if (player.GetMoney() - moneyAmount > 0) {
+			table.IncreasePot(moneyAmount);
+			player.IncreaseRoundBet(moneyAmount);
+			player.DecreaseMoney(moneyAmount);
+		} else {
+			table.IncreasePot(player.GetMoney());
+			player.IncreaseRoundBet(player.GetMoney());
+			player.SetMoney(0);
+			player.SetRoundState(PlayerState.ALLIN);
+			electivePlayersCount -= 1;
+		}
+	}
+
+	/**
+	 * SelectStartPlayer - Selects beginner of a game (PreFlop Player Selection)
+	 * @return -1 on failure
+	 */
+	//Nur vom PreFlop aufgerufen
+	public int SelectStartPlayer()
+	{
+		table.SetDealer(playersInRound.get(dealerIndex));			//Dealer
+
+		//Mehr als 2 Spieler
+		if (playersInRound.size() > 2) {
+			table.SetSmallBlind(playersInRound.get(dealerIndex + 1));	//Small Blind
+			table.SetBigBlind(playersInRound.get(dealerIndex + 2));		//Big Blind
+			actualPlayer = playersInRound.get(dealerIndex + 3);			//Spieler neben dem Big Blind
+		} else if (playersInRound.size() == 2) {
+			table.SetSmallBlind(playersInRound.get(dealerIndex));		//Button = Small Blind
+			table.SetBigBlind(playersInRound.get(dealerIndex + 1));		//Big Blind = Andere Person
+			actualPlayer = table.GetSmallBlind();				//Dealer beginnt
+		}
+
+		highestBetPlayer = actualPlayer;
+		return -1;
 	}
 	
 }

@@ -12,7 +12,7 @@ public class Table {
 	private Player smallBlind;
 	private Player bigBlind;
 	
-	private int pot;
+	private int pot = 0;
 	private int smallBlindValue;
 	private int bigBlindValue;
 	
@@ -154,6 +154,8 @@ public class Table {
 	{
 		this.pot = pot;
 	}
+
+	public void IncreasePot(int pot) { this.pot += pot; }
 	
 	public int GetSmallBlindValue()
 	{

@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<FRAME GUID="2FB25471-B62C-4EE6-BD43-F819C095ACF8" FORMAT="0000" APP_VERSION="2.2.0.8" CHECKSUM="EEF5DFDAFC8758E3">
-  <PROJECT FORMAT="1.00" NAME="Pokern" AUTHOR="Derpie" CREATED="2016.10.24 17:59:48" MODIFIED="2016.10.27 17:22:54">
+<FRAME GUID="2FB25471-B62C-4EE6-BD43-F819C095ACF8" FORMAT="0000" APP_VERSION="2.2.0.8" CHECKSUM="AE04CC9BF4F80DDE">
+  <PROJECT FORMAT="1.00" NAME="Pokern" AUTHOR="Derpie" CREATED="2016.10.24 17:59:48" MODIFIED="2016.10.27 21:13:59">
     <DIAGRAMS>
-      <DIAGRAM FORMAT="1.00" ID="0" NAME="Poker Ablaufplan" CREATED="2016.10.24 17:59:50" MODIFIED="2016.10.26 15:36:43">
+      <DIAGRAM FORMAT="1.00" ID="0" NAME="Poker Ablaufplan" CREATED="2016.10.24 17:59:50" MODIFIED="2016.10.27 18:18:01">
         <LAYOUT FORMAT="1.00" COLUMNS="1" ROWS="11">
           <ENTRIES>
             <ENTRY COLUMN="0" ROW="0" ANCHOR="True">
@@ -52,7 +52,7 @@
             </ENTRY>
             <ENTRY COLUMN="0" ROW="9">
               <FIGURE SUBTYPE="PapLoopEnd" FORMAT="1.00" ID="283" ASSOCIATE="281">
-                <TEXT><![CDATA[Mindestens 2 Spieler dabei / Guthaben > 0]]></TEXT>
+                <TEXT><![CDATA[Mindestens 2 Spieler dabei & Guthaben > 0]]></TEXT>
               </FIGURE>
             </ENTRY>
             <ENTRY COLUMN="0" ROW="10">
@@ -72,94 +72,6 @@
           <CONNECTION FORMAT="1.00" ID="276" FROM="273" TO="281" TEXT="" />
           <CONNECTION FORMAT="1.00" ID="282" FROM="281" TO="274" TEXT="" />
           <CONNECTION FORMAT="1.00" ID="284" FROM="283" TO="2" TEXT="" />
-        </CONNECTIONS>
-      </DIAGRAM>
-      <DIAGRAM FORMAT="1.00" ID="1" NAME="Side Pot" CREATED="2016.10.26 14:25:19" MODIFIED="2016.10.27 14:09:37">
-        <LAYOUT FORMAT="1.00" COLUMNS="2" ROWS="12">
-          <ENTRIES>
-            <ENTRY COLUMN="0" ROW="0" ANCHOR="True">
-              <FIGURE SUBTYPE="PapTitle" FORMAT="1.00" ID="0">
-                <TEXT><![CDATA[Side Pot]]></TEXT>
-              </FIGURE>
-            </ENTRY>
-            <ENTRY COLUMN="0" ROW="1">
-              <FIGURE SUBTYPE="PapStart" FORMAT="1.00" ID="1">
-                <TEXT><![CDATA[Start]]></TEXT>
-              </FIGURE>
-            </ENTRY>
-            <ENTRY COLUMN="0" ROW="2">
-              <FIGURE SUBTYPE="PapInput" FORMAT="1.00" ID="4">
-                <TEXT><![CDATA[Spieler für Sidepot]]></TEXT>
-              </FIGURE>
-            </ENTRY>
-            <ENTRY COLUMN="0" ROW="3">
-              <FIGURE SUBTYPE="PapInput" FORMAT="1.00" ID="6">
-                <TEXT><![CDATA[Guthaben des Spielers]]></TEXT>
-              </FIGURE>
-            </ENTRY>
-            <ENTRY COLUMN="0" ROW="4">
-              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="12">
-                <TEXT><![CDATA[Erstelle neuen Side Pot]]></TEXT>
-              </FIGURE>
-            </ENTRY>
-            <ENTRY COLUMN="0" ROW="5">
-              <FIGURE SUBTYPE="PapCondition" FORMAT="1.00" ID="22">
-                <TEXT><![CDATA[Ist Liste der All-In Pots leer?]]></TEXT>
-              </FIGURE>
-            </ENTRY>
-            <ENTRY COLUMN="0" ROW="6">
-              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="14">
-                <TEXT><![CDATA[Füge alle Spieler, die nicht All-In sind (und im Spiel), diesem Side-Pot hinzu]]></TEXT>
-              </FIGURE>
-            </ENTRY>
-            <ENTRY COLUMN="0" ROW="7">
-              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="16">
-                <TEXT><![CDATA[Wähle aktuellen Pot aus]]></TEXT>
-              </FIGURE>
-            </ENTRY>
-            <ENTRY COLUMN="0" ROW="8">
-              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="8">
-                <TEXT><![CDATA[Setze Max-Value auf STARTGUTHABEN des Spielers]]></TEXT>
-              </FIGURE>
-            </ENTRY>
-            <ENTRY COLUMN="0" ROW="9">
-              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="10">
-                <TEXT><![CDATA[Füge diesen Pot der Liste der All-In Pots hinzu]]></TEXT>
-              </FIGURE>
-            </ENTRY>
-            <ENTRY COLUMN="0" ROW="10">
-              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="19">
-                <TEXT><![CDATA[Entferne Spieler aus Liste der Spieler welche Wahlmöglichkeiten haben]]></TEXT>
-              </FIGURE>
-            </ENTRY>
-            <ENTRY COLUMN="0" ROW="11">
-              <FIGURE SUBTYPE="PapEnd" FORMAT="1.00" ID="2">
-                <TEXT><![CDATA[Ende]]></TEXT>
-              </FIGURE>
-            </ENTRY>
-            <ENTRY COLUMN="1" ROW="8">
-              <FIGURE SUBTYPE="PapComment" FORMAT="1.00" ID="18">
-                <TEXT><![CDATA[Startguthaben = Eigenschaft, die fest für jedes Spiel ist und das Guthaben mit dem ein Spieler ein Spiel startete repräsentiert]]></TEXT>
-              </FIGURE>
-            </ENTRY>
-            <ENTRY COLUMN="1" ROW="10">
-              <FIGURE SUBTYPE="PapComment" FORMAT="1.00" ID="21">
-                <TEXT><![CDATA[Optionale Implementierung, würde es aber schöner machen wenn wir nicht zusätzlich abfragen wollen ob ein Spieler "All-In" oder "Fold" Status hat]]></TEXT>
-              </FIGURE>
-            </ENTRY>
-          </ENTRIES>
-        </LAYOUT>
-        <CONNECTIONS>
-          <CONNECTION FORMAT="1.00" ID="3" FROM="1" TO="4" TEXT="" />
-          <CONNECTION FORMAT="1.00" ID="5" FROM="4" TO="6" TEXT="" />
-          <CONNECTION FORMAT="1.00" ID="7" FROM="6" TO="12" TEXT="" />
-          <CONNECTION FORMAT="1.00" ID="9" FROM="8" TO="10" TEXT="" />
-          <CONNECTION FORMAT="1.00" ID="11" FROM="10" TO="19" TEXT="" />
-          <CONNECTION FORMAT="1.00" ID="13" FROM="12" TO="22" TEXT="" />
-          <CONNECTION FORMAT="1.00" ID="15" FROM="14" TO="16" TEXT="" />
-          <CONNECTION FORMAT="1.00" ID="17" FROM="16" TO="8" TEXT="" />
-          <CONNECTION FORMAT="1.00" ID="20" FROM="19" TO="2" TEXT="" />
-          <CONNECTION FORMAT="1.00" ID="23" FROM="22" TO="14" TEXT="ja" />
         </CONNECTIONS>
       </DIAGRAM>
       <DIAGRAM FORMAT="1.00" ID="2" NAME="Runde ist zu Ende" CREATED="2016.10.26 14:27:15" MODIFIED="2016.10.26 14:27:15">
@@ -186,25 +98,20 @@
           <CONNECTION FORMAT="1.00" ID="3" FROM="1" TO="2" TEXT="" />
         </CONNECTIONS>
       </DIAGRAM>
-      <DIAGRAM FORMAT="1.00" ID="3" NAME="Poker Runde" CREATED="2016.10.26 14:28:51" MODIFIED="2016.10.27 17:05:54">
-        <LAYOUT FORMAT="1.00" COLUMNS="14" ROWS="18">
+      <DIAGRAM FORMAT="1.00" ID="3" NAME="Poker Runde" CREATED="2016.10.26 14:28:51" MODIFIED="2016.10.27 20:50:44">
+        <LAYOUT FORMAT="1.00" COLUMNS="14" ROWS="12">
           <ENTRIES>
             <ENTRY COLUMN="0" ROW="3">
-              <FIGURE SUBTYPE="PapConnector" FORMAT="1.00" ID="135">
-                <TEXT><![CDATA[]]></TEXT>
-              </FIGURE>
-            </ENTRY>
-            <ENTRY COLUMN="0" ROW="9">
               <FIGURE SUBTYPE="PapConnector" FORMAT="1.00" ID="105">
                 <TEXT><![CDATA[]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="0" ROW="16">
+            <ENTRY COLUMN="0" ROW="10">
               <FIGURE SUBTYPE="PapConnector" FORMAT="1.00" ID="130">
                 <TEXT><![CDATA[]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="0" ROW="17">
+            <ENTRY COLUMN="0" ROW="11">
               <FIGURE SUBTYPE="PapEnd" FORMAT="1.00" ID="2">
                 <TEXT><![CDATA[Ende]]></TEXT>
               </FIGURE>
@@ -225,270 +132,216 @@
               </FIGURE>
             </ENTRY>
             <ENTRY COLUMN="1" ROW="3">
-              <FIGURE SUBTYPE="PapCondition" FORMAT="1.00" ID="133">
-                <TEXT><![CDATA[electivePlayersList.count
->
-0]]></TEXT>
-              </FIGURE>
-            </ENTRY>
-            <ENTRY COLUMN="1" ROW="4">
-              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="103">
-                <TEXT><![CDATA[highestBetPlayer = null]]></TEXT>
-              </FIGURE>
-            </ENTRY>
-            <ENTRY COLUMN="1" ROW="5">
-              <FIGURE SUBTYPE="PapCondition" FORMAT="1.00" ID="89">
-                <TEXT><![CDATA[roundState 
-== 
-PREFLOP]]></TEXT>
-              </FIGURE>
-            </ENTRY>
-            <ENTRY COLUMN="1" ROW="6">
-              <FIGURE SUBTYPE="PapInput" FORMAT="1.00" ID="4">
-                <TEXT><![CDATA[Wähle Spieler aus, der am nächsten am Small Blind sitzt (SmallBlind inklusive) und im Spiel ist]]></TEXT>
-              </FIGURE>
-            </ENTRY>
-            <ENTRY COLUMN="1" ROW="7">
-              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="174">
-                <TEXT><![CDATA[actualPlayerCounter = das Ergebnis der Auswahl]]></TEXT>
-              </FIGURE>
-            </ENTRY>
-            <ENTRY COLUMN="1" ROW="8">
-              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="172">
-                <TEXT><![CDATA[actualPlayer = Ergebins]]></TEXT>
-              </FIGURE>
-            </ENTRY>
-            <ENTRY COLUMN="1" ROW="9">
               <FIGURE SUBTYPE="PapCondition" FORMAT="1.00" ID="6">
                 <TEXT><![CDATA[actualPlayer
 ==
 highestBetPlayer]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="1" ROW="15">
-              <FIGURE SUBTYPE="PapConnector" FORMAT="1.00" ID="54">
-                <TEXT><![CDATA[]]></TEXT>
+            <ENTRY COLUMN="1" ROW="9">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="194">
+                <TEXT><![CDATA[actualPlayer = nächster in Tischliste]]></TEXT>
               </FIGURE>
             </ENTRY>
             <ENTRY COLUMN="2" ROW="3">
-              <FIGURE SUBTYPE="PapComment" FORMAT="1.00" ID="180">
-                <TEXT><![CDATA[Mehr als 0 Spieler haben Möglichkeit zu wählen (muss eventuell zu 1 geändert werden)]]></TEXT>
-              </FIGURE>
-            </ENTRY>
-            <ENTRY COLUMN="2" ROW="5">
-              <FIGURE SUBTYPE="PapConnector" FORMAT="1.00" ID="91">
-                <TEXT><![CDATA[]]></TEXT>
-              </FIGURE>
-            </ENTRY>
-            <ENTRY COLUMN="2" ROW="6">
-              <FIGURE SUBTYPE="PapInput" FORMAT="1.00" ID="93">
-                <TEXT><![CDATA[Wähle Spieler links vom BigBlind]]></TEXT>
-              </FIGURE>
-            </ENTRY>
-            <ENTRY COLUMN="2" ROW="7">
-              <FIGURE SUBTYPE="PapConnector" FORMAT="1.00" ID="177">
-                <TEXT><![CDATA[]]></TEXT>
+              <FIGURE SUBTYPE="PapCondition" FORMAT="1.00" ID="195">
+                <TEXT><![CDATA[player.GetGameState 
+> 
+0]]></TEXT>
               </FIGURE>
             </ENTRY>
             <ENTRY COLUMN="2" ROW="9">
-              <FIGURE SUBTYPE="PapCondition" FORMAT="1.00" ID="86">
-                <TEXT><![CDATA[actualPlayer.gameState 
-== 
-ALLIN]]></TEXT>
+              <FIGURE SUBTYPE="PapConnector" FORMAT="1.00" ID="205">
+                <TEXT><![CDATA[]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="2" ROW="15">
-              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="15">
-                <TEXT><![CDATA[actualPlayerCounter += 1]]></TEXT>
-              </FIGURE>
-            </ENTRY>
-            <ENTRY COLUMN="3" ROW="6">
-              <FIGURE SUBTYPE="PapComment" FORMAT="1.00" ID="181">
-                <TEXT><![CDATA[Gewählt wird aus electivePlayerList]]></TEXT>
-              </FIGURE>
-            </ENTRY>
-            <ENTRY COLUMN="3" ROW="9">
+            <ENTRY COLUMN="3" ROW="3">
               <FIGURE SUBTYPE="PapInput" FORMAT="1.00" ID="10">
                 <TEXT><![CDATA[Spieler Aktion]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="3" ROW="12">
+            <ENTRY COLUMN="3" ROW="6">
               <FIGURE SUBTYPE="PapModule" FORMAT="1.00" ID="33">
                 <TEXT><![CDATA[Showdown]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="4" ROW="9">
+            <ENTRY COLUMN="4" ROW="3">
               <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="170">
                 <TEXT><![CDATA[action = actualPlayer.getAction()]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="5" ROW="9">
+            <ENTRY COLUMN="5" ROW="3">
               <FIGURE SUBTYPE="PapCondition" FORMAT="1.00" ID="11">
                 <TEXT><![CDATA[action
 ==
 FOLD]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="5" ROW="12">
+            <ENTRY COLUMN="5" ROW="6">
               <FIGURE SUBTYPE="PapCondition" FORMAT="1.00" ID="30">
                 <TEXT><![CDATA[electivePlayerList.count
 > 
 1]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="5" ROW="13">
+            <ENTRY COLUMN="5" ROW="7">
               <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="184">
-                <TEXT><![CDATA[playersInRoundList.remove(player)]]></TEXT>
+                <TEXT><![CDATA[playersInRoundList.remove(actualPlayer)]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="5" ROW="14">
+            <ENTRY COLUMN="5" ROW="8">
               <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="182">
-                <TEXT><![CDATA[electivePlayersList.remove(actualPlayer)]]></TEXT>
+                <TEXT><![CDATA[playersElectiveList.remove(actualPlayer)]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="5" ROW="15">
+            <ENTRY COLUMN="5" ROW="9">
               <FIGURE SUBTYPE="PapConnector" FORMAT="1.00" ID="43">
                 <TEXT><![CDATA[]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="6" ROW="15">
+            <ENTRY COLUMN="6" ROW="9">
               <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="138">
                 <TEXT><![CDATA[actualPlayer.IncreaseRoundBet(actualPlayer.GetSetAmount())]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="7" ROW="9">
+            <ENTRY COLUMN="7" ROW="3">
               <FIGURE SUBTYPE="PapCondition" FORMAT="1.00" ID="36">
                 <TEXT><![CDATA[actualPlayer.GetSetAmount()
 ==
-actualPalyer.GetMoney()]]></TEXT>
+actualPlayer]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="7" ROW="11">
+            <ENTRY COLUMN="7" ROW="4">
+              <FIGURE SUBTYPE="PapConnector" FORMAT="1.00" ID="191">
+                <TEXT><![CDATA[]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="7" ROW="5">
               <FIGURE SUBTYPE="PapConnector" FORMAT="1.00" ID="80">
                 <TEXT><![CDATA[]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="7" ROW="12">
+            <ENTRY COLUMN="7" ROW="6">
               <FIGURE SUBTYPE="PapCondition" FORMAT="1.00" ID="39">
                 <TEXT><![CDATA[action == CALL || action == CHECK]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="7" ROW="15">
+            <ENTRY COLUMN="7" ROW="9">
               <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="57">
                 <TEXT><![CDATA[tableMoney += actualPlayer.GetSetAmount()]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="8" ROW="12">
-              <FIGURE SUBTYPE="PapConnector" FORMAT="1.00" ID="115">
-                <TEXT><![CDATA[]]></TEXT>
-              </FIGURE>
-            </ENTRY>
-            <ENTRY COLUMN="8" ROW="15">
-              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="117">
-                <TEXT><![CDATA[highestBetPlayer = actualPlayer]]></TEXT>
-              </FIGURE>
-            </ENTRY>
-            <ENTRY COLUMN="9" ROW="9">
+            <ENTRY COLUMN="8" ROW="3">
               <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="158">
                 <TEXT><![CDATA[actualPlayer.SetRoundBet(acutalPlayer.GetRoundStartMoney)]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="9" ROW="10">
+            <ENTRY COLUMN="8" ROW="4">
               <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="168">
                 <TEXT><![CDATA[actualPlayer.SetAllIn()]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="9" ROW="11">
+            <ENTRY COLUMN="8" ROW="6">
+              <FIGURE SUBTYPE="PapConnector" FORMAT="1.00" ID="115">
+                <TEXT><![CDATA[]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="8" ROW="9">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="117">
+                <TEXT><![CDATA[highestBetPlayer = actualPlayer]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="9" ROW="5">
               <FIGURE SUBTYPE="PapConnector" FORMAT="1.00" ID="145">
                 <TEXT><![CDATA[]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="9" ROW="16">
+            <ENTRY COLUMN="9" ROW="10">
               <FIGURE SUBTYPE="PapConnector" FORMAT="1.00" ID="140">
                 <TEXT><![CDATA[]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="10" ROW="9">
+            <ENTRY COLUMN="10" ROW="3">
               <FIGURE SUBTYPE="PapConnector" FORMAT="1.00" ID="152">
                 <TEXT><![CDATA[]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="10" ROW="11">
+            <ENTRY COLUMN="10" ROW="5">
               <FIGURE SUBTYPE="PapConnector" FORMAT="1.00" ID="160">
                 <TEXT><![CDATA[]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="10" ROW="16">
+            <ENTRY COLUMN="10" ROW="10">
               <FIGURE SUBTYPE="PapConnector" FORMAT="1.00" ID="156">
                 <TEXT><![CDATA[]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="11" ROW="9">
+            <ENTRY COLUMN="11" ROW="3">
               <FIGURE SUBTYPE="PapComment" FORMAT="1.00" ID="154">
                 <TEXT><![CDATA[Alte Version (Side Pot als tatsächliche Struktur)]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="11" ROW="10">
+            <ENTRY COLUMN="11" ROW="4">
               <FIGURE SUBTYPE="PapComment" FORMAT="1.00" ID="167">
                 <TEXT><![CDATA[Alte Version (Side Pot als tatsächliche Struktur)]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="11" ROW="11">
+            <ENTRY COLUMN="11" ROW="5">
               <FIGURE SUBTYPE="PapComment" FORMAT="1.00" ID="162">
                 <TEXT><![CDATA[Alte Version (Side Pot als tatsächliche Struktur)]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="11" ROW="12">
+            <ENTRY COLUMN="11" ROW="6">
               <FIGURE SUBTYPE="PapComment" FORMAT="1.00" ID="163">
                 <TEXT><![CDATA[Alte Version (Side Pot als tatsächliche Struktur)]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="11" ROW="13">
+            <ENTRY COLUMN="11" ROW="7">
               <FIGURE SUBTYPE="PapComment" FORMAT="1.00" ID="164">
                 <TEXT><![CDATA[Alte Version (Side Pot als tatsächliche Struktur)]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="11" ROW="15">
+            <ENTRY COLUMN="11" ROW="9">
               <FIGURE SUBTYPE="PapComment" FORMAT="1.00" ID="165">
                 <TEXT><![CDATA[Alte Version (Side Pot als tatsächliche Struktur)]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="11" ROW="16">
+            <ENTRY COLUMN="11" ROW="10">
               <FIGURE SUBTYPE="PapComment" FORMAT="1.00" ID="166">
                 <TEXT><![CDATA[Alte Version (Side Pot als tatsächliche Struktur)]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="12" ROW="9">
+            <ENTRY COLUMN="12" ROW="3">
               <FIGURE SUBTYPE="PapCondition" FORMAT="1.00" ID="69">
                 <TEXT><![CDATA[Existiert Side Pot gleichen Guthabens?]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="12" ROW="10">
+            <ENTRY COLUMN="12" ROW="4">
               <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="73">
                 <TEXT><![CDATA[Füge Spieler dem Side Pot hinzu]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="12" ROW="11">
+            <ENTRY COLUMN="12" ROW="5">
               <FIGURE SUBTYPE="PapCondition" FORMAT="1.00" ID="112">
                 <TEXT><![CDATA[Sind alle Spieler All-In?]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="12" ROW="12">
+            <ENTRY COLUMN="12" ROW="6">
               <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="120">
                 <TEXT><![CDATA[Decke alle Karten auf]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="12" ROW="16">
+            <ENTRY COLUMN="12" ROW="10">
               <FIGURE SUBTYPE="PapConnector" FORMAT="1.00" ID="128">
                 <TEXT><![CDATA[]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="13" ROW="9">
+            <ENTRY COLUMN="13" ROW="3">
               <FIGURE SUBTYPE="PapModule" FORMAT="1.00" ID="85">
                 <TEXT><![CDATA[Sidepot]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="13" ROW="11">
+            <ENTRY COLUMN="13" ROW="5">
               <FIGURE SUBTYPE="PapConnector" FORMAT="1.00" ID="82">
                 <TEXT><![CDATA[]]></TEXT>
               </FIGURE>
@@ -496,66 +349,55 @@ actualPalyer.GetMoney()]]></TEXT>
           </ENTRIES>
         </LAYOUT>
         <CONNECTIONS>
-          <CONNECTION FORMAT="1.00" ID="3" FROM="1" TO="133" TEXT="" />
-          <CONNECTION FORMAT="1.00" ID="5" FROM="4" TO="174" TEXT="" />
           <CONNECTION FORMAT="1.00" ID="131" FROM="130" TO="2" TEXT="" />
-          <CONNECTION FORMAT="1.00" ID="9" FROM="6" TO="86" TEXT="nein" />
           <CONNECTION FORMAT="1.00" ID="12" FROM="10" TO="170" TEXT="" />
           <CONNECTION FORMAT="1.00" ID="44" FROM="30" TO="184" TEXT="ja" />
           <CONNECTION FORMAT="1.00" ID="20" FROM="6" TO="105" TEXT="ja" />
-          <CONNECTION FORMAT="1.00" ID="55" FROM="15" TO="54" TEXT="" />
-          <CONNECTION FORMAT="1.00" ID="56" FROM="54" TO="6" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="56" FROM="194" TO="6" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="206" FROM="205" TO="194" TEXT="" />
           <CONNECTION FORMAT="1.00" ID="29" FROM="30" TO="33" TEXT="nein" />
           <CONNECTION FORMAT="1.00" ID="35" FROM="11" TO="36" TEXT="nein" />
           <CONNECTION FORMAT="1.00" ID="111" FROM="73" TO="112" TEXT="" />
           <CONNECTION FORMAT="1.00" ID="41" FROM="39" TO="57" TEXT="Ja =&gt; Call / Check" />
-          <CONNECTION FORMAT="1.00" ID="45" FROM="43" TO="15" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="9" FROM="6" TO="195" TEXT="nein" />
           <CONNECTION FORMAT="1.00" ID="58" FROM="57" TO="138" TEXT="" />
           <CONNECTION FORMAT="1.00" ID="116" FROM="39" TO="115" TEXT="Nein =&gt; Bet / Raise" />
           <CONNECTION FORMAT="1.00" ID="171" FROM="170" TO="11" TEXT="" />
           <CONNECTION FORMAT="1.00" ID="119" FROM="115" TO="117" TEXT="" />
-          <CONNECTION FORMAT="1.00" ID="38" FROM="36" TO="80" TEXT="nein" />
+          <CONNECTION FORMAT="1.00" ID="192" FROM="191" TO="80" TEXT="" />
           <CONNECTION FORMAT="1.00" ID="78" FROM="85" TO="82" TEXT="" />
           <CONNECTION FORMAT="1.00" ID="74" FROM="69" TO="73" TEXT="ja" />
           <CONNECTION FORMAT="1.00" ID="84" FROM="82" TO="112" TEXT="" />
-          <CONNECTION FORMAT="1.00" ID="87" FROM="86" TO="10" TEXT="nein" />
           <CONNECTION FORMAT="1.00" ID="72" FROM="69" TO="85" TEXT="nein" />
           <CONNECTION FORMAT="1.00" ID="81" FROM="80" TO="39" TEXT="" />
           <CONNECTION FORMAT="1.00" ID="118" FROM="117" TO="57" TEXT="" />
-          <CONNECTION FORMAT="1.00" ID="88" FROM="86" TO="15" TEXT="ja" />
-          <CONNECTION FORMAT="1.00" ID="90" FROM="89" TO="4" TEXT="nein" />
-          <CONNECTION FORMAT="1.00" ID="92" FROM="89" TO="91" TEXT="ja" />
-          <CONNECTION FORMAT="1.00" ID="94" FROM="91" TO="93" TEXT="" />
-          <CONNECTION FORMAT="1.00" ID="178" FROM="93" TO="177" TEXT="" />
-          <CONNECTION FORMAT="1.00" ID="98" FROM="172" TO="6" TEXT="" />
-          <CONNECTION FORMAT="1.00" ID="179" FROM="177" TO="174" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="193" FROM="168" TO="191" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="3" FROM="1" TO="6" TEXT="" />
           <CONNECTION FORMAT="1.00" ID="14" FROM="11" TO="30" TEXT="ja" />
-          <CONNECTION FORMAT="1.00" ID="104" FROM="103" TO="89" TEXT="" />
           <CONNECTION FORMAT="1.00" ID="110" FROM="112" TO="160" TEXT="nein" />
           <CONNECTION FORMAT="1.00" ID="121" FROM="112" TO="120" TEXT="ja" />
           <CONNECTION FORMAT="1.00" ID="125" FROM="120" TO="128" TEXT="" />
           <CONNECTION FORMAT="1.00" ID="107" FROM="105" TO="130" TEXT="" />
           <CONNECTION FORMAT="1.00" ID="132" FROM="128" TO="156" TEXT="" />
-          <CONNECTION FORMAT="1.00" ID="134" FROM="133" TO="103" TEXT="nein" />
-          <CONNECTION FORMAT="1.00" ID="136" FROM="133" TO="135" TEXT="ja" />
-          <CONNECTION FORMAT="1.00" ID="137" FROM="135" TO="105" TEXT="" />
           <CONNECTION FORMAT="1.00" ID="139" FROM="138" TO="43" TEXT="" />
           <CONNECTION FORMAT="1.00" ID="141" FROM="140" TO="130" TEXT="" />
           <CONNECTION FORMAT="1.00" ID="146" FROM="145" TO="80" TEXT="" />
           <CONNECTION FORMAT="1.00" ID="62" FROM="36" TO="158" TEXT="ja" />
-          <CONNECTION FORMAT="1.00" ID="169" FROM="168" TO="145" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="38" FROM="36" TO="191" TEXT="nein" />
           <CONNECTION FORMAT="1.00" ID="153" FROM="152" TO="69" TEXT="" />
-          <CONNECTION FORMAT="1.00" ID="155" FROM="158" TO="168" TEXT="" />
-          <CONNECTION FORMAT="1.00" ID="175" FROM="174" TO="172" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="190" FROM="158" TO="168" TEXT="" />
           <CONNECTION FORMAT="1.00" ID="183" FROM="182" TO="43" TEXT="" />
           <CONNECTION FORMAT="1.00" ID="185" FROM="184" TO="182" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="196" FROM="195" TO="10" TEXT="ja" />
+          <CONNECTION FORMAT="1.00" ID="204" FROM="195" TO="205" TEXT="nein" />
+          <CONNECTION FORMAT="1.00" ID="45" FROM="43" TO="205" TEXT="" />
         </CONNECTIONS>
       </DIAGRAM>
-      <DIAGRAM FORMAT="1.00" ID="4" NAME="Showdown" CREATED="2016.10.26 14:32:03" MODIFIED="2016.10.27 17:22:54">
+      <DIAGRAM FORMAT="1.00" ID="4" NAME="Showdown" CREATED="2016.10.26 14:32:03" MODIFIED="2016.10.27 18:21:35">
         <LAYOUT FORMAT="1.00" COLUMNS="4" ROWS="17">
           <ENTRIES>
-            <ENTRY COLUMN="0" ROW="7">
-              <FIGURE SUBTYPE="PapConnector" FORMAT="1.00" ID="117">
+            <ENTRY COLUMN="0" ROW="6">
+              <FIGURE SUBTYPE="PapConnector" FORMAT="1.00" ID="120">
                 <TEXT><![CDATA[]]></TEXT>
               </FIGURE>
             </ENTRY>
@@ -581,7 +423,7 @@ actualPalyer.GetMoney()]]></TEXT>
             </ENTRY>
             <ENTRY COLUMN="1" ROW="3">
               <FIGURE SUBTYPE="PapCondition" FORMAT="1.00" ID="46">
-                <TEXT><![CDATA[electivePlayersList.count 
+                <TEXT><![CDATA[electivePlayersList.size()
 > 
 1]]></TEXT>
               </FIGURE>
@@ -697,7 +539,7 @@ ALLIN]]></TEXT>
             </ENTRY>
             <ENTRY COLUMN="3" ROW="3">
               <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="54">
-                <TEXT><![CDATA[winner = actualPlayer]]></TEXT>
+                <TEXT><![CDATA[actualPlayer = playersElectiveList.get(0)]]></TEXT>
               </FIGURE>
             </ENTRY>
             <ENTRY COLUMN="3" ROW="6">
@@ -755,8 +597,8 @@ ALLIN]]></TEXT>
           <CONNECTION FORMAT="1.00" ID="81" FROM="78" TO="80" TEXT="" />
           <CONNECTION FORMAT="1.00" ID="110" FROM="108" TO="113" TEXT="nein" />
           <CONNECTION FORMAT="1.00" ID="116" FROM="4" TO="113" TEXT="" />
-          <CONNECTION FORMAT="1.00" ID="118" FROM="111" TO="117" TEXT="" />
-          <CONNECTION FORMAT="1.00" ID="119" FROM="117" TO="9" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="122" FROM="120" TO="44" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="118" FROM="111" TO="120" TEXT="" />
         </CONNECTIONS>
       </DIAGRAM>
       <DIAGRAM FORMAT="1.00" ID="5" NAME="Table Erstellen" CREATED="2016.10.26 14:56:45" MODIFIED="2016.10.27 14:42:32">
@@ -818,8 +660,8 @@ ALLIN]]></TEXT>
           <CONNECTION FORMAT="1.00" ID="20" FROM="19" TO="15" TEXT="" />
         </CONNECTIONS>
       </DIAGRAM>
-      <DIAGRAM FORMAT="1.00" ID="6" NAME="Preflop" CREATED="2016.10.26 15:31:37" MODIFIED="2016.10.27 17:05:54">
-        <LAYOUT FORMAT="1.00" COLUMNS="2" ROWS="16">
+      <DIAGRAM FORMAT="1.00" ID="6" NAME="Preflop" CREATED="2016.10.26 15:31:37" MODIFIED="2016.10.27 21:13:59">
+        <LAYOUT FORMAT="1.00" COLUMNS="3" ROWS="20">
           <ENTRIES>
             <ENTRY COLUMN="0" ROW="0" ANCHOR="True">
               <FIGURE SUBTYPE="PapTitle" FORMAT="1.00" ID="0">
@@ -842,107 +684,140 @@ ALLIN]]></TEXT>
               </FIGURE>
             </ENTRY>
             <ENTRY COLUMN="0" ROW="4">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="27">
+                <TEXT><![CDATA[gameState = PREFLOP]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="0" ROW="11">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="43">
+                <TEXT><![CDATA[electivePlayersCount = playersInRoundList.size()]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="0" ROW="12">
+              <FIGURE SUBTYPE="PapModule" FORMAT="1.00" ID="39">
+                <TEXT><![CDATA[BestimmeStartspieler]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="0" ROW="13">
+              <FIGURE SUBTYPE="PapModule" FORMAT="1.00" ID="47">
+                <TEXT><![CDATA[PayMoney(table.GetSmallBlindValue(), table.GetSmallBlind())]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="0" ROW="14">
+              <FIGURE SUBTYPE="PapModule" FORMAT="1.00" ID="49">
+                <TEXT><![CDATA[PayMoney(table.GetBigBlindValue(), table.GetBigBlind())]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="0" ROW="15">
+              <FIGURE SUBTYPE="PapLoopStart" FORMAT="1.00" ID="4" ASSOCIATE="6">
+                <TEXT><![CDATA[Für alle Spieler]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="0" ROW="16">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="8">
+                <TEXT><![CDATA[Verteile Holecards]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="0" ROW="17">
+              <FIGURE SUBTYPE="PapLoopEnd" FORMAT="1.00" ID="6" ASSOCIATE="4">
+                <TEXT><![CDATA[In GameTable.playersList]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="0" ROW="18">
+              <FIGURE SUBTYPE="PapModule" FORMAT="1.00" ID="15">
+                <TEXT><![CDATA[Poker Runde]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="0" ROW="19">
+              <FIGURE SUBTYPE="PapEnd" FORMAT="1.00" ID="2">
+                <TEXT><![CDATA[Ende]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="1" ROW="5">
               <FIGURE SUBTYPE="PapLoopStart" FORMAT="1.00" ID="19" ASSOCIATE="21">
                 <TEXT><![CDATA[Für alle Spieler]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="0" ROW="5">
+            <ENTRY COLUMN="1" ROW="6">
               <FIGURE SUBTYPE="PapCondition" FORMAT="1.00" ID="23">
                 <TEXT><![CDATA[player.money
 >=
 0]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="0" ROW="6">
+            <ENTRY COLUMN="1" ROW="7">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="41">
+                <TEXT><![CDATA[player.SetRoundState(PlayerState.PLAYING)]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="1" ROW="8">
               <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="32">
                 <TEXT><![CDATA[playersStorageList.add(player)]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="0" ROW="7">
+            <ENTRY COLUMN="1" ROW="9">
               <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="25">
                 <TEXT><![CDATA[playersInRoundList.add(player)]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="0" ROW="8">
-              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="34">
-                <TEXT><![CDATA[playersElectiveList.add(player)]]></TEXT>
-              </FIGURE>
-            </ENTRY>
-            <ENTRY COLUMN="0" ROW="9">
+            <ENTRY COLUMN="1" ROW="10">
               <FIGURE SUBTYPE="PapLoopEnd" FORMAT="1.00" ID="21" ASSOCIATE="19">
                 <TEXT><![CDATA[In Table.connectedPlayersList]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="0" ROW="10">
-              <FIGURE SUBTYPE="PapLoopStart" FORMAT="1.00" ID="4" ASSOCIATE="6">
-                <TEXT><![CDATA[Für alle Spieler]]></TEXT>
+            <ENTRY COLUMN="1" ROW="13">
+              <FIGURE SUBTYPE="PapComment" FORMAT="1.00" ID="51">
+                <TEXT><![CDATA[Small Blind zahlt]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="0" ROW="11">
-              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="8">
-                <TEXT><![CDATA[Verteile Holecards]]></TEXT>
+            <ENTRY COLUMN="1" ROW="14">
+              <FIGURE SUBTYPE="PapComment" FORMAT="1.00" ID="52">
+                <TEXT><![CDATA[Big Blind zahlt]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="0" ROW="12">
-              <FIGURE SUBTYPE="PapLoopEnd" FORMAT="1.00" ID="6" ASSOCIATE="4">
-                <TEXT><![CDATA[In GameTable.playersList]]></TEXT>
+            <ENTRY COLUMN="1" ROW="16">
+              <FIGURE SUBTYPE="PapComment" FORMAT="1.00" ID="18">
+                <TEXT><![CDATA[Ersten 2 Karten]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="0" ROW="13">
-              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="27">
-                <TEXT><![CDATA[gameState = PREFLOP]]></TEXT>
+            <ENTRY COLUMN="2" ROW="6">
+              <FIGURE SUBTYPE="PapComment" FORMAT="1.00" ID="53">
+                <TEXT><![CDATA[Nicht beachtet: Juden ohne Geld gehen]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="0" ROW="14">
-              <FIGURE SUBTYPE="PapModule" FORMAT="1.00" ID="15">
-                <TEXT><![CDATA[Poker Runde]]></TEXT>
-              </FIGURE>
-            </ENTRY>
-            <ENTRY COLUMN="0" ROW="15">
-              <FIGURE SUBTYPE="PapEnd" FORMAT="1.00" ID="2">
-                <TEXT><![CDATA[Ende]]></TEXT>
-              </FIGURE>
-            </ENTRY>
-            <ENTRY COLUMN="1" ROW="6">
+            <ENTRY COLUMN="2" ROW="8">
               <FIGURE SUBTYPE="PapComment" FORMAT="1.00" ID="38">
                 <TEXT><![CDATA[Welche Spieler mit gestartet haben]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="1" ROW="7">
+            <ENTRY COLUMN="2" ROW="9">
               <FIGURE SUBTYPE="PapComment" FORMAT="1.00" ID="37">
                 <TEXT><![CDATA[Welche Spieler in der aktuellen Setz Runde noch sind]]></TEXT>
-              </FIGURE>
-            </ENTRY>
-            <ENTRY COLUMN="1" ROW="8">
-              <FIGURE SUBTYPE="PapComment" FORMAT="1.00" ID="36">
-                <TEXT><![CDATA[Welche Spieler haben noch Wahlmöglichkeit]]></TEXT>
-              </FIGURE>
-            </ENTRY>
-            <ENTRY COLUMN="1" ROW="11">
-              <FIGURE SUBTYPE="PapComment" FORMAT="1.00" ID="18">
-                <TEXT><![CDATA[Ersten 2 Karten]]></TEXT>
               </FIGURE>
             </ENTRY>
           </ENTRIES>
         </LAYOUT>
         <CONNECTIONS>
-          <CONNECTION FORMAT="1.00" ID="28" FROM="27" TO="15" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="54" FROM="49" TO="4" TEXT="" />
           <CONNECTION FORMAT="1.00" ID="3" FROM="1" TO="29" TEXT="" />
           <CONNECTION FORMAT="1.00" ID="5" FROM="4" TO="8" TEXT="" />
           <CONNECTION FORMAT="1.00" ID="9" FROM="8" TO="6" TEXT="" />
-          <CONNECTION FORMAT="1.00" ID="7" FROM="6" TO="27" TEXT="" />
-          <CONNECTION FORMAT="1.00" ID="22" FROM="21" TO="4" TEXT="" />
           <CONNECTION FORMAT="1.00" ID="16" FROM="15" TO="2" TEXT="" />
-          <CONNECTION FORMAT="1.00" ID="30" FROM="29" TO="19" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="30" FROM="29" TO="27" TEXT="" />
           <CONNECTION FORMAT="1.00" ID="20" FROM="19" TO="23" TEXT="" />
-          <CONNECTION FORMAT="1.00" ID="24" FROM="23" TO="32" TEXT="Ja" />
-          <CONNECTION FORMAT="1.00" ID="26" FROM="25" TO="34" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="24" FROM="23" TO="41" TEXT="Ja" />
+          <CONNECTION FORMAT="1.00" ID="44" FROM="43" TO="39" TEXT="" />
           <CONNECTION FORMAT="1.00" ID="33" FROM="32" TO="25" TEXT="" />
-          <CONNECTION FORMAT="1.00" ID="35" FROM="34" TO="21" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="26" FROM="25" TO="21" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="48" FROM="47" TO="49" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="42" FROM="41" TO="32" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="40" FROM="39" TO="47" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="7" FROM="6" TO="15" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="56" FROM="27" TO="43" TEXT="" />
         </CONNECTIONS>
       </DIAGRAM>
-      <DIAGRAM FORMAT="1.00" ID="7" NAME="Flop" CREATED="2016.10.26 15:34:02" MODIFIED="2016.10.26 15:37:22">
-        <LAYOUT FORMAT="1.00" COLUMNS="1" ROWS="5">
+      <DIAGRAM FORMAT="1.00" ID="7" NAME="Flop" CREATED="2016.10.26 15:34:02" MODIFIED="2016.10.27 20:55:46">
+        <LAYOUT FORMAT="1.00" COLUMNS="1" ROWS="7">
           <ENTRIES>
             <ENTRY COLUMN="0" ROW="0" ANCHOR="True">
               <FIGURE SUBTYPE="PapTitle" FORMAT="1.00" ID="0">
@@ -960,11 +835,21 @@ ALLIN]]></TEXT>
               </FIGURE>
             </ENTRY>
             <ENTRY COLUMN="0" ROW="3">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="10">
+                <TEXT><![CDATA[gameState = FLOP]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="0" ROW="4">
+              <FIGURE SUBTYPE="PapModule" FORMAT="1.00" ID="8">
+                <TEXT><![CDATA[BestimmeStartspielerPostPreflop]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="0" ROW="5">
               <FIGURE SUBTYPE="PapModule" FORMAT="1.00" ID="6">
                 <TEXT><![CDATA[Poker Runde]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="0" ROW="4">
+            <ENTRY COLUMN="0" ROW="6">
               <FIGURE SUBTYPE="PapEnd" FORMAT="1.00" ID="2">
                 <TEXT><![CDATA[Ende]]></TEXT>
               </FIGURE>
@@ -973,12 +858,14 @@ ALLIN]]></TEXT>
         </LAYOUT>
         <CONNECTIONS>
           <CONNECTION FORMAT="1.00" ID="3" FROM="1" TO="4" TEXT="" />
-          <CONNECTION FORMAT="1.00" ID="5" FROM="4" TO="6" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="5" FROM="4" TO="10" TEXT="" />
           <CONNECTION FORMAT="1.00" ID="7" FROM="6" TO="2" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="9" FROM="8" TO="6" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="11" FROM="10" TO="8" TEXT="" />
         </CONNECTIONS>
       </DIAGRAM>
-      <DIAGRAM FORMAT="1.00" ID="8" NAME="River" CREATED="2016.10.26 15:34:08" MODIFIED="2016.10.26 15:37:28">
-        <LAYOUT FORMAT="1.00" COLUMNS="1" ROWS="5">
+      <DIAGRAM FORMAT="1.00" ID="8" NAME="River" CREATED="2016.10.26 15:34:08" MODIFIED="2016.10.27 20:56:41">
+        <LAYOUT FORMAT="1.00" COLUMNS="1" ROWS="7">
           <ENTRIES>
             <ENTRY COLUMN="0" ROW="0" ANCHOR="True">
               <FIGURE SUBTYPE="PapTitle" FORMAT="1.00" ID="0">
@@ -996,11 +883,21 @@ ALLIN]]></TEXT>
               </FIGURE>
             </ENTRY>
             <ENTRY COLUMN="0" ROW="3">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="10">
+                <TEXT><![CDATA[gameState = RIVER]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="0" ROW="4">
+              <FIGURE SUBTYPE="PapModule" FORMAT="1.00" ID="27">
+                <TEXT><![CDATA[BestimmeStartspielerPostPreflop]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="0" ROW="5">
               <FIGURE SUBTYPE="PapModule" FORMAT="1.00" ID="6">
                 <TEXT><![CDATA[Poker Runde]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="0" ROW="4">
+            <ENTRY COLUMN="0" ROW="6">
               <FIGURE SUBTYPE="PapEnd" FORMAT="1.00" ID="2">
                 <TEXT><![CDATA[Ende]]></TEXT>
               </FIGURE>
@@ -1009,12 +906,14 @@ ALLIN]]></TEXT>
         </LAYOUT>
         <CONNECTIONS>
           <CONNECTION FORMAT="1.00" ID="3" FROM="1" TO="4" TEXT="" />
-          <CONNECTION FORMAT="1.00" ID="5" FROM="4" TO="6" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="5" FROM="4" TO="10" TEXT="" />
           <CONNECTION FORMAT="1.00" ID="7" FROM="6" TO="2" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="28" FROM="27" TO="6" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="11" FROM="10" TO="27" TEXT="" />
         </CONNECTIONS>
       </DIAGRAM>
-      <DIAGRAM FORMAT="1.00" ID="9" NAME="Turn" CREATED="2016.10.26 15:34:12" MODIFIED="2016.10.26 15:37:39">
-        <LAYOUT FORMAT="1.00" COLUMNS="1" ROWS="5">
+      <DIAGRAM FORMAT="1.00" ID="9" NAME="Turn" CREATED="2016.10.26 15:34:12" MODIFIED="2016.10.27 18:28:26">
+        <LAYOUT FORMAT="1.00" COLUMNS="1" ROWS="7">
           <ENTRIES>
             <ENTRY COLUMN="0" ROW="0" ANCHOR="True">
               <FIGURE SUBTYPE="PapTitle" FORMAT="1.00" ID="0">
@@ -1032,11 +931,21 @@ ALLIN]]></TEXT>
               </FIGURE>
             </ENTRY>
             <ENTRY COLUMN="0" ROW="3">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="8">
+                <TEXT><![CDATA[gameState = TURN]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="0" ROW="4">
+              <FIGURE SUBTYPE="PapModule" FORMAT="1.00" ID="10">
+                <TEXT><![CDATA[BestimmeStartspieler]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="0" ROW="5">
               <FIGURE SUBTYPE="PapModule" FORMAT="1.00" ID="6">
                 <TEXT><![CDATA[Poker Runde]]></TEXT>
               </FIGURE>
             </ENTRY>
-            <ENTRY COLUMN="0" ROW="4">
+            <ENTRY COLUMN="0" ROW="6">
               <FIGURE SUBTYPE="PapEnd" FORMAT="1.00" ID="2">
                 <TEXT><![CDATA[Ende]]></TEXT>
               </FIGURE>
@@ -1045,8 +954,10 @@ ALLIN]]></TEXT>
         </LAYOUT>
         <CONNECTIONS>
           <CONNECTION FORMAT="1.00" ID="3" FROM="1" TO="4" TEXT="" />
-          <CONNECTION FORMAT="1.00" ID="5" FROM="4" TO="6" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="5" FROM="4" TO="8" TEXT="" />
           <CONNECTION FORMAT="1.00" ID="7" FROM="6" TO="2" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="9" FROM="8" TO="10" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="11" FROM="10" TO="6" TEXT="" />
         </CONNECTIONS>
       </DIAGRAM>
       <DIAGRAM FORMAT="1.00" ID="10" NAME="Gewinnerstack" CREATED="2016.10.27 13:39:16" MODIFIED="2016.10.27 14:09:37">
@@ -1073,12 +984,174 @@ ALLIN]]></TEXT>
           <CONNECTION FORMAT="1.00" ID="3" FROM="1" TO="2" TEXT="" />
         </CONNECTIONS>
       </DIAGRAM>
-      <DIAGRAM FORMAT="1.00" ID="11" NAME="Sidepot 2" CREATED="2016.10.27 14:08:58" MODIFIED="2016.10.27 14:08:58">
-        <LAYOUT FORMAT="1.00" COLUMNS="1" ROWS="5">
+      <DIAGRAM FORMAT="1.00" ID="13" NAME="Blinds" CREATED="2016.10.27 20:15:53" MODIFIED="2016.10.27 20:41:32">
+        <LAYOUT FORMAT="1.00" COLUMNS="2" ROWS="15">
           <ENTRIES>
             <ENTRY COLUMN="0" ROW="0" ANCHOR="True">
               <FIGURE SUBTYPE="PapTitle" FORMAT="1.00" ID="0">
-                <TEXT><![CDATA[Sidepot 2]]></TEXT>
+                <TEXT><![CDATA[Blinds]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="0" ROW="1">
+              <FIGURE SUBTYPE="PapStart" FORMAT="1.00" ID="1">
+                <TEXT><![CDATA[Start]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="0" ROW="2">
+              <FIGURE SUBTYPE="PapCondition" FORMAT="1.00" ID="4">
+                <TEXT><![CDATA[smallBlind.GetMoney() - table.GetSmallBlindValue()
+>
+0]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="0" ROW="3">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="5">
+                <TEXT><![CDATA[table.SetPot(table.GetSmallBlindValue())]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="0" ROW="4">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="6">
+                <TEXT><![CDATA[smallBlind.SetRoundBet(table.GetSmallBlindValue())]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="0" ROW="5">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="7">
+                <TEXT><![CDATA[smallBlind.DecreaseMoney(table.GetSmallBlindValue())]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="0" ROW="7">
+              <FIGURE SUBTYPE="PapConnector" FORMAT="1.00" ID="8">
+                <TEXT><![CDATA[]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="0" ROW="8">
+              <FIGURE SUBTYPE="PapCondition" FORMAT="1.00" ID="9">
+                <TEXT><![CDATA[bigBlind.GetMoney() - table.GetBigBlindValue()
+>
+0]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="0" ROW="9">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="10">
+                <TEXT><![CDATA[pot += table.GetBigBlindValue()]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="0" ROW="10">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="11">
+                <TEXT><![CDATA[bigBlind.SetRoundBet(table.GetBigBlindValue())]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="0" ROW="11">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="12">
+                <TEXT><![CDATA[bigBlind.DecreaseMoney(table.GetBigBlindValue())]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="0" ROW="13">
+              <FIGURE SUBTYPE="PapConnector" FORMAT="1.00" ID="13">
+                <TEXT><![CDATA[]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="0" ROW="14">
+              <FIGURE SUBTYPE="PapEnd" FORMAT="1.00" ID="2">
+                <TEXT><![CDATA[Ende]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="1" ROW="2">
+              <FIGURE SUBTYPE="PapConnector" FORMAT="1.00" ID="14">
+                <TEXT><![CDATA[]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="1" ROW="3">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="15">
+                <TEXT><![CDATA[pot += smallBlind.GetMoney()]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="1" ROW="4">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="16">
+                <TEXT><![CDATA[smallBlind.SetRoundBet(smallBlind.GetMoney())]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="1" ROW="5">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="17">
+                <TEXT><![CDATA[smallBlind.SetMoney(0)]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="1" ROW="6">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="18">
+                <TEXT><![CDATA[smallBlind.SetRoundState(PlayerState.ALLIN)]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="1" ROW="7">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="19">
+                <TEXT><![CDATA[electivePlayersCount -= 1]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="1" ROW="8">
+              <FIGURE SUBTYPE="PapConnector" FORMAT="1.00" ID="20">
+                <TEXT><![CDATA[]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="1" ROW="9">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="21">
+                <TEXT><![CDATA[pot += bigBlind.GetMoney()]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="1" ROW="10">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="22">
+                <TEXT><![CDATA[bigBlind.SetRoundBet(bigBlind.getMoney())]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="1" ROW="11">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="23">
+                <TEXT><![CDATA[bigBlind.setMoney(0)]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="1" ROW="12">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="24">
+                <TEXT><![CDATA[bigBlind.SetRoundState(PlayerState.ALLIN)]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="1" ROW="13">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="25">
+                <TEXT><![CDATA[electivePlayersCount -= 1]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+          </ENTRIES>
+        </LAYOUT>
+        <CONNECTIONS>
+          <CONNECTION FORMAT="1.00" ID="49" FROM="13" TO="2" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="26" FROM="4" TO="14" TEXT="nein" />
+          <CONNECTION FORMAT="1.00" ID="27" FROM="4" TO="5" TEXT="ja" />
+          <CONNECTION FORMAT="1.00" ID="28" FROM="14" TO="15" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="29" FROM="5" TO="6" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="30" FROM="15" TO="16" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="31" FROM="6" TO="7" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="32" FROM="16" TO="17" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="33" FROM="7" TO="8" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="34" FROM="17" TO="18" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="35" FROM="18" TO="19" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="36" FROM="19" TO="8" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="37" FROM="8" TO="9" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="38" FROM="9" TO="10" TEXT="ja" />
+          <CONNECTION FORMAT="1.00" ID="39" FROM="9" TO="20" TEXT="nein" />
+          <CONNECTION FORMAT="1.00" ID="40" FROM="20" TO="21" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="41" FROM="10" TO="11" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="42" FROM="21" TO="22" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="43" FROM="11" TO="12" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="44" FROM="22" TO="23" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="45" FROM="12" TO="13" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="46" FROM="23" TO="24" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="47" FROM="24" TO="25" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="48" FROM="25" TO="13" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="50" FROM="1" TO="4" TEXT="" />
+        </CONNECTIONS>
+      </DIAGRAM>
+      <DIAGRAM FORMAT="1.00" ID="14" NAME="PayMoney" CREATED="2016.10.27 20:33:27" MODIFIED="2016.10.27 20:33:27">
+        <LAYOUT FORMAT="1.00" COLUMNS="2" ROWS="11">
+          <ENTRIES>
+            <ENTRY COLUMN="0" ROW="0" ANCHOR="True">
+              <FIGURE SUBTYPE="PapTitle" FORMAT="1.00" ID="0">
+                <TEXT><![CDATA[PayMoney]]></TEXT>
               </FIGURE>
             </ENTRY>
             <ENTRY COLUMN="0" ROW="1">
@@ -1088,17 +1161,74 @@ ALLIN]]></TEXT>
             </ENTRY>
             <ENTRY COLUMN="0" ROW="2">
               <FIGURE SUBTYPE="PapInput" FORMAT="1.00" ID="4">
-                <TEXT><![CDATA[Spieler]]></TEXT>
+                <TEXT><![CDATA[moneyAmount]]></TEXT>
               </FIGURE>
             </ENTRY>
             <ENTRY COLUMN="0" ROW="3">
               <FIGURE SUBTYPE="PapInput" FORMAT="1.00" ID="6">
-                <TEXT><![CDATA[Guthaben]]></TEXT>
+                <TEXT><![CDATA[player]]></TEXT>
               </FIGURE>
             </ENTRY>
             <ENTRY COLUMN="0" ROW="4">
+              <FIGURE SUBTYPE="PapCondition" FORMAT="1.00" ID="8">
+                <TEXT><![CDATA[player.GetMoney() - moneyAmount
+>
+0]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="0" ROW="5">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="10">
+                <TEXT><![CDATA[table.IncreasePot(moneyAmount)]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="0" ROW="6">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="12">
+                <TEXT><![CDATA[player.DecreaseMoney(moneyAmount)]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="0" ROW="7">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="14">
+                <TEXT><![CDATA[player.IncreaseRoundBet(moneyAmount)]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="0" ROW="9">
+              <FIGURE SUBTYPE="PapConnector" FORMAT="1.00" ID="24">
+                <TEXT><![CDATA[]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="0" ROW="10">
               <FIGURE SUBTYPE="PapEnd" FORMAT="1.00" ID="2">
                 <TEXT><![CDATA[Ende]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="1" ROW="4">
+              <FIGURE SUBTYPE="PapConnector" FORMAT="1.00" ID="16">
+                <TEXT><![CDATA[]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="1" ROW="5">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="18">
+                <TEXT><![CDATA[table.IncreasePot(player.GetMoney())]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="1" ROW="6">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="20">
+                <TEXT><![CDATA[player.IncreaseRoundBet(player.GetMoney())]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="1" ROW="7">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="21">
+                <TEXT><![CDATA[player.SetMoney(0)]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="1" ROW="8">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="22">
+                <TEXT><![CDATA[player.SetRoundState(PlayerState.ALLIN)]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="1" ROW="9">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="23">
+                <TEXT><![CDATA[electivePlayersCount -= 1]]></TEXT>
               </FIGURE>
             </ENTRY>
           </ENTRIES>
@@ -1106,7 +1236,188 @@ ALLIN]]></TEXT>
         <CONNECTIONS>
           <CONNECTION FORMAT="1.00" ID="3" FROM="1" TO="4" TEXT="" />
           <CONNECTION FORMAT="1.00" ID="5" FROM="4" TO="6" TEXT="" />
-          <CONNECTION FORMAT="1.00" ID="7" FROM="6" TO="2" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="7" FROM="6" TO="8" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="9" FROM="8" TO="10" TEXT="ja" />
+          <CONNECTION FORMAT="1.00" ID="11" FROM="10" TO="12" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="13" FROM="12" TO="14" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="25" FROM="24" TO="2" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="17" FROM="8" TO="16" TEXT="nein" />
+          <CONNECTION FORMAT="1.00" ID="19" FROM="16" TO="18" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="15" FROM="14" TO="24" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="26" FROM="23" TO="24" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="27" FROM="22" TO="23" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="28" FROM="21" TO="22" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="29" FROM="20" TO="21" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="30" FROM="18" TO="20" TEXT="" />
+        </CONNECTIONS>
+      </DIAGRAM>
+      <DIAGRAM FORMAT="1.00" ID="12" NAME="BestimmeStartspieler" CREATED="2016.10.27 17:55:45" MODIFIED="2016.10.27 21:04:59">
+        <LAYOUT FORMAT="1.00" COLUMNS="3" ROWS="11">
+          <ENTRIES>
+            <ENTRY COLUMN="0" ROW="2">
+              <FIGURE SUBTYPE="PapModule" FORMAT="1.00" ID="27">
+                <TEXT><![CDATA[Showdown]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="1" ROW="0" ANCHOR="True">
+              <FIGURE SUBTYPE="PapTitle" FORMAT="1.00" ID="0">
+                <TEXT><![CDATA[BestimmeStartspieler]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="1" ROW="1">
+              <FIGURE SUBTYPE="PapStart" FORMAT="1.00" ID="1">
+                <TEXT><![CDATA[Start]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="1" ROW="2">
+              <FIGURE SUBTYPE="PapCondition" FORMAT="1.00" ID="4">
+                <TEXT><![CDATA[electivePlayersCount 
+> 
+1]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="1" ROW="3">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="5">
+                <TEXT><![CDATA[highestBetPlayer = null]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="1" ROW="4">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="32">
+                <TEXT><![CDATA[table.SetDealer(playersInRound.get(dealerIndex))]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="1" ROW="5">
+              <FIGURE SUBTYPE="PapCondition" FORMAT="1.00" ID="31">
+                <TEXT><![CDATA[playersInRound.size() 
+> 
+2]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="1" ROW="6">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="34">
+                <TEXT><![CDATA[table.SetSmallBlind(playersInRound.get(dealerIndex + 1))]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="1" ROW="7">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="36">
+                <TEXT><![CDATA[table.SetBigBlind(playersInRound.get(dealerIndex + 2))]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="1" ROW="8">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="40">
+                <TEXT><![CDATA[actualPlayer = playersInRound.get(dealerIndex + 3);]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="1" ROW="9">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="75">
+                <TEXT><![CDATA[highestBetPlayer = actualPlayer]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="1" ROW="10">
+              <FIGURE SUBTYPE="PapEnd" FORMAT="1.00" ID="2">
+                <TEXT><![CDATA[Ende]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="2" ROW="2">
+              <FIGURE SUBTYPE="PapComment" FORMAT="1.00" ID="10">
+                <TEXT><![CDATA[Mehr als 0 Spieler haben Möglichkeit zu wählen (muss eventuell zu 1 geändert werden)]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="2" ROW="5">
+              <FIGURE SUBTYPE="PapConnector" FORMAT="1.00" ID="62">
+                <TEXT><![CDATA[]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="2" ROW="6">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="64">
+                <TEXT><![CDATA[table.SetSmallBlind(playersInRound.get(dealerIndex))]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="2" ROW="7">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="66">
+                <TEXT><![CDATA[table.SetBigBlind(playersInRound.get(dealerIndex + 1))]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="2" ROW="8">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="68">
+                <TEXT><![CDATA[actualPlayer = table.GetSmallBlind()]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="2" ROW="9">
+              <FIGURE SUBTYPE="PapConnector" FORMAT="1.00" ID="70">
+                <TEXT><![CDATA[]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+          </ENTRIES>
+        </LAYOUT>
+        <CONNECTIONS>
+          <CONNECTION FORMAT="1.00" ID="3" FROM="1" TO="4" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="15" FROM="4" TO="5" TEXT="ja" />
+          <CONNECTION FORMAT="1.00" ID="65" FROM="62" TO="64" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="61" FROM="32" TO="31" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="67" FROM="64" TO="66" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="58" FROM="40" TO="75" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="26" FROM="4" TO="27" TEXT="nein" />
+          <CONNECTION FORMAT="1.00" ID="16" FROM="5" TO="32" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="19" FROM="31" TO="34" TEXT="ja" />
+          <CONNECTION FORMAT="1.00" ID="69" FROM="66" TO="68" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="63" FROM="31" TO="62" TEXT="nein" />
+          <CONNECTION FORMAT="1.00" ID="35" FROM="34" TO="36" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="37" FROM="36" TO="40" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="71" FROM="68" TO="70" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="73" FROM="75" TO="2" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="74" FROM="70" TO="75" TEXT="" />
+        </CONNECTIONS>
+      </DIAGRAM>
+      <DIAGRAM FORMAT="1.00" ID="15" NAME="BestimmeStartspielerPostPreflop" CREATED="2016.10.27 20:54:41" MODIFIED="2016.10.27 20:54:41">
+        <LAYOUT FORMAT="1.00" COLUMNS="2" ROWS="5">
+          <ENTRIES>
+            <ENTRY COLUMN="0" ROW="0" ANCHOR="True">
+              <FIGURE SUBTYPE="PapTitle" FORMAT="1.00" ID="0">
+                <TEXT><![CDATA[BestimmeStartspielerPostPreflop]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="0" ROW="1">
+              <FIGURE SUBTYPE="PapStart" FORMAT="1.00" ID="1">
+                <TEXT><![CDATA[Start]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="0" ROW="2">
+              <FIGURE SUBTYPE="PapCondition" FORMAT="1.00" ID="4">
+                <TEXT><![CDATA[playersInRound.size()
+>
+2]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="0" ROW="3">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="5">
+                <TEXT><![CDATA[actualPlayer = playersInRound.get(dealerIndex + 1)]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="0" ROW="4">
+              <FIGURE SUBTYPE="PapEnd" FORMAT="1.00" ID="2">
+                <TEXT><![CDATA[Ende]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="1" ROW="2">
+              <FIGURE SUBTYPE="PapConnector" FORMAT="1.00" ID="7">
+                <TEXT><![CDATA[]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+            <ENTRY COLUMN="1" ROW="3">
+              <FIGURE SUBTYPE="PapActivity" FORMAT="1.00" ID="8">
+                <TEXT><![CDATA[actualPlayer = playersInRound.get(dealerIndex)]]></TEXT>
+              </FIGURE>
+            </ENTRY>
+          </ENTRIES>
+        </LAYOUT>
+        <CONNECTIONS>
+          <CONNECTION FORMAT="1.00" ID="10" FROM="4" TO="5" TEXT="ja" />
+          <CONNECTION FORMAT="1.00" ID="11" FROM="4" TO="7" TEXT="nein" />
+          <CONNECTION FORMAT="1.00" ID="12" FROM="7" TO="8" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="18" FROM="8" TO="5" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="3" FROM="1" TO="4" TEXT="" />
+          <CONNECTION FORMAT="1.00" ID="16" FROM="5" TO="2" TEXT="" />
         </CONNECTIONS>
       </DIAGRAM>
     </DIAGRAMS>

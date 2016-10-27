@@ -1,5 +1,7 @@
 package game;
 
+import game.models.PlayerState;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -8,7 +10,9 @@ class Player {
 	private int money;
 	private List<Card> cards;
 	private String nickname;
-	
+	private PlayerState playerRoundState;
+	private int RoundBet = 0;
+
 	/**
 	 * game.Player constructor with std value for money
 	 */
@@ -64,7 +68,7 @@ class Player {
 	 * @return the current value of money, or -1 if the player
 	 * doesn't have enough money
 	 */
-	public int RemoveMoney(int money)
+	public int DecreaseMoney(int money)
 	{
 		if (this.money - money < 0) {
 			return -1;
@@ -73,7 +77,12 @@ class Player {
 			return this.money;
 		}
 	}
-	
+
+	/**
+	 * IncreaseMoney - Increase the money about money
+	 * @param money Value the amount should be increased about
+	 */
+	public void IncreaseMoney(int money) { this.money += money; }
 	/**
 	 * SetCards - Sets the cards
 	 * @param cards a list of cards the should be set
@@ -133,4 +142,35 @@ class Player {
 	{
 		this.nickname = nickname;
 	}
+
+	/**
+	 * GetRoundState
+	 * @return State of the player in actual Round
+	 */
+	public PlayerState GetRoundState() { return this.playerRoundState; }
+
+	/**
+	 * SetRoundState
+	 * @param playerRoundState the new state for the player
+	 */
+	public void SetRoundState(PlayerState playerRoundState) { this.playerRoundState = playerRoundState; }
+
+	/**
+	 * SetRoundBet
+	 * @param RoundBet Value for Round Bet
+	 */
+	public void SetRoundBet(int RoundBet) { this.RoundBet = RoundBet; }
+
+	/**
+	 * GetRoundBet
+	 * @return RoundBet returns RoundBet for Player
+	 */
+	public int GetRoundBet() { return RoundBet; }
+
+	/**
+	 * Increase Round Bet
+	 * @param RoundBet Value for increasing
+	 * Increases Round Bet about RoundBet
+	 */
+	public void IncreaseRoundBet(int RoundBet) { this.RoundBet += RoundBet; }
 }
