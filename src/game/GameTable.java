@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Random;
 
 public class GameTable {
-	
-	private Table.CircularList<Player> playersInRound;
 
 	private Deck deck;
 	private Table table;
@@ -43,7 +41,7 @@ public class GameTable {
 		 */
 		table.SetRoundState(RoundState.PREFLOP);
 		table.SetPot(0);
-		playersInRound = (Table.CircularList<Player>) table.GetPlayersOnTable().clone();
+		Table.CircularList<Player> playersInRound = (Table.CircularList<Player>) table.GetPlayersOnTable().clone();
 		electivePlayersCount = playersInRound.size();		//Counts Players who have the right to vote
 
 		if(table.IsFirstRound()){
@@ -53,17 +51,14 @@ public class GameTable {
 			dealerIndex++;
 		}
 
-		SelectStartPlayer();
+		SelectStartPlayerPreFlop();
 		PayBlinds();
-		
-		for (int i = 0; i < playersInRound.size(); i++) {
-			playersInRound.get(dealerIndex + i)
-				.AddCard(deck.Draw());
-		}
-		for (int i = 0; i < playersInRound.size(); i++) {
-			playersInRound.get(dealerIndex + i)
-				.AddCard(deck.Draw());
-		}
+
+		//Falls aus einem unerfindlichen Grunde die Blinds höher sind als das Geld von Spieler X und Spieler Y
+		//dann sollten wir gewappnet sein, um uns dem Kampf gegen den Deadlock der PokerRunde() zu stellen.
+		//Dafür ziehen wir den Showdown einfach vor
+		if (electivePlayersCount <= 1) { return ShowdownPreRiver(); }	//Deus Vult!
+		SpreadPlayerCards();
 		
 		//Debug
 		for (Player p : playersInRound) {
@@ -72,12 +67,9 @@ public class GameTable {
 						   + tmpCards.get(0).toString() + ","
 						   + tmpCards.get(1).toString());
 		}
-		
-		
-		/*
-			Pokerrunde
-		 */
-		
+
+		PokerRound();
+
 		return 0;
 	}
 
@@ -90,7 +82,8 @@ public class GameTable {
 	public int Flop()
 	{
 		table.SetRoundState(RoundState.FLOP);
-		
+
+		/*
 		//burn 1 card
 		deck.Draw();
 		
@@ -98,8 +91,10 @@ public class GameTable {
 		table.AddBoardCard(deck.Draw());
 		table.AddBoardCard(deck.Draw());
 		table.AddBoardCard(deck.Draw());
-		
-		
+		*/
+		AddBoardCard(3);
+		SelectPlayerPostPreFlop();
+		PokerRound();
 		/**
 		 * flop gameplay comes here
 		 */
@@ -115,13 +110,17 @@ public class GameTable {
 	public int Turn()
 	{
 		table.SetRoundState(RoundState.TURN);
-		
+
+		/*
 		//burn 1 card
 		deck.Draw();
 		
 		//Put 1 card on the board
 		table.AddBoardCard(deck.Draw());
-		
+		*/
+		AddBoardCard(1);
+		SelectPlayerPostPreFlop();
+		PokerRound();
 		/**
 		 * turn gameplay comes here
 		 */
@@ -137,13 +136,17 @@ public class GameTable {
 	public int River()
 	{
 		table.SetRoundState(RoundState.RIVER);
-		
+
+		/*
 		//burn 1 card
 		deck.Draw();
 		
-		//Put 3 cards on the board
+		//Put 1 cards on the board
 		table.AddBoardCard(deck.Draw());
-		
+		*/
+		AddBoardCard(1);
+		SelectPlayerPostPreFlop();
+		PokerRound();
 		/**
 		 * river gameplay comes here
 		 */
@@ -158,11 +161,62 @@ public class GameTable {
 	 */
 	public int Showdown(){
 		table.SetRoundState(RoundState.SHOWDOWN);
+		if (electivePlayersCount > 1) {
+		} else { //Nur noch einer übrig => Er bekommt alles Geld
+			for(Player p : table.GetPlayersOnTable()){
+				if (p.IsElective()) {
+					p.IncreaseMoney(table.GetPot());
+					/*End Logic*/
+				}
+			}
+		}
 		/**
 		 * Everything needed for showdown comes here
 		 */
 		
 		return 0;
+	}
+
+	public int ShowdownPreRiver()
+	{
+		switch (table.GetRoundState()) {
+			case PREFLOP:
+				SpreadPlayerCards();
+				AddBoardCard(3);
+				table.SetRoundState(RoundState.FLOP);	//redundant
+			case FLOP:
+				AddBoardCard(1);
+				table.SetRoundState(RoundState.TURN);	//redundant
+			case TURN:
+				AddBoardCard(1);
+				table.SetRoundState(RoundState.RIVER);	//redundant
+		}
+		return Showdown();
+	}
+
+	public void AddBoardCard(int amount)
+	{
+		deck.Draw();							//Burn first
+		for (int i = 0; i < amount; i++) {
+			table.AddBoardCard(deck.Draw());
+			//VisibleState auf false setzen
+			//An alle Clients verteilen
+			//Zeit t warten
+			//Aufdecken
+
+		}
+	}
+
+	public void SpreadPlayerCards(){
+		Table.CircularList<Player> playersInRound = (Table.CircularList<Player>) table.GetPlayersOnTable().clone();
+		for (int i = 0; i < playersInRound.size(); i++) {
+			playersInRound.get(dealerIndex + i)
+					.AddCard(deck.Draw());
+		}
+		for (int i = 0; i < playersInRound.size(); i++) {
+			playersInRound.get(dealerIndex + i)
+					.AddCard(deck.Draw());
+		}
 	}
 
 	public void PayBlinds()
@@ -214,8 +268,7 @@ public class GameTable {
 					if (electivePlayersCount > 1) {																		//Mindestens 2 Spieler haben noch Wahlmöglichkeit
 						electivePlayersCount -= 1;
 					} else {
-																														//Showdown
-						//return Showdown Ergebnis
+						return ShowdownPreRiver();
 					}
 				}
 			}
@@ -227,12 +280,13 @@ public class GameTable {
 		return 1;
 	}
 	/**
-	 * SelectStartPlayer - Selects beginner of a game (PreFlop Player Selection)
+	 * SelectStartPlayerPreFlop - Selects beginner of a game (PreFlop Player Selection)
 	 * @return -1 on failure
 	 */
 	//Nur vom PreFlop aufgerufen
-	public int SelectStartPlayer()
+	public int SelectStartPlayerPreFlop()
 	{
+		Table.CircularList<Player> playersInRound = (Table.CircularList<Player>) table.GetPlayersOnTable().clone();
 		table.SetDealer(playersInRound.get(dealerIndex));			//Dealer
 
 		//Mehr als 2 Spieler
@@ -243,10 +297,15 @@ public class GameTable {
 		} else if (playersInRound.size() == 2) {
 			table.SetSmallBlind(playersInRound.get(dealerIndex));		//Button = Small Blind
 			table.SetBigBlind(playersInRound.get(dealerIndex + 1));		//Big Blind = Andere Person
-			actualPlayer = table.GetSmallBlind();				//Dealer beginnt
+			actualPlayer = table.GetSmallBlind();						//Dealer beginnt
 		}
 
-		highestBetPlayer = actualPlayer;
+		return -1;
+	}
+
+	public int SelectPlayerPostPreFlop()
+	{
+		//Muss ich überarbeiten
 		return -1;
 	}
 	
