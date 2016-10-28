@@ -1,5 +1,6 @@
 package game;
 
+import game.models.BettingOperations;
 import game.models.RoundState;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ public class Table {
 	private GameTable gameTable;
 	private RoundState roundState;
 	private boolean firstRound;
+	private BettingOperations bettingOperationsState;
 	
 	private List<Card> boardCards = new ArrayList<>();
 	
@@ -211,5 +213,9 @@ public class Table {
 	{
 		boardCards.clear();
 	}
+
+	public void SetBettingOperationsState(BettingOperations tableState) { this.bettingOperationsState = tableState; }
+
+	public BettingOperations GetBettingOperationsState() { return bettingOperationsState; }
 }
 

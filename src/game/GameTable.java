@@ -1,6 +1,6 @@
 package game;
 
-import com.sun.org.apache.bcel.internal.generic.Select;
+import game.models.BettingOperations;
 import game.models.PlayerState;
 import game.models.RoundState;
 
@@ -38,10 +38,8 @@ public class GameTable {
 	public int PreFlop()
 	{
 		/*
-			Fuck players without money
-			we dont want to have them on our table
-			Go fuck yourself
-			Also valid for Timozen: Go fuck yourself <3
+			(Learn to)
+			Love our code <3
 		 */
 		table.SetRoundState(RoundState.PREFLOP);
 		table.SetPot(0);
@@ -183,11 +181,51 @@ public class GameTable {
 			table.IncreasePot(player.GetMoney());
 			player.IncreaseRoundBet(player.GetMoney());
 			player.SetMoney(0);
-			player.SetRoundState(PlayerState.ALLIN);
+			player.SetPlayerState(PlayerState.ALLIN);
 			electivePlayersCount -= 1;
 		}
 	}
 
+	public int PokerRound(){
+		table.SetBettingOperationsState(BettingOperations.CHECK);
+		while (actualPlayer != highestBetPlayer) {																		//Solange nicht einmal rundherum vom letzten Höchstbietenden
+			if (actualPlayer.GetPlayerState().GetState() > 1) {															//Wenn gewählter Spieler noch Wahlmöglichkeit hat
+				//--------------------------
+				BettingOperations playerAction = actualPlayer.GetAction();	//Hier muss gewartet werden!!!
+				//--------------------------
+				if (playerAction != BettingOperations.FOLD) {															//Spieler foldet nicht
+					if (playerAction == BettingOperations.RAISE || playerAction == BettingOperations.BET) {				//Spieler Raised / Bettet (wird Höchstbietender)
+						if(playerAction == BettingOperations.BET){														//Sofern die Aktion Bet ist
+							table.SetBettingOperationsState(BettingOperations.CALL);									//Setze Table auf "Call"-State (Bet = Raise, Check = Call)
+						}
+						highestBetPlayer = actualPlayer;																//aktueller Spieler ist nun Höchstbietender
+					} else {																							//Spieler Callt / Checkt
+						if (highestBetPlayer == null) { highestBetPlayer = actualPlayer; }								//Falls es noch keinen Höchstbietenden gibt, so setzen wir diesen auf die Person (da sie Erste am Zug ist)
+					}
+					PayMoney(actualPlayer.GetBetAmount(), actualPlayer);
+					/*
+						Jetzt wird das Geld gezahlt
+						Dabei ist der Zeitpunkt der Zahlung irrelevant, da die PayMoney Funktion AllIn States berücksichtigt
+						Zudem brauchen wir kein Fallback, wenn der Amount überschritten wird, da der Client die Optionen
+						halten wird, zu überprüfen dass die Menge des gesetzten Geldes <= der Menge des Geldes ist
+						Passt zudem direkt die RoundBet an
+					 */
+				} else {																								//Spieler foldet
+					if (electivePlayersCount > 1) {																		//Mindestens 2 Spieler haben noch Wahlmöglichkeit
+						electivePlayersCount -= 1;
+					} else {
+																														//Showdown
+						//return Showdown Ergebnis
+					}
+				}
+			}
+		}
+
+		//Zurücksetzen der Spieler für die nächste Setzrunde
+		actualPlayer = null;
+		highestBetPlayer = null;
+		return 1;
+	}
 	/**
 	 * SelectStartPlayer - Selects beginner of a game (PreFlop Player Selection)
 	 * @return -1 on failure

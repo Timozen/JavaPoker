@@ -1,5 +1,6 @@
 package game;
 
+import game.models.BettingOperations;
 import game.models.PlayerState;
 
 import java.util.LinkedList;
@@ -10,8 +11,12 @@ class Player {
 	private int money;
 	private List<Card> cards;
 	private String nickname;
-	private PlayerState playerRoundState;
-	private int RoundBet = 0;
+	private PlayerState playerState;		//Gives information about what Player did (Fold / AllIn / Normal)
+
+	private int roundBet = 0;
+	private BettingOperations action;
+	private int betAmount;					//zu setzender Betrag
+	private boolean isElective;
 
 	/**
 	 * game.Player constructor with std value for money
@@ -21,6 +26,9 @@ class Player {
 		this.nickname = nickname;
 		this.money = 5000;
 		this.cards = new LinkedList<>();
+		this.roundBet = 0;
+		this.betAmount = 0;
+		this.isElective = true;
 	}
 	
 	/**
@@ -144,33 +152,46 @@ class Player {
 	}
 
 	/**
-	 * GetRoundState
+	 * GetPlayerState
 	 * @return State of the player in actual Round
 	 */
-	public PlayerState GetRoundState() { return this.playerRoundState; }
+	public PlayerState GetPlayerState() { return this.playerState; }
 
 	/**
-	 * SetRoundState
-	 * @param playerRoundState the new state for the player
+	 * SetPlayerState
+	 * @param playerState the new state for the player
 	 */
-	public void SetRoundState(PlayerState playerRoundState) { this.playerRoundState = playerRoundState; }
+	public void SetPlayerState(PlayerState playerState) {
+		this.playerState = playerState;
+		if (playerState == PlayerState.ALLIN || playerState == PlayerState.FOLD) {
+			isElective = false;
+		}
+	}
 
 	/**
 	 * SetRoundBet
-	 * @param RoundBet Value for Round Bet
+	 * @param roundBet Value for Round Bet
 	 */
-	public void SetRoundBet(int RoundBet) { this.RoundBet = RoundBet; }
+	public void SetRoundBet(int roundBet) { this.roundBet = roundBet; }
 
 	/**
 	 * GetRoundBet
-	 * @return RoundBet returns RoundBet for Player
+	 * @return roundBet returns roundBet for Player
 	 */
-	public int GetRoundBet() { return RoundBet; }
+	public int GetRoundBet() { return roundBet; }
 
 	/**
 	 * Increase Round Bet
-	 * @param RoundBet Value for increasing
-	 * Increases Round Bet about RoundBet
+	 * @param roundBet Value for increasing
+	 * Increases Round Bet about roundBet
 	 */
-	public void IncreaseRoundBet(int RoundBet) { this.RoundBet += RoundBet; }
+	public void IncreaseRoundBet(int roundBet) { this.roundBet += roundBet; }
+
+	public BettingOperations GetAction() { return action; }
+
+	public void SetBetAmount(int betAmount) { this.betAmount = betAmount; }
+
+	public int GetBetAmount() { return betAmount; }
+
+	public boolean IsElective() { return isElective; }
 }

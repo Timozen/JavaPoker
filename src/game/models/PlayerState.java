@@ -11,4 +11,5 @@ public enum PlayerState {
     PlayerState(int state){
         this.state = state;
     }
+    public int GetState() { return state; }
 }
