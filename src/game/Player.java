@@ -227,12 +227,8 @@ class Player {
 		
 		cardsWithTable = new ArrayList<>();
 		
-		for (Card card : cards) {
-			this.cardsWithTable.add(card);
-		}
-		for (Card card : table.GetBoardCardList()){
-			cardsWithTable.add(card);
-		}
+		this.cardsWithTable.addAll(cards);
+		cardsWithTable.addAll(table.GetBoardCardList());
 	}
 
 	public List<PokerCard> GetCardsWithTable() {
