@@ -241,7 +241,7 @@ public class Table {
 		this.firstRound = firstRound;
 	}
 	
-	public List<Card> getBoardCards()
+	public List<Card> GetBoardCards()
 	{
 		return boardCards;
 	}

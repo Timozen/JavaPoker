@@ -93,7 +93,7 @@ public class GameTable {
 	public int Flop()
 	{
 		table.SetRoundState(RoundState.FLOP);
-
+		
 		/*
 		//burn 1 card
 		deck.Draw();
@@ -215,7 +215,8 @@ public class GameTable {
 		}
 	}
 
-	public void SpreadPlayerCards(){
+	public void SpreadPlayerCards()
+	{
 		for (int i = 0; i < playersInRound.size(); i++) {
 			playersInRound.get(dealerIndex + i)
 					.AddCard(deck.Draw());
@@ -249,7 +250,14 @@ public class GameTable {
 		}
 	}
 
-	public int PokerRound(){
+	public int PokerRound()
+	{
+		System.out.println("Current Round: " + table.GetRoundState());
+		System.out.print("Board: " + ((table.GetBoardCards().isEmpty()) ? "---":""));
+		for(Card card : table.GetBoardCards()){
+			System.out.print(card.toString() + " ");
+		}
+		
 		table.SetBettingOperationsState(BettingOperations.CHECK);														//Das BettingOperations ist lediglich um Spieler zu informieren
 		SetPlayersUncalled();																							//Initialisiere alle Spieler mit uncalled state
 
@@ -337,7 +345,8 @@ public class GameTable {
 	}
 
 	//Setzt alle Spieler auf uncalled
-	private void SetPlayersUncalled(){
+	private void SetPlayersUncalled()
+	{
 		for (Player p : playersInRound) {
 			if (p.GetPlayerState() == PlayerState.PLAYING) {
 				p.SetIsCalledHighestBet(false);
@@ -355,7 +364,8 @@ public class GameTable {
 		return true;
 	}
 
-	private int GetPlayingPlayers(){
+	private int GetPlayingPlayers()
+	{
 		int playerCount = 0;
 		for (Player p : playersInRound) {
 			if (p.GetPlayerState().GetState() <= 1) {																	//Playing || All-In
