@@ -7,6 +7,10 @@ import java.util.*;
 
 public class Deck {
 	private Queue<Card> queue;
+	private int seed;
+	public Deck(int seed){
+		this.seed = seed;
+	}
 	
 	/**
 	 * Draw - Draws a card
@@ -60,7 +64,7 @@ public class Deck {
 	 */
 	private void shuffle(Card[] cards)
 	{
-		Random r = new Random();
+		Random r = new Random(seed);
 		for (int i = cards.length - 1; i > 0; i--) {
 			int tmpPos = r.nextInt(i);
 			

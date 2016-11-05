@@ -3,10 +3,7 @@ package game;
 import game.models.BettingOperations;
 import game.models.RoundState;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Table {
 	private boolean gameInProgress;
@@ -28,6 +25,9 @@ public class Table {
 	private boolean isFinished = false;
 	
 	private List<Card> boardCards = new ArrayList<>();
+	private int seed;
+	
+	
 	
 	public Table()
 	{
@@ -43,6 +43,11 @@ public class Table {
 	public void StartGame()
 	{
 		while (playersOnTable.size() != 1) {
+			
+			//Generate a simple seed for debugging
+			seed = (int) (new Date().getTime()/1000);
+			System.out.println("The seed for this round is:" + seed);
+			
 			actualRoundBet = 0;
 			isFinished = false;
 			gameTable.PreFlop();
@@ -388,6 +393,11 @@ public class Table {
 	public void SetGameFinished(boolean isFinished)
 	{
 		this.isFinished = isFinished;
+	}
+	
+	public int GetSeed()
+	{
+		return seed;
 	}
 }
 

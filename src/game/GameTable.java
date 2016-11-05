@@ -20,14 +20,15 @@ public class GameTable {
 	private Table.CircularList<Player> playersInRound;
 	private boolean isShowdown;
 	private int actualSetRoundBet;
+	
 
 	public GameTable(Table table) {
 		this.table = table;
-		deck = new Deck();
+		
+		deck = new Deck(table.GetSeed());
 		deck.CreateAndShuffle();
-
-		//TODO add a seed generation algorithm
-		roundRNG = new Random();
+		
+		roundRNG = new Random(table.GetSeed());
 	}
 
 	/**
