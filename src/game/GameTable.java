@@ -253,7 +253,7 @@ public class GameTable {
 	public int PokerRound()
 	{
 		System.out.println("Current Round: " + table.GetRoundState());
-		System.out.print("Board: " + ((table.GetBoardCards().isEmpty()) ? "---":""));
+		System.out.print("Board: " + ((table.GetBoardCards().isEmpty()) ? "---\n":""));
 		for(Card card : table.GetBoardCards()){
 			System.out.print(card.toString() + " ");
 		}
@@ -262,7 +262,7 @@ public class GameTable {
 		SetPlayersUncalled();																							//Initialisiere alle Spieler mit uncalled state
 
 		while (!IsAllPlayersCalled() && !isShowdown) {																	//Solange nicht alle (Playing) Spieler gecallt / gecheckt haben
-			if (actualPlayer.GetPlayerState().GetState() > 1) {															//Wenn gewählter Spieler noch Wahlmöglichkeit hat (State 1, 0 = AllIn/Fold)
+			if (actualPlayer.GetPlayerState().GetState() == 0) {															//Wenn gewählter Spieler noch Wahlmöglichkeit hat (State 1, 0 = AllIn/Fold)
 				//--------------------------
 				table.GetPlayerAction(actualPlayer);
 				BettingOperations playerAction = actualPlayer.GetBettingAction(); 									//Hier muss gewartet werden!!!

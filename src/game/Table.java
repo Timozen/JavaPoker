@@ -4,7 +4,9 @@ import game.models.BettingOperations;
 import game.models.RoundState;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 public class Table {
 	private boolean gameInProgress;
@@ -67,11 +69,101 @@ public class Table {
 		}
 	}
 	
-	public BettingOperations GetPlayerAction(Player player)
+	public void GetPlayerAction(Player player)
 	{
-		//Platzhalter, wird für Multiplayer interessant
-		return BettingOperations.BET;
+		//TODO das muss noch zur laufzeit rausgefunden werden!!!
+		BettingOperations[] options = {BettingOperations.RAISE, BettingOperations.FOLD, BettingOperations.BET, BettingOperations.CALL, BettingOperations.CHECK};
+		Scanner scanner = new Scanner(System.in);
+		List<BettingOperations> operationsList = Arrays.asList(options);
+		
+		System.out.println("Turn of " + player.GetNickname());
+		System.out.print("Options: ");
+		
+		for (BettingOperations op : options) {
+			System.out.print(op + " ");
+		}
+		
+		player.SetBettingAction(GetValidBettingOperationInput(operationsList, scanner));
+		
+		player.SetBetAmount(GetValidMoneyFromBettingOperation(player.GetBettingAction(), scanner));
 	}
+	
+	private static int GetValidMoneyFromBettingOperation(BettingOperations op, Scanner scanner)
+	{
+		switch (op) {
+			case FOLD:
+				return 0;
+			case CALL:
+				return 0;
+			case CHECK:
+				return 0;
+			case RAISE:
+				return GetMoneyFromInput(scanner);
+			case BET:
+				return GetMoneyFromInput(scanner);
+			case INVALID:
+				System.out.println("This should not have happened...");
+				break;
+		}
+		return 0;
+	}
+	
+	private static int GetMoneyFromInput(Scanner scanner)
+	{
+		System.out.print("Value: ");
+		while (!scanner.hasNextInt()){
+			System.out.println("Invalid input!");
+			System.out.print("Value: ");
+			scanner.next();
+		}
+		System.out.println();
+		return scanner.nextInt();
+	}
+	
+	private static BettingOperations GetValidBettingOperationInput(List<BettingOperations> operationsList, Scanner scanner)
+	{
+		BettingOperations answerBet = BettingOperations.INVALID;
+		
+		while (answerBet == BettingOperations.INVALID) {
+			System.out.print("\nInput:");
+			
+			String answer = scanner.nextLine();
+			
+			answerBet = CreateBettingOperationFromAnswer(answer);
+			
+			if (answerBet == BettingOperations.INVALID) {
+				System.out.println("Input is invalid!");
+				continue;
+			}
+			
+			if (!operationsList.contains(answerBet)) {
+				System.out.println("This option is not possible for you!");
+				answerBet = BettingOperations.INVALID;
+			}
+		}
+		return answerBet;
+	}
+	
+	private static BettingOperations CreateBettingOperationFromAnswer(String answer)
+	{
+		answer = answer.toUpperCase();
+		
+		if (answer.contains("FOLD")) {
+			return BettingOperations.FOLD;
+		} else if (answer.contains("BET")) {
+			return BettingOperations.BET;
+		} else if (answer.contains("RAISE")) {
+			return BettingOperations.RAISE;
+		} else if (answer.contains("CALL")) {
+			return BettingOperations.CALL;
+		} else if (answer.contains("CHECK")) {
+			return BettingOperations.CHECK;
+		} else {
+			return BettingOperations.INVALID;
+		}
+	}
+	
+	
 	
 	/**
 	 * AddPlayerToTable

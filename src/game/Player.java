@@ -4,6 +4,7 @@ import game.models.BettingOperations;
 import game.models.PlayerState;
 import handChecker.PokerCard;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -223,6 +224,9 @@ class Player {
 	public int GetWinnerNumber() { return winnerNumber; }
 
 	public void SetCardsWithTable(Table table) {
+		
+		cardsWithTable = new ArrayList<>();
+		
 		for (Card card : cards) {
 			this.cardsWithTable.add(card);
 		}
