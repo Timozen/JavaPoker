@@ -15,10 +15,12 @@ public class GameTable {
 	private int dealerIndex;
 	private int electivePlayersCount = 0;
 
-
-	private Player highestBetPlayer;	//Spieler, der in Setz Runde den höchsten Einsatz hält
 	private Player actualPlayer;		//Aktueller Spieler für Runde
-	
+
+	private Table.CircularList<Player> playersInRound;
+	private boolean isShowdown;
+	private int actualSetRoundBet;
+
 	public GameTable(Table table) {
 		this.table = table;
 		deck = new Deck();
@@ -41,25 +43,34 @@ public class GameTable {
 		 */
 		table.SetRoundState(RoundState.PREFLOP);
 		table.SetPot(0);
-		Table.CircularList<Player> playersInRound = (Table.CircularList<Player>) table.GetPlayersOnTable().clone();
+		playersInRound = (Table.CircularList<Player>) table.GetPlayersOnTable().clone();
+		isShowdown = false;
+
+		for(Player p : playersInRound){
+			p.SetPlayerState(PlayerState.PLAYING);
+		}
+
 		electivePlayersCount = playersInRound.size();		//Counts Players who have the right to vote
 
-		if(table.IsFirstRound()){
+		//DealerIndexWorkaround
+		if (table.IsFirstRound()) {
 			dealerIndex = roundRNG.nextInt(playersInRound.size());
 			table.SetFirstRound(false);
+			table.SetDealer(playersInRound.get(dealerIndex));
 		} else {
-			dealerIndex++;
+			table.SetNextDealer();
+			dealerIndex = table.GetDealerIndex();
 		}
 
 		SelectStartPlayerPreFlop();
 		PayBlinds();
+		SpreadPlayerCards();
 
 		//Falls aus einem unerfindlichen Grunde die Blinds höher sind als das Geld von Spieler X und Spieler Y
 		//dann sollten wir gewappnet sein, um uns dem Kampf gegen den Deadlock der PokerRunde() zu stellen.
 		//Dafür ziehen wir den Showdown einfach vor
-		if (electivePlayersCount <= 1) { return ShowdownPreRiver(); }	//Deus Vult!
-		SpreadPlayerCards();
-		
+		if (electivePlayersCount <= 1) {isShowdown = true;}
+
 		//Debug
 		for (Player p : playersInRound) {
 			List<Card> tmpCards = p.GetCards();
@@ -86,21 +97,21 @@ public class GameTable {
 		/*
 		//burn 1 card
 		deck.Draw();
-		
+
 		//Put 3 cards on the board
 		table.AddBoardCard(deck.Draw());
 		table.AddBoardCard(deck.Draw());
 		table.AddBoardCard(deck.Draw());
 		*/
 		AddBoardCard(3);
-		SelectPlayerPostPreFlop();
+		SelectStartPlayerPostFlop();
 		PokerRound();
 		/**
 		 * flop gameplay comes here
 		 */
 		return 0;
 	}
-	
+
 	/**
 	 * Turn
 	 * @return
@@ -114,19 +125,19 @@ public class GameTable {
 		/*
 		//burn 1 card
 		deck.Draw();
-		
+
 		//Put 1 card on the board
 		table.AddBoardCard(deck.Draw());
 		*/
 		AddBoardCard(1);
-		SelectPlayerPostPreFlop();
+		SelectStartPlayerPostFlop();
 		PokerRound();
 		/**
 		 * turn gameplay comes here
 		 */
 		return 0;
 	}
-	
+
 	/**
 	 * River
 	 * @return
@@ -140,19 +151,19 @@ public class GameTable {
 		/*
 		//burn 1 card
 		deck.Draw();
-		
+
 		//Put 1 cards on the board
 		table.AddBoardCard(deck.Draw());
 		*/
 		AddBoardCard(1);
-		SelectPlayerPostPreFlop();
+		SelectStartPlayerPostFlop();
 		PokerRound();
 		/**
 		 * river gameplay comes here
 		 */
 		return 0;
 	}
-	
+
 	/**
 	 * Showdown
 	 * @return
@@ -161,37 +172,39 @@ public class GameTable {
 	 */
 	public int Showdown(){
 		table.SetRoundState(RoundState.SHOWDOWN);
-		if (electivePlayersCount > 1) {
-		} else { //Nur noch einer übrig => Er bekommt alles Geld
-			for(Player p : table.GetPlayersOnTable()){
-				if (p.IsElective()) {
-					p.IncreaseMoney(table.GetPot());
-					/*End Logic*/
+		WinnerObject winner = new WinnerObject(playersInRound, table);
+		winner.CalculateActualWinnerList();
+
+
+		int oldActualWinnerAmount = winner.GetActualWinnerAmount();
+		Player actualWinner;
+		while (table.GetPotValue() != 0) {
+			winner.CalculateActualWinnerList();																			//Solange der Topf nicht ausgezahlt ist
+			while ((actualWinner = winner.PopActualWinner()) != null) {													//Pop Top Element & look if not zero
+				List<Player> actualWinnerList = winner.GetActualWinnerList();
+				int actualWinnerAmount = winner.GetActualWinnerAmount() + 1;                                        	//Popped Top Element, so we need to increase about 1
+				int moneyPerPlayer = 0;
+				for (Player p : playersInRound) {
+					moneyPerPlayer += p.DecreaseRoundBet(actualWinner.GetRoundBet());
 				}
+				table.DecreasePot(moneyPerPlayer);
+				for (Player p : actualWinnerList) {
+					p.IncreaseMoney(moneyPerPlayer / actualWinnerAmount);
+				}
+				//Work done for now, let the process start again
+				//Will traverse through all the players, and if they've got 0 so no problem, nothing changes, perfect
+			}
+			if (table.GetPotValue() <= oldActualWinnerAmount) {															//Pot Value less than players who got paid
+				//Vorerst PotValue 0 setzen
+				table.SetPot(0);
+				return 1;				//Success
 			}
 		}
 		/**
 		 * Everything needed for showdown comes here
 		 */
-		
-		return 0;
-	}
 
-	public int ShowdownPreRiver()
-	{
-		switch (table.GetRoundState()) {
-			case PREFLOP:
-				SpreadPlayerCards();
-				AddBoardCard(3);
-				table.SetRoundState(RoundState.FLOP);	//redundant
-			case FLOP:
-				AddBoardCard(1);
-				table.SetRoundState(RoundState.TURN);	//redundant
-			case TURN:
-				AddBoardCard(1);
-				table.SetRoundState(RoundState.RIVER);	//redundant
-		}
-		return Showdown();
+		return 0;
 	}
 
 	public void AddBoardCard(int amount)
@@ -199,16 +212,10 @@ public class GameTable {
 		deck.Draw();							//Burn first
 		for (int i = 0; i < amount; i++) {
 			table.AddBoardCard(deck.Draw());
-			//VisibleState auf false setzen
-			//An alle Clients verteilen
-			//Zeit t warten
-			//Aufdecken
-
 		}
 	}
 
 	public void SpreadPlayerCards(){
-		Table.CircularList<Player> playersInRound = (Table.CircularList<Player>) table.GetPlayersOnTable().clone();
 		for (int i = 0; i < playersInRound.size(); i++) {
 			playersInRound.get(dealerIndex + i)
 					.AddCard(deck.Draw());
@@ -217,6 +224,7 @@ public class GameTable {
 			playersInRound.get(dealerIndex + i)
 					.AddCard(deck.Draw());
 		}
+		//table muss Spieler informieren und Karten an Clients verteilen
 	}
 
 	public void PayBlinds()
@@ -227,56 +235,69 @@ public class GameTable {
 
 	public void PayMoney(int moneyAmount, Player player)
 	{
-		if (player.GetMoney() - moneyAmount > 0) {
-			table.IncreasePot(moneyAmount);
-			player.IncreaseRoundBet(moneyAmount);
-			player.DecreaseMoney(moneyAmount);
-		} else {
-			table.IncreasePot(player.GetMoney());
-			player.IncreaseRoundBet(player.GetMoney());
-			player.SetMoney(0);
-			player.SetPlayerState(PlayerState.ALLIN);
-			electivePlayersCount -= 1;
+		table.IncreasePot(moneyAmount);
+		if (moneyAmount != 0) {
+			if (player.GetMoney() - moneyAmount > 0) {
+				player.IncreaseRoundBet(moneyAmount);
+				player.DecreaseMoney(moneyAmount);
+			} else {
+				player.IncreaseRoundBet(player.GetMoney());
+				player.SetMoney(0);
+				player.SetPlayerState(PlayerState.ALLIN);
+				electivePlayersCount -= 1;
+			}
 		}
 	}
 
 	public int PokerRound(){
-		table.SetBettingOperationsState(BettingOperations.CHECK);
-		while (actualPlayer != highestBetPlayer) {																		//Solange nicht einmal rundherum vom letzten Höchstbietenden
-			if (actualPlayer.GetPlayerState().GetState() > 1) {															//Wenn gewählter Spieler noch Wahlmöglichkeit hat
+		table.SetBettingOperationsState(BettingOperations.CHECK);														//Das BettingOperations ist lediglich um Spieler zu informieren
+		SetPlayersUncalled();																							//Initialisiere alle Spieler mit uncalled state
+
+		while (!IsAllPlayersCalled() && !isShowdown) {																	//Solange nicht alle (Playing) Spieler gecallt / gecheckt haben
+			if (actualPlayer.GetPlayerState().GetState() > 1) {															//Wenn gewählter Spieler noch Wahlmöglichkeit hat (State 1, 0 = AllIn/Fold)
 				//--------------------------
-				BettingOperations playerAction = actualPlayer.GetAction();	//Hier muss gewartet werden!!!
+				BettingOperations playerAction = table.GetPlayerAction(actualPlayer);									//Hier muss gewartet werden!!!
 				//--------------------------
 				if (playerAction != BettingOperations.FOLD) {															//Spieler foldet nicht
 					if (playerAction == BettingOperations.RAISE || playerAction == BettingOperations.BET) {				//Spieler Raised / Bettet (wird Höchstbietender)
+						SetPlayersUncalled();																			//=> Alle müssen neu wählen
+						table.SetActualRoundBet(actualPlayer.GetActualRoundBet() + actualPlayer.GetBetAmount());		//Setze aktuellen Rundeneinsatz
 						if(playerAction == BettingOperations.BET){														//Sofern die Aktion Bet ist
 							table.SetBettingOperationsState(BettingOperations.CALL);									//Setze Table auf "Call"-State (Bet = Raise, Check = Call)
+							//------------
+							//Informiere Clients, dass Schalter auf "CALL" umgelegt wurde statt "CHECK"
+							//Diese Funktion sollte im table Implementiert werden, bei SetBettingOperationsState
+							//------------
 						}
-						highestBetPlayer = actualPlayer;																//aktueller Spieler ist nun Höchstbietender
-					} else {																							//Spieler Callt / Checkt
-						if (highestBetPlayer == null) { highestBetPlayer = actualPlayer; }								//Falls es noch keinen Höchstbietenden gibt, so setzen wir diesen auf die Person (da sie Erste am Zug ist)
 					}
+
+					actualPlayer.SetActualRoundBet(table.GetActualRoundBet());											//Spielers Rundeneinsatz wird darauf gesetzt (=> Table kann informieren)
+					//Kommentar: Bei einem Check / Call wird der GetBetAmount auf 0 gesetzt, dann geht Fkt weiterhin
 					PayMoney(actualPlayer.GetBetAmount(), actualPlayer);
-					/*
-						Jetzt wird das Geld gezahlt
-						Dabei ist der Zeitpunkt der Zahlung irrelevant, da die PayMoney Funktion AllIn States berücksichtigt
-						Zudem brauchen wir kein Fallback, wenn der Amount überschritten wird, da der Client die Optionen
-						halten wird, zu überprüfen dass die Menge des gesetzten Geldes <= der Menge des Geldes ist
-						Passt zudem direkt die RoundBet an
-					 */
+					actualPlayer.SetIsCalledHighestBet(true);															//Hat höchsten Eisnatz gecallt / selbst gestellt (bleibt egal)
 				} else {																								//Spieler foldet
-					if (electivePlayersCount > 1) {																		//Mindestens 2 Spieler haben noch Wahlmöglichkeit
-						electivePlayersCount -= 1;
+					actualPlayer.SetPlayerState(PlayerState.FOLD);
+					electivePlayersCount -= 1;
+					if (GetPlayingPlayers() == 1) {
+						actualPlayer.IncreaseMoney(table.GetPotValue());
+						table.SetGameFinished(true);
 					} else {
-						return ShowdownPreRiver();
+						if (electivePlayersCount > 1 && IsAllPlayersCalled()) {
+							//return ShowdownPreRiver();
+							//Müssen durchgehen, also hier Schleife abbrechen
+							isShowdown = true;
+						}
 					}
 				}
 			}
+			//--------------------------
+			actualPlayer = playersInRound.get(playersInRound.indexOf(actualPlayer) + 1);
+			//die Information dass der Spieler dran ist erfolgt erst später
+			//da es sein könnte, dass der Listen Nächste keine Wahlmöglichkeit hat
 		}
 
 		//Zurücksetzen der Spieler für die nächste Setzrunde
 		actualPlayer = null;
-		highestBetPlayer = null;
 		return 1;
 	}
 	/**
@@ -286,7 +307,6 @@ public class GameTable {
 	//Nur vom PreFlop aufgerufen
 	public int SelectStartPlayerPreFlop()
 	{
-		Table.CircularList<Player> playersInRound = (Table.CircularList<Player>) table.GetPlayersOnTable().clone();
 		table.SetDealer(playersInRound.get(dealerIndex));			//Dealer
 
 		//Mehr als 2 Spieler
@@ -303,10 +323,44 @@ public class GameTable {
 		return -1;
 	}
 
-	public int SelectPlayerPostPreFlop()
+	public int SelectStartPlayerPostFlop()
 	{
-		//Muss ich überarbeiten
+		//Beginnen tut Spieler nach dem Button
+		for(int i = dealerIndex; i < dealerIndex + playersInRound.size(); i++){
+			if (playersInRound.get(i).GetPlayerState() == PlayerState.PLAYING) {
+				actualPlayer = playersInRound.get(i);
+				return 1;
+			}
+		}
 		return -1;
 	}
-	
+
+	//Setzt alle Spieler auf uncalled
+	private void SetPlayersUncalled(){
+		for (Player p : playersInRound) {
+			if (p.GetPlayerState() == PlayerState.PLAYING) {
+				p.SetIsCalledHighestBet(false);
+			}
+		}
+	}
+
+	private boolean IsAllPlayersCalled()
+	{
+		for (Player p : playersInRound) {
+			if (p.GetPlayerState() == PlayerState.PLAYING && !p.GetIsCalledHighestBet()) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private int GetPlayingPlayers(){
+		int playerCount = 0;
+		for (Player p : playersInRound) {
+			if (p.GetPlayerState().GetState() <= 1) {																	//Playing || All-In
+				playerCount += 1;
+			}
+		}
+		return playerCount;
+	}
 }

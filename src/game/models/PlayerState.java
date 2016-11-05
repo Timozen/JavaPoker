@@ -6,9 +6,10 @@ package game.models;
 public enum PlayerState {
     PLAYING (0),
     ALLIN (1),
-    FOLD (2);
+    FOLD (2),
+    PAID (3);
     private int state;
-    PlayerState(int state){
+    PlayerState (int state) {
         this.state = state;
     }
     public int GetState() { return state; }

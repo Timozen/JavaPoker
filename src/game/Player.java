@@ -2,6 +2,7 @@ package game;
 
 import game.models.BettingOperations;
 import game.models.PlayerState;
+import handChecker.PokerCard;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -17,6 +18,12 @@ class Player {
 	private BettingOperations action;
 	private int betAmount;					//zu setzender Betrag
 	private boolean isElective;
+	private boolean calledHighestBet;
+
+	private int actualRoundBet;
+	private List<PokerCard> cardsWithTable;
+	private int winnerNumber;
+
 
 	/**
 	 * game.Player constructor with std value for money
@@ -187,6 +194,16 @@ class Player {
 	 */
 	public void IncreaseRoundBet(int roundBet) { this.roundBet += roundBet; }
 
+	public int DecreaseRoundBet (int roundBet) {
+		int oldBet = this.roundBet;
+		if ((this.roundBet - roundBet) < 0) {
+			this.roundBet = 0;
+			return oldBet;
+		}
+		this.roundBet -= roundBet;
+		return roundBet;
+	}
+
 	public BettingOperations GetAction() { return action; }
 
 	public void SetBetAmount(int betAmount) { this.betAmount = betAmount; }
@@ -194,4 +211,29 @@ class Player {
 	public int GetBetAmount() { return betAmount; }
 
 	public boolean IsElective() { return isElective; }
+
+	public void SetIsCalledHighestBet (boolean calledHighestBet) { this.calledHighestBet = calledHighestBet; }
+
+	public boolean GetIsCalledHighestBet() { return calledHighestBet; }
+
+	public int GetActualRoundBet() { return actualRoundBet;	}
+
+	public void SetActualRoundBet(int actualRoundBet) {	this.actualRoundBet = actualRoundBet; }
+
+	public void SetWinnerNumber(int winnerNumber) { this.winnerNumber = winnerNumber; }
+
+	public int GetWinnerNumber() { return winnerNumber; }
+
+	public void SetCardsWithTable(Table table) {
+		for (Card card : cards) {
+			this.cardsWithTable.add(card);
+		}
+		for (Card card : table.GetBoardCardList()){
+			cardsWithTable.add(card);
+		}
+	}
+
+	public List<PokerCard> GetCardsWithTable() {
+		return cardsWithTable;
+	}
 }

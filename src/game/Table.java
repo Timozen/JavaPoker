@@ -21,7 +21,10 @@ public class Table {
 	private RoundState roundState;
 	private boolean firstRound;
 	private BettingOperations bettingOperationsState;
-	
+
+	private int actualRoundBet;
+	private boolean isFinished = false;
+
 	private List<Card> boardCards = new ArrayList<>();
 	
 	public Table()
@@ -37,11 +40,31 @@ public class Table {
 	
 	public void StartGame()
 	{
-		gameTable.PreFlop();
-		gameTable.Flop();
-		gameTable.Turn();
-		gameTable.River();
-		gameTable.Showdown();
+		while (playersOnTable.size() != 1) {
+			actualRoundBet = 0;
+			isFinished = false;
+			gameTable.PreFlop();
+			if (!isFinished) {
+				actualRoundBet = 0;
+				gameTable.Flop();
+			}
+			if (!isFinished) {
+				gameTable.Turn();
+				actualRoundBet = 0;
+			}
+			if (!isFinished) {
+				gameTable.River();
+				actualRoundBet = 0;
+				gameTable.Showdown();
+			}
+			//---- Nach jeder Stufe muss eine Notification an die Player erfolgen
+			//Post-Showdown
+			for (Player p : playersOnTable) {		//There is a workaround in need too, bc dealer index sucks after this
+				if (p.GetMoney() == 0) {
+					playersOnTable.remove(p);
+				}
+			}
+		}
 	}
 	
 	
@@ -147,7 +170,7 @@ public class Table {
 		this.bigBlind = bigBlind;
 	}
 	
-	public int GetPot()
+	public int GetPotValue()
 	{
 		return pot;
 	}
@@ -158,6 +181,16 @@ public class Table {
 	}
 
 	public void IncreasePot(int pot) { this.pot += pot; }
+
+	public int DecreasePot(int pot) {
+		int oldPot = this.pot;
+		if (this.pot - pot < 0){
+			this.pot = 0;
+			return oldPot;
+		}
+		this.pot -= pot;
+		return pot;
+	}
 	
 	public int GetSmallBlindValue()
 	{
@@ -217,5 +250,26 @@ public class Table {
 	public void SetBettingOperationsState(BettingOperations tableState) { this.bettingOperationsState = tableState; }
 
 	public BettingOperations GetBettingOperationsState() { return bettingOperationsState; }
+
+	public int GetActualRoundBet() { return actualRoundBet;	}
+
+	public void SetActualRoundBet(int actualRoundBet) {	this.actualRoundBet = actualRoundBet; }
+
+	public BettingOperations GetPlayerAction(Player player) {
+		//Platzhalter, wird für Multiplayer interessant
+		return BettingOperations.BET;
+	}
+
+	public void SetNextDealer() {
+
+	}
+
+	public int GetDealerIndex() {
+		return 0;
+	}
+
+	public List<Card> GetBoardCardList() { return boardCards; }
+
+	public void SetGameFinished(boolean isFinished){ this.isFinished = isFinished; }
 }
 

@@ -1,5 +1,5 @@
 package game.models;
 
 public enum BettingOperations {
-	CALL, RAISE, BET, CHECK, FOLD
+	CALL, RAISE, BET, CHECK, FOLD, INVALID
 }
