@@ -256,7 +256,8 @@ public class GameTable {
 		while (!IsAllPlayersCalled() && !isShowdown) {																	//Solange nicht alle (Playing) Spieler gecallt / gecheckt haben
 			if (actualPlayer.GetPlayerState().GetState() > 1) {															//Wenn gewählter Spieler noch Wahlmöglichkeit hat (State 1, 0 = AllIn/Fold)
 				//--------------------------
-				BettingOperations playerAction = table.GetPlayerAction(actualPlayer);									//Hier muss gewartet werden!!!
+				table.GetPlayerAction(actualPlayer);
+				BettingOperations playerAction = actualPlayer.GetBettingAction(); 									//Hier muss gewartet werden!!!
 				//--------------------------
 				if (playerAction != BettingOperations.FOLD) {															//Spieler foldet nicht
 					if (playerAction == BettingOperations.RAISE || playerAction == BettingOperations.BET) {				//Spieler Raised / Bettet (wird Höchstbietender)

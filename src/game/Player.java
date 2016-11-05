@@ -15,7 +15,7 @@ class Player {
 	private PlayerState playerState;		//Gives information about what Player did (Fold / AllIn / Normal)
 
 	private int roundBet = 0;
-	private BettingOperations action;
+	private BettingOperations bettingAction;
 	private int betAmount;					//zu setzender Betrag
 	private boolean isElective;
 	private boolean calledHighestBet;
@@ -24,6 +24,7 @@ class Player {
 	private List<PokerCard> cardsWithTable;
 	private int winnerNumber;
 
+	
 
 	/**
 	 * game.Player constructor with std value for money
@@ -203,9 +204,6 @@ class Player {
 		this.roundBet -= roundBet;
 		return roundBet;
 	}
-
-	public BettingOperations GetAction() { return action; }
-
 	public void SetBetAmount(int betAmount) { this.betAmount = betAmount; }
 
 	public int GetBetAmount() { return betAmount; }
@@ -235,5 +233,15 @@ class Player {
 
 	public List<PokerCard> GetCardsWithTable() {
 		return cardsWithTable;
+	}
+	
+	public BettingOperations GetBettingAction()
+	{
+		return bettingAction;
+	}
+	
+	public void SetBettingAction(BettingOperations action)
+	{
+		this.bettingAction = action;
 	}
 }
