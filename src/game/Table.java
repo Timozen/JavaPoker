@@ -1,6 +1,7 @@
 package game;
 
 import game.models.BettingOperations;
+import game.models.CircularList;
 import game.models.RoundState;
 
 import java.util.*;
@@ -234,13 +235,7 @@ public class Table {
 	 *
 	 * @param <E>
 	 */
-	class CircularList<E> extends ArrayList<E> {
-		@Override
-		public E get(int index)
-		{
-			return super.get(index % size());
-		}
-	}
+	
 	
 	/**
 	 * IncreaseSmallBlind

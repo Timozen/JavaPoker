@@ -1,6 +1,7 @@
 package game;
 
 import game.models.BettingOperations;
+import game.models.CircularList;
 import game.models.PlayerState;
 import game.models.RoundState;
 
@@ -17,7 +18,7 @@ public class GameTable {
 
 	private Player actualPlayer;		//Aktueller Spieler für Runde
 
-	private Table.CircularList<Player> playersInRound;
+	private CircularList<Player> playersInRound;
 	private boolean isShowdown;
 	private int actualSetRoundBet;
 	
@@ -44,7 +45,7 @@ public class GameTable {
 		 */
 		table.SetRoundState(RoundState.PREFLOP);
 		table.SetPot(0);
-		playersInRound = (Table.CircularList<Player>) table.GetPlayersOnTable().clone();
+		playersInRound = (CircularList<Player>) table.GetPlayersOnTable().clone();
 		isShowdown = false;
 
 		for(Player p : playersInRound){

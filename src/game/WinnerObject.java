@@ -1,5 +1,6 @@
 package game;
 
+import game.models.CircularList;
 import game.models.PlayerState;
 import handChecker.HandChecker;
 
@@ -10,15 +11,15 @@ import java.util.List;
  * Created by Derpie on 29.10.2016.
  */
 public class WinnerObject {
-    private Table.CircularList<Player> winningPlayers;
+    private CircularList<Player> winningPlayers;
     private List<Player> actualWinningPlayers;
     private Table table;
     private HandChecker checker;
 
-    public WinnerObject(Table.CircularList<Player> playerList, Table table){
+    public WinnerObject(CircularList<Player> playerList, Table table){
         actualWinningPlayers = new ArrayList<Player>();
 
-        winningPlayers = (Table.CircularList<Player>)playerList.clone();
+        winningPlayers = (CircularList<Player>)playerList.clone();
         checker = new HandChecker();
         for (Player p : playerList) {
             if (p.GetPlayerState() == PlayerState.FOLD) {
