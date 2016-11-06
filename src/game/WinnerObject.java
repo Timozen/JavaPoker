@@ -66,7 +66,7 @@ public class WinnerObject {
 	{
 		int highestNumeric = winningPlayers.get(winningPlayers.size() - 1).GetWinnerNumber();
 		for (int i = winningPlayers.size() - 1;
-		     winningPlayers.get(i).GetWinnerNumber() == highestNumeric && winningPlayers.size() > 0;
+		     winningPlayers.size() > 0 && winningPlayers.get(i).GetWinnerNumber() == highestNumeric;
 		     i--) {
 			actualWinningPlayers.add(winningPlayers.get(i));
 			winningPlayers.remove(i);

@@ -31,7 +31,8 @@ public class Table {
 	private Random random;
 	private boolean generateRoundSeed = false;
 	
-	public Table(int seed){
+	public Table(int seed)
+	{
 		
 		this.seed = seed;
 		random = new Random(seed);
@@ -60,7 +61,7 @@ public class Table {
 	
 	private int generateSeed()
 	{
-		return (int) (new Date().getTime()/1000);
+		return (int) (new Date().getTime() / 1000);
 	}
 	
 	public void StartGame()
@@ -69,15 +70,14 @@ public class Table {
 		
 		while (playersOnTable.size() != 1) {
 			
-			if(generateRoundSeed){
+			if (generateRoundSeed) {
 				seed = generateSeed();
 				random.setSeed(seed);
-			}else {
+			} else {
 				generateRoundSeed = true;
 			}
-						
+			System.out.println("####################################################");
 			System.out.println("The seed for this Round is: " + seed);
-						
 			
 			actualRoundBet = 0;
 			isFinished = false;
@@ -98,9 +98,7 @@ public class Table {
 			//---- Nach jeder Stufe muss eine Notification an die Player erfolgen
 			//Post-Showdown
 			//There is a workaround in need too, bc dealer index sucks after this
-			playersOnTable.stream().filter(p -> p.GetMoney() == 0).forEach(p -> {
-				playersOnTable.remove(p);
-			});
+			playersOnTable.removeIf(player -> player.GetMoney() == 0);
 		}
 	}
 	
@@ -111,15 +109,12 @@ public class Table {
 		Scanner scanner = new Scanner(System.in);
 		List<BettingOperations> operationsList = Arrays.asList(options);
 		
-		System.out.println("Turn of " + player.GetNickname());
+		System.out.println("Turn of " + player.GetNickname() + "(" + player.GetMoney() + ")");
 		System.out.print("Options: ");
 		
-		for (BettingOperations op : options) {
-			System.out.print(op + " ");
-		}
+		operationsList.forEach((BettingOperations op) -> System.out.print(op + " "));
 		
 		player.SetBettingAction(GetValidBettingOperationInput(operationsList, scanner));
-		
 		player.SetBetAmount(GetValidMoneyFromBettingOperation(player.GetBettingAction(), scanner));
 	}
 	
@@ -146,7 +141,7 @@ public class Table {
 	private static int GetMoneyFromInput(Scanner scanner)
 	{
 		System.out.print("Value: ");
-		while (!scanner.hasNextInt()){
+		while (!scanner.hasNextInt()) {
 			System.out.println("Invalid input!");
 			System.out.print("Value: ");
 			scanner.next();
@@ -199,7 +194,6 @@ public class Table {
 	}
 	
 	
-	
 	/**
 	 * AddPlayerToTable
 	 *
@@ -228,12 +222,6 @@ public class Table {
 	{
 		this.playersOnTable.remove(player);
 	}
-	
-	/**
-	 * A CircularList only needed for the table
-	 *
-	 * @param <E>
-	 */
 	
 	
 	/**

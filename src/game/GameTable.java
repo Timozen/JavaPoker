@@ -143,8 +143,12 @@ public class GameTable {
 	 *
 	 * Compare hands
 	 */
-	public int Showdown(){
+	public int Showdown()
+	{
 		table.SetRoundState(RoundState.SHOWDOWN);
+		
+		roundBeginOutput();
+		
 		WinnerObject winner = new WinnerObject(playersInRound, table);
 		winner.CalculateActualWinnerList();
 
@@ -179,6 +183,8 @@ public class GameTable {
 
 		return 0;
 	}
+	
+	
 
 	public void AddBoardCard(int amount)
 	{
@@ -204,7 +210,10 @@ public class GameTable {
 	public void PayBlinds()
 	{
 		PayMoney(table.GetSmallBlindValue(), table.GetSmallBlind());
+		System.out.println("Player "+ table.GetSmallBlind().GetNickname() + " paid the SmallBlind of " + table.GetSmallBlindValue());
 		PayMoney(table.GetBigBlindValue(), table.GetBigBlind());
+		System.out.println("Player "+ table.GetBigBlind().GetNickname() + " paid the BigBlind of " + table.GetBigBlindValue());
+		System.out.println();
 	}
 
 	public void PayMoney(int moneyAmount, Player player)
@@ -219,17 +228,16 @@ public class GameTable {
 				player.SetMoney(0);
 				player.SetPlayerState(PlayerState.ALLIN);
 				electivePlayersCount -= 1;
+				
+				//All in notification
+				System.out.println("Player " + player.GetNickname() + " went All-In");
 			}
 		}
 	}
 
 	public int PokerRound()
 	{
-		System.out.println("Current Round: " + table.GetRoundState());
-		System.out.print("Board: " + ((table.GetBoardCards().isEmpty()) ? "---\n":""));
-		for(Card card : table.GetBoardCards()){
-			System.out.print(card.toString() + " ");
-		}
+		roundBeginOutput();
 		
 		table.SetBettingOperationsState(BettingOperations.CHECK);														//Das BettingOperations ist lediglich um Spieler zu informieren
 		SetPlayersUncalled();																							//Initialisiere alle Spieler mit uncalled state
@@ -280,8 +288,12 @@ public class GameTable {
 
 		//Zurücksetzen der Spieler für die nächste Setzrunde
 		actualPlayer = null;
+		
+		roundEndOutput();
+		
 		return 1;
 	}
+	
 	/**
 	 * SelectStartPlayerPreFlop - Selects beginner of a game (PreFlop Player Selection)
 	 * @return -1 on failure
@@ -301,7 +313,13 @@ public class GameTable {
 			table.SetBigBlind(playersInRound.get(dealerIndex + 1));		//Big Blind = Andere Person
 			actualPlayer = table.GetSmallBlind();						//Dealer beginnt
 		}
-
+		
+		System.out.println();
+		System.out.println("Dealer: "     + table.GetDealer().GetNickname());
+		System.out.println("SmallBlind: " + table.GetSmallBlind().GetNickname());
+		System.out.println("BigBlind: "   + table.GetBigBlind().GetNickname());
+		System.out.println();
+		
 		return -1;
 	}
 
@@ -344,5 +362,31 @@ public class GameTable {
 			}
 		}
 		return playerCount;
+	}
+	
+	//OUTPUT
+	private void roundBeginOutput()
+	{
+		System.out.println("####################################################");
+		System.out.println("Current Round: " + table.GetRoundState());
+		System.out.print("Board: " + ((table.GetBoardCards().isEmpty()) ? "---":""));
+		for(Card card : table.GetBoardCards()){
+			System.out.print(card.toString() + ", ");
+		}
+		System.out.println();
+	}
+	
+	private void roundEndOutput()
+	{
+		System.out.println("\n#######################################");
+		System.out.print("Remaining players: ");
+		playersInRound.stream().filter(player -> player.GetPlayerState() == PlayerState.PLAYING ||
+							 player.GetPlayerState() == PlayerState.ALLIN).forEach( player -> {
+			System.out.print(player.GetNickname() + " (" + player.GetMoney() + "), ");
+		});
+		System.out.println();
+		System.out.println("Current Pot:" + table.GetPotValue());
+		System.out.println("#######################################\n");
+		
 	}
 }
