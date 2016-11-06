@@ -320,11 +320,9 @@ public class GameTable {
 	//Setzt alle Spieler auf uncalled
 	private void SetPlayersUncalled()
 	{
-		for (Player p : playersInRound) {
-			if (p.GetPlayerState() == PlayerState.PLAYING) {
-				p.SetIsCalledHighestBet(false);
-			}
-		}
+		playersInRound.stream().filter(p -> p.GetPlayerState() == PlayerState.PLAYING).forEach(p -> {
+			p.SetIsCalledHighestBet(false);
+		});
 	}
 
 	private boolean IsAllPlayersCalled()

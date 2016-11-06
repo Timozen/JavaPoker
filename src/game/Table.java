@@ -8,6 +8,7 @@ import java.util.*;
 
 public class Table {
 	private boolean gameInProgress;
+	
 	private CircularList<Player> playersOnTable;
 	private Player dealer;
 	private Player smallBlind;
@@ -21,7 +22,6 @@ public class Table {
 	private RoundState roundState;
 	private boolean firstRound;
 	private BettingOperations bettingOperationsState;
-	
 	private int actualRoundBet;
 	private boolean isFinished = false;
 	
@@ -97,11 +97,10 @@ public class Table {
 			}
 			//---- Nach jeder Stufe muss eine Notification an die Player erfolgen
 			//Post-Showdown
-			for (Player p : playersOnTable) {                //There is a workaround in need too, bc dealer index sucks after this
-				if (p.GetMoney() == 0) {
-					playersOnTable.remove(p);
-				}
-			}
+			//There is a workaround in need too, bc dealer index sucks after this
+			playersOnTable.stream().filter(p -> p.GetMoney() == 0).forEach(p -> {
+				playersOnTable.remove(p);
+			});
 		}
 	}
 	
