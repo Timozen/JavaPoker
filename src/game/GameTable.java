@@ -24,11 +24,11 @@ public class GameTable {
 
 	public GameTable(Table table) {
 		this.table = table;
+		roundRNG = table.GetRandom();
 		
-		deck = new Deck(table.GetSeed());
+		deck = new Deck(roundRNG);
 		deck.CreateAndShuffle();
 		
-		roundRNG = new Random(table.GetSeed());
 	}
 
 	/**

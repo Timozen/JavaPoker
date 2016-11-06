@@ -7,9 +7,9 @@ import java.util.*;
 
 public class Deck {
 	private Queue<Card> queue;
-	private int seed;
-	public Deck(int seed){
-		this.seed = seed;
+	private Random r;
+	public Deck(Random r){
+		this.r = r;
 	}
 	
 	/**
@@ -49,7 +49,10 @@ public class Deck {
 			}
 		}
 		
-		Collections.shuffle(cards);
+		shuffle(cards);
+		
+		//this doesnt work with our pseudo random
+		//Collections.shuffle(cards);
 		
 		queue = cards;
 	}
@@ -62,15 +65,13 @@ public class Deck {
 	 * This method shuffles a card array with a very simple
 	 * algorithm
 	 */
-	private void shuffle(Card[] cards)
+	private void shuffle(List<Card> cards)
 	{
-		Random r = new Random(seed);
-		for (int i = cards.length - 1; i > 0; i--) {
+		for (int i = cards.size() - 1; i > 0; i--) {
 			int tmpPos = r.nextInt(i);
-			
-			Card tmpCard = cards[i];
-			cards[i] = cards[tmpPos];
-			cards[tmpPos] = tmpCard;
+			Card tmpCard = cards.get(i);
+			cards.set(i, cards.get(tmpPos));
+			cards.set(tmpPos, tmpCard);
 		}
 	}
 	

@@ -25,12 +25,30 @@ public class Table {
 	private boolean isFinished = false;
 	
 	private List<Card> boardCards = new ArrayList<>();
-	private int seed;
+	private int seed = -1;
+	private Random random;
 	
-	
+	public Table(int seed){
+		
+		this.seed = seed;
+		random = new Random(seed);
+		
+		playersOnTable = new CircularList<>();
+		
+		smallBlindValue = 100;
+		bigBlindValue = 2 * smallBlindValue;
+		
+		gameTable = new GameTable(this);
+		firstRound = true;
+	}
 	
 	public Table()
 	{
+		//Generate a simple seed for debugging
+		if(seed == -1){
+			seed = (int) (new Date().getTime()/1000);
+		}
+		random = new Random(seed);
 		playersOnTable = new CircularList<>();
 		
 		smallBlindValue = 100;
@@ -42,12 +60,9 @@ public class Table {
 	
 	public void StartGame()
 	{
+		System.out.println("The seed for this Table is:" + seed);
+		
 		while (playersOnTable.size() != 1) {
-			
-			//Generate a simple seed for debugging
-			seed = (int) (new Date().getTime()/1000);
-			System.out.println("The seed for this round is:" + seed);
-			
 			actualRoundBet = 0;
 			isFinished = false;
 			gameTable.PreFlop();
@@ -398,6 +413,11 @@ public class Table {
 	public int GetSeed()
 	{
 		return seed;
+	}
+	
+	public Random GetRandom()
+	{
+		return random;
 	}
 }
 
