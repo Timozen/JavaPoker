@@ -62,7 +62,7 @@ public class WinnerObject {
     public void CalculateActualWinnerList(){
         int highestNumeric = winningPlayers.get(winningPlayers.size() - 1).GetWinnerNumber();
         for (int i = winningPlayers.size() - 1;
-            winningPlayers.get(i).GetWinnerNumber() == highestNumeric;
+            winningPlayers.get(i).GetWinnerNumber() == highestNumeric && winningPlayers.size() > 0;
             i--) {
             actualWinningPlayers.add(winningPlayers.get(i));
             winningPlayers.remove(i);

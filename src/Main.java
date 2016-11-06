@@ -8,8 +8,8 @@ public class Main {
 		table.AddPlayerToTable("Tim");
 		table.AddPlayerToTable("Niklas");
 		table.AddPlayerToTable("Matthias");
-		table.AddPlayerToTable("Fabian");
-		table.AddPlayerToTable("Jan");
+		//table.AddPlayerToTable("Fabian");
+		//table.AddPlayerToTable("Jan");
 		
 		table.StartGame();
 		//Implementierung:
