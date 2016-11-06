@@ -115,7 +115,9 @@ public class Table {
 		operationsList.forEach((BettingOperations op) -> System.out.print(op + " "));
 		
 		player.SetBettingAction(GetValidBettingOperationInput(operationsList, scanner));
-		player.SetBetAmount(GetValidMoneyFromBettingOperation(player.GetBettingAction(), scanner));
+		player.SetBetAmountFromInput(GetValidMoneyFromBettingOperation(player.GetBettingAction(), scanner));
+		
+		System.out.println("Player " + player.GetNickname() + " " + player.GetBettingAction() + " " + player.GetBetAmountFromInput());
 	}
 	
 	private static int GetValidMoneyFromBettingOperation(BettingOperations op, Scanner scanner)
@@ -375,12 +377,12 @@ public class Table {
 		return bettingOperationsState;
 	}
 	
-	public int GetActualRoundBet()
+	public int GetRoundBetCurrent()
 	{
 		return actualRoundBet;
 	}
 	
-	public void SetActualRoundBet(int actualRoundBet)
+	public void SetRoundBetCurrent(int actualRoundBet)
 	{
 		this.actualRoundBet = actualRoundBet;
 	}

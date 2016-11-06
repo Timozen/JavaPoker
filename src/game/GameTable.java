@@ -47,10 +47,8 @@ public class GameTable {
 		table.SetPot(0);
 		playersInRound = (CircularList<Player>) table.GetPlayersOnTable().clone();
 		isShowdown = false;
-
-		for(Player p : playersInRound){
-			p.SetPlayerState(PlayerState.PLAYING);
-		}
+		
+		playersInRound.forEach((Player p) -> p.SetPlayerState(PlayerState.PLAYING));
 
 		electivePlayersCount = playersInRound.size();		//Counts Players who have the right to vote
 
@@ -162,7 +160,7 @@ public class GameTable {
 				int actualWinnerAmount = winner.GetActualWinnerAmount() + 1;                                        	//Popped Top Element, so we need to increase about 1
 				int moneyPerPlayer = 0;
 				for (Player p : playersInRound) {
-					moneyPerPlayer += p.DecreaseRoundBet(actualWinner.GetRoundBet());
+					moneyPerPlayer += p.DecreaseRoundBetAll(actualWinner.GetRoundBetAll());
 				}
 				table.DecreasePot(moneyPerPlayer);
 				for (Player p : actualWinnerList) {
@@ -211,8 +209,12 @@ public class GameTable {
 	{
 		PayMoney(table.GetSmallBlindValue(), table.GetSmallBlind());
 		System.out.println("Player "+ table.GetSmallBlind().GetNickname() + " paid the SmallBlind of " + table.GetSmallBlindValue());
+		
 		PayMoney(table.GetBigBlindValue(), table.GetBigBlind());
+		table.SetRoundBetCurrent(table.GetBigBlindValue());
+		
 		System.out.println("Player "+ table.GetBigBlind().GetNickname() + " paid the BigBlind of " + table.GetBigBlindValue());
+		System.out.println("ActualRoundBet: " + table.GetRoundBetCurrent());
 		System.out.println();
 	}
 
@@ -221,10 +223,10 @@ public class GameTable {
 		table.IncreasePot(moneyAmount);
 		if (moneyAmount != 0) {
 			if (player.GetMoney() - moneyAmount > 0) {
-				player.IncreaseRoundBet(moneyAmount);
+				player.IncreaseRoundBetAll(moneyAmount);
 				player.DecreaseMoney(moneyAmount);
 			} else {
-				player.IncreaseRoundBet(player.GetMoney());
+				player.IncreaseRoundBetAll(player.GetMoney());
 				player.SetMoney(0);
 				player.SetPlayerState(PlayerState.ALLIN);
 				electivePlayersCount -= 1;
@@ -249,9 +251,14 @@ public class GameTable {
 				BettingOperations playerAction = actualPlayer.GetBettingAction(); 									//Hier muss gewartet werden!!!
 				//--------------------------
 				if (playerAction != BettingOperations.FOLD) {															//Spieler foldet nicht
-					if (playerAction == BettingOperations.RAISE || playerAction == BettingOperations.BET) {				//Spieler Raised / Bettet (wird Höchstbietender)
-						SetPlayersUncalled();																			//=> Alle müssen neu wählen
-						table.SetActualRoundBet(actualPlayer.GetActualRoundBet() + actualPlayer.GetBetAmount());		//Setze aktuellen Rundeneinsatz
+					//Spieler Raised / Bettet (wird Höchstbietender)
+					if (playerAction == BettingOperations.RAISE || playerAction == BettingOperations.BET) {
+						//=> Alle müssen neu wählen
+						SetPlayersUncalled();
+						
+						//table.SetRoundBetCurrent(actualPlayer.GetRoundBetCurrent() + actualPlayer.GetBetAmountFromInput());		//Setze aktuellen Rundeneinsatz
+						//
+						//actualPlayer.SetRoundBetCurrent(table.GetRoundBetCurrent());
 						if(playerAction == BettingOperations.BET){														//Sofern die Aktion Bet ist
 							table.SetBettingOperationsState(BettingOperations.CALL);									//Setze Table auf "Call"-State (Bet = Raise, Check = Call)
 							//------------
@@ -260,10 +267,18 @@ public class GameTable {
 							//------------
 						}
 					}
-
-					actualPlayer.SetActualRoundBet(table.GetActualRoundBet());											//Spielers Rundeneinsatz wird darauf gesetzt (=> Table kann informieren)
-					//Kommentar: Bei einem Check / Call wird der GetBetAmount auf 0 gesetzt, dann geht Fkt weiterhin
-					PayMoney(actualPlayer.GetBetAmount(), actualPlayer);
+					//actualPlayer.SetRoundBetCurrent(table.GetRoundBetCurrent());
+					//Spielers Rundeneinsatz wird darauf gesetzt (=> Table kann informieren)
+					//Kommentar: Bei einem Check / Call wird der GetBetAmountFromInput auf 0 gesetzt, dann geht Fkt weiterhin
+					
+					int needToPay = table.GetRoundBetCurrent() + actualPlayer.GetBetAmountFromInput();
+					int diff = needToPay - actualPlayer.GetRoundBetCurrent();
+					
+					PayMoney(diff, actualPlayer);
+					
+					table.SetRoundBetCurrent(needToPay);
+					actualPlayer.SetRoundBetCurrent(needToPay);
+					
 					actualPlayer.SetIsCalledHighestBet(true);															//Hat höchsten Eisnatz gecallt / selbst gestellt (bleibt egal)
 				} else {																								//Spieler foldet
 					actualPlayer.SetPlayerState(PlayerState.FOLD);
@@ -379,6 +394,7 @@ public class GameTable {
 	private void roundEndOutput()
 	{
 		System.out.println("\n#######################################");
+		System.out.println("Elective Player Count: " + electivePlayersCount );
 		System.out.print("Remaining players: ");
 		playersInRound.stream().filter(player -> player.GetPlayerState() == PlayerState.PLAYING ||
 							 player.GetPlayerState() == PlayerState.ALLIN).forEach( player -> {

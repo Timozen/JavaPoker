@@ -75,7 +75,7 @@ public class WinnerObject {
 		//need calculation for highest Bets (if they are not equal, anyway dont care if)
 		for (int i = 0; i < actualWinningPlayers.size() - (i + 1); i++) {
 			for (int j = 0; j < actualWinningPlayers.size() - (i + 1); j++) {
-				if (actualWinningPlayers.get(j).GetRoundBet() < actualWinningPlayers.get(j + 1).GetRoundBet()) {
+				if (actualWinningPlayers.get(j).GetRoundBetAll() < actualWinningPlayers.get(j + 1).GetRoundBetAll()) {
 					Player p = actualWinningPlayers.get(j);
 					actualWinningPlayers.set(j, actualWinningPlayers.get(j + 1));
 					actualWinningPlayers.set(j + 1, p);
