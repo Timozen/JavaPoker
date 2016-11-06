@@ -1,6 +1,5 @@
 package game;
 
-import game.Card;
 import handChecker.PokerCard;
 
 import java.util.*;
@@ -29,19 +28,6 @@ public class Deck {
 	 */
 	public void CreateAndShuffle()
 	{
-		/**
-		game.Card cards[] = new game.Card[52];
-		int tempColorRange = 13;
-		
-		for (int i = 0; i < PokerCard.Color.values().length; i++) {
-			for (int j = 0; j < PokerCard.Value.values().length; j++) {
-				int tmpPos = i * tempColorRange + j;
-				cards[tmpPos] = new game.Card(PokerCard.Color.values()[i],
-							 PokerCard.Value.values()[j]);
-			}
-		}
-		 **/
-		
 		LinkedList<Card> cards = new LinkedList<>();
 		for(PokerCard.Color color : PokerCard.Color.values()){
 			for(PokerCard.Value value : PokerCard.Value.values()){
@@ -58,11 +44,11 @@ public class Deck {
 	}
 	
 	/**
-	 * shuffle - shuffles a card array
+	 * shuffle - shuffles a list of cards
 	 *
-	 * @param cards contains a array of cards
+	 * @param cards contains a list of cards
 	 *
-	 * This method shuffles a card array with a very simple
+	 * This method shuffles a list of cards with a very simple
 	 * algorithm
 	 */
 	private void shuffle(List<Card> cards)
@@ -73,19 +59,5 @@ public class Deck {
 			cards.set(i, cards.get(tmpPos));
 			cards.set(tmpPos, tmpCard);
 		}
-	}
-	
-	/**
-	 * Only for Debug!!!
-	 *
-	 * @param cards a array of cards
-	 */
-	private void print(List<Card> cards)
-	{
-		System.out.println("########################");
-		for (Card card : cards) {
-			System.out.println(card.getColor() + " " + card.getValue());
-		}
-		System.out.println("########################");
 	}
 }

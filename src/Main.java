@@ -25,9 +25,5 @@ public class Main {
 		//table.AddPlayerToTable("Jan");
 		
 		table.StartGame();
-		//Implementierung:
-		// Table.GetPlayerAction() <= da muss die Aktion gewählt werden.
-		//							  mit für den Player aufgerufen werden muss SetBetAmount()
-
 	}
 }

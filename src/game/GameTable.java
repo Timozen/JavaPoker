@@ -94,22 +94,11 @@ public class GameTable {
 	public int Flop()
 	{
 		table.SetRoundState(RoundState.FLOP);
-		
-		/*
-		//burn 1 card
-		deck.Draw();
 
-		//Put 3 cards on the board
-		table.AddBoardCard(deck.Draw());
-		table.AddBoardCard(deck.Draw());
-		table.AddBoardCard(deck.Draw());
-		*/
 		AddBoardCard(3);
 		SelectStartPlayerPostFlop();
 		PokerRound();
-		/**
-		 * flop gameplay comes here
-		 */
+		
 		return 0;
 	}
 
@@ -123,19 +112,10 @@ public class GameTable {
 	{
 		table.SetRoundState(RoundState.TURN);
 
-		/*
-		//burn 1 card
-		deck.Draw();
-
-		//Put 1 card on the board
-		table.AddBoardCard(deck.Draw());
-		*/
 		AddBoardCard(1);
 		SelectStartPlayerPostFlop();
 		PokerRound();
-		/**
-		 * turn gameplay comes here
-		 */
+		
 		return 0;
 	}
 
@@ -148,20 +128,11 @@ public class GameTable {
 	public int River()
 	{
 		table.SetRoundState(RoundState.RIVER);
-
-		/*
-		//burn 1 card
-		deck.Draw();
-
-		//Put 1 cards on the board
-		table.AddBoardCard(deck.Draw());
-		*/
+		
 		AddBoardCard(1);
 		SelectStartPlayerPostFlop();
 		PokerRound();
-		/**
-		 * river gameplay comes here
-		 */
+
 		return 0;
 	}
 
