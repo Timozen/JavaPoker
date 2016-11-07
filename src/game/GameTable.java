@@ -301,6 +301,7 @@ public class GameTable {
 		actualPlayer = null;
 		
 		roundEndOutput();
+		resetRoundBetCurrent();
 		
 		return 1;
 	}
@@ -401,5 +402,11 @@ public class GameTable {
 		System.out.println("Current Pot:" + table.GetPotValue());
 		System.out.println("#######################################\n");
 		
+	}
+
+	private void resetRoundBetCurrent() {
+		for(Player p : playersInRound) {
+			p.SetRoundBetCurrent(0);
+		}
 	}
 }
