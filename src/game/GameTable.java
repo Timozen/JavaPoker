@@ -245,38 +245,25 @@ public class GameTable {
 		SetPlayersUncalled();																							//Initialisiere alle Spieler mit uncalled state
 
 		while (!IsAllPlayersCalled() && !isShowdown) {																	//Solange nicht alle (Playing) Spieler gecallt / gecheckt haben
-			if (actualPlayer.GetPlayerState().GetState() == 0) {															//Wenn gewählter Spieler noch Wahlmöglichkeit hat (State 1, 0 = AllIn/Fold)
+			if (actualPlayer.GetPlayerState().GetState() == 0) {														//Wenn gewählter Spieler noch Wahlmöglichkeit hat (State 1, 0 = AllIn/Fold)
 				//--------------------------
 				table.GetPlayerAction(actualPlayer);
-				BettingOperations playerAction = actualPlayer.GetBettingAction(); 									//Hier muss gewartet werden!!!
+				BettingOperations playerAction = actualPlayer.GetBettingAction(); 										//Hier muss gewartet werden!!!
 				//--------------------------
 				if (playerAction != BettingOperations.FOLD) {															//Spieler foldet nicht
+					int needToPay = table.GetRoundBetCurrent() + actualPlayer.GetBetAmountFromInput();
 					//Spieler Raised / Bettet (wird Höchstbietender)
 					if (playerAction == BettingOperations.RAISE || playerAction == BettingOperations.BET) {
 						//=> Alle müssen neu wählen
+						//=> Rundeneinsatz wird incrementiert
 						SetPlayersUncalled();
-						
-						//table.SetRoundBetCurrent(actualPlayer.GetRoundBetCurrent() + actualPlayer.GetBetAmountFromInput());		//Setze aktuellen Rundeneinsatz
-						//
-						//actualPlayer.SetRoundBetCurrent(table.GetRoundBetCurrent());
-						if(playerAction == BettingOperations.BET){														//Sofern die Aktion Bet ist
-							table.SetBettingOperationsState(BettingOperations.CALL);									//Setze Table auf "Call"-State (Bet = Raise, Check = Call)
-							//------------
-							//Informiere Clients, dass Schalter auf "CALL" umgelegt wurde statt "CHECK"
-							//Diese Funktion sollte im table Implementiert werden, bei SetBettingOperationsState
-							//------------
-						}
+						table.SetRoundBetCurrent(needToPay);
+						//TODO informiere clients, falls Bet => Raise & Call
 					}
-					//actualPlayer.SetRoundBetCurrent(table.GetRoundBetCurrent());
-					//Spielers Rundeneinsatz wird darauf gesetzt (=> Table kann informieren)
 					//Kommentar: Bei einem Check / Call wird der GetBetAmountFromInput auf 0 gesetzt, dann geht Fkt weiterhin
-					
-					int needToPay = table.GetRoundBetCurrent() + actualPlayer.GetBetAmountFromInput();
+
 					int diff = needToPay - actualPlayer.GetRoundBetCurrent();
-					
 					PayMoney(diff, actualPlayer);
-					
-					table.SetRoundBetCurrent(needToPay);
 					actualPlayer.SetRoundBetCurrent(needToPay);
 					
 					actualPlayer.SetIsCalledHighestBet(true);															//Hat höchsten Eisnatz gecallt / selbst gestellt (bleibt egal)
