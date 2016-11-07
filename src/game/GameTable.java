@@ -248,7 +248,7 @@ public class GameTable {
 		SetPlayersUncalled();																							//Initialisiere alle Spieler mit uncalled state
 
 		while (!IsAllPlayersCalled() && !isShowdown) {																	//Solange nicht alle (Playing) Spieler gecallt / gecheckt haben
-			if (actualPlayer.GetPlayerState().GetState() == 0) {														//Wenn gewählter Spieler noch Wahlmöglichkeit hat (State 1, 0 = AllIn/Fold)
+			if (actualPlayer.GetPlayerState().GetNumeric() == 0) {														//Wenn gewählter Spieler noch Wahlmöglichkeit hat (State 1, 0 = AllIn/Fold)
 				//--------------------------
 				table.GetPlayerAction(actualPlayer);
 				BettingOperations playerAction = actualPlayer.GetBettingAction(); 										//Hier muss gewartet werden!!!
@@ -274,14 +274,19 @@ public class GameTable {
 					actualPlayer.SetPlayerState(PlayerState.FOLD);
 					electivePlayersCount -= 1;
 					if (GetPlayingPlayers() == 1) {
-						actualPlayer.IncreaseMoney(table.GetPotValue());
-						table.SetGameFinished(true);
-					} else {
-						if (electivePlayersCount > 1 && IsAllPlayersCalled()) {
-							//return ShowdownPreRiver();
-							//Müssen durchgehen, also hier Schleife abbrechen
-							isShowdown = true;
+						int nextPlayer = playersInRound.indexOf(actualPlayer) + 1;
+						while (table.GetPlayersOnTable().get(nextPlayer).GetPlayerState().GetNumeric() >= 1) {
+							nextPlayer += 1;
 						}
+						playersInRound.get(nextPlayer).IncreaseMoney(table.GetPotValue());
+						table.SetGameFinished(true);
+						isShowdown = true;
+						System.out.println("Only " + playersInRound.get(nextPlayer).GetNickname() + " left.");
+						System.out.println("Money increased about " + table.GetPotValue());
+					} else if (electivePlayersCount > 1 && IsAllPlayersCalled()) {
+						//return ShowdownPreRiver();
+						//Müssen durchgehen, also hier Schleife abbrechen
+						isShowdown = true;
 					}
 				}
 			}
@@ -289,6 +294,7 @@ public class GameTable {
 			actualPlayer = playersInRound.get(playersInRound.indexOf(actualPlayer) + 1);
 			//die Information dass der Spieler dran ist erfolgt erst später
 			//da es sein könnte, dass der Listen Nächste keine Wahlmöglichkeit hat
+			System.out.println("Current Pot Value: " + table.GetPotValue());
 		}
 
 		//Zurücksetzen der Spieler für die nächste Setzrunde
@@ -362,10 +368,11 @@ public class GameTable {
 	{
 		int playerCount = 0;
 		for (Player p : playersInRound) {
-			if (p.GetPlayerState().GetState() <= 1) {																	//Playing || All-In
+			if (p.GetPlayerState().GetNumeric() <= 1) {																	//Playing || All-In
 				playerCount += 1;
 			}
 		}
+		System.out.println("Remaining Players: " + playerCount);
 		return playerCount;
 	}
 	
