@@ -115,12 +115,13 @@ public class Table {
 		operationsList.forEach((BettingOperations op) -> System.out.print(op + " "));
 		
 		player.SetBettingAction(GetValidBettingOperationInput(operationsList, scanner));
-		player.SetBetAmountFromInput(GetValidMoneyFromBettingOperation(player.GetBettingAction(), scanner));
+		player.SetBetAmountFromInput(GetValidMoneyFromBettingOperation(player.GetBettingAction(), scanner, player));
 		
 		System.out.println("Player " + player.GetNickname() + " " + player.GetBettingAction() + " " + player.GetBetAmountFromInput());
+		if (player.GetBettingAction() != BettingOperations.BET && player.GetBettingAction() != BettingOperations.RAISE) { System.out.println(); }
 	}
 	
-	private static int GetValidMoneyFromBettingOperation(BettingOperations op, Scanner scanner)
+	private int GetValidMoneyFromBettingOperation(BettingOperations op, Scanner scanner, Player p)
 	{
 		switch (op) {
 			case FOLD:
@@ -130,9 +131,9 @@ public class Table {
 			case CHECK:
 				return 0;
 			case RAISE:
-				return GetMoneyFromInput(scanner);
+				return GetMoneyFromInput(scanner, p);
 			case BET:
-				return GetMoneyFromInput(scanner);
+				return GetMoneyFromInput(scanner, p);
 			case INVALID:
 				System.out.println("This should not have happened...");
 				break;
@@ -140,16 +141,29 @@ public class Table {
 		return 0;
 	}
 	
-	private static int GetMoneyFromInput(Scanner scanner)
+	private int GetMoneyFromInput(Scanner scanner, Player p)
 	{
+		int maximumBet = p.GetMoney() - (actualRoundBet - p.GetRoundBetCurrent());
+		int playerBet = maximumBet + 1;
+		System.out.println("Current Player Bet: " + p.GetRoundBetCurrent());
+		System.out.println("Current Table Bet: " + actualRoundBet);
+		System.out.println("Maximum Player Bet: " + maximumBet);
 		System.out.print("Value: ");
-		while (!scanner.hasNextInt()) {
-			System.out.println("Invalid input!");
-			System.out.print("Value: ");
-			scanner.next();
+		while (playerBet > maximumBet) {
+			while (!scanner.hasNextInt()) {
+				System.out.println("Invalid input!");
+				System.out.print("Value: ");
+				scanner.next();
+			}
+			playerBet = scanner.nextInt();
+			if (playerBet > maximumBet) {
+				System.out.println("Invalid input!");
+				System.out.print("Value: ");
+			}
 		}
+		System.out.println("Player will pay " + playerBet + " + " + (actualRoundBet - p.GetRoundBetCurrent()) + " = " + (playerBet + (actualRoundBet - p.GetRoundBetCurrent())));
 		System.out.println();
-		return scanner.nextInt();
+		return playerBet;
 	}
 	
 	private static BettingOperations GetValidBettingOperationInput(List<BettingOperations> operationsList, Scanner scanner)
