@@ -217,20 +217,20 @@ public class GameTable {
 
 		System.out.println("Player "+ table.GetBigBlind().GetNickname() + " paid the BigBlind of " + table.GetBigBlindValue());
 		System.out.println("ActualRoundBet: " + table.GetRoundBetCurrent());
+		System.out.println("Pot Value: " + table.GetPotValue());
 		System.out.println();
 	}
 
 	public void PayMoney(int moneyAmount, Player player)
 	{
-		table.IncreasePot(moneyAmount);
 		if (moneyAmount != 0) {
 			if (player.GetMoney() - moneyAmount > 0) {
-				System.out.println(player.GetNickname() + " paid " + moneyAmount);
+				System.out.println(player.GetNickname() + " paid " + moneyAmount + "(moneyAmount)");
 				table.IncreasePot(moneyAmount);
 				player.IncreaseRoundBetAll(moneyAmount);
 				player.DecreaseMoney(moneyAmount);
 			} else {
-				System.out.println(player.GetNickname() + " paid " + player.GetMoney());
+				System.out.println(player.GetNickname() + " paid " + player.GetMoney() + "(Player Money)");
 				table.IncreasePot(player.GetMoney());
 				player.IncreaseRoundBetAll(player.GetMoney());
 				player.SetMoney(0);
@@ -246,7 +246,7 @@ public class GameTable {
 	public int PokerRound()
 	{
 		roundBeginOutput();
-		
+		System.out.println("Pot Value: " + table.GetPotValue());
 		table.SetBettingOperationsState(BettingOperations.CHECK);														//Das BettingOperations ist lediglich um Spieler zu informieren
 		SetPlayersUncalled();																							//Initialisiere alle Spieler mit uncalled state
 
