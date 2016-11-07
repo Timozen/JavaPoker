@@ -286,7 +286,7 @@ public class GameTable {
 						isShowdown = true;
 						System.out.println("Only " + playersInRound.get(nextPlayer).GetNickname() + " left.");
 						System.out.println("Money increased about " + table.GetPotValue());
-					} else if (electivePlayersCount > 1 && IsAllPlayersCalled()) {
+					} else if (electivePlayersCount == 1 && IsAllPlayersCalled()) {
 						//return ShowdownPreRiver();
 						//Müssen durchgehen, also hier Schleife abbrechen
 						isShowdown = true;
