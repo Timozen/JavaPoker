@@ -208,11 +208,13 @@ public class GameTable {
 	public void PayBlinds()
 	{
 		PayMoney(table.GetSmallBlindValue(), table.GetSmallBlind());
+		table.GetSmallBlind().SetRoundBetCurrent(table.GetSmallBlindValue());
 		System.out.println("Player "+ table.GetSmallBlind().GetNickname() + " paid the SmallBlind of " + table.GetSmallBlindValue());
 		
 		PayMoney(table.GetBigBlindValue(), table.GetBigBlind());
 		table.SetRoundBetCurrent(table.GetBigBlindValue());
-		
+		table.GetBigBlind().SetRoundBetCurrent(table.GetBigBlindValue());
+
 		System.out.println("Player "+ table.GetBigBlind().GetNickname() + " paid the BigBlind of " + table.GetBigBlindValue());
 		System.out.println("ActualRoundBet: " + table.GetRoundBetCurrent());
 		System.out.println();
@@ -220,6 +222,7 @@ public class GameTable {
 
 	public void PayMoney(int moneyAmount, Player player)
 	{
+		System.out.println(player.GetNickname() + " paid " + moneyAmount);
 		table.IncreasePot(moneyAmount);
 		if (moneyAmount != 0) {
 			if (player.GetMoney() - moneyAmount > 0) {
