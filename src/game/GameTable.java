@@ -222,13 +222,16 @@ public class GameTable {
 
 	public void PayMoney(int moneyAmount, Player player)
 	{
-		System.out.println(player.GetNickname() + " paid " + moneyAmount);
 		table.IncreasePot(moneyAmount);
 		if (moneyAmount != 0) {
 			if (player.GetMoney() - moneyAmount > 0) {
+				System.out.println(player.GetNickname() + " paid " + moneyAmount);
+				table.IncreasePot(moneyAmount);
 				player.IncreaseRoundBetAll(moneyAmount);
 				player.DecreaseMoney(moneyAmount);
 			} else {
+				System.out.println(player.GetNickname() + " paid " + player.GetMoney());
+				table.IncreasePot(player.GetMoney());
 				player.IncreaseRoundBetAll(player.GetMoney());
 				player.SetMoney(0);
 				player.SetPlayerState(PlayerState.ALLIN);
