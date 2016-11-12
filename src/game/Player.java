@@ -163,6 +163,10 @@ class Player {
 	{
 		return winnerNumber;
 	}
+
+	public void IncreaseWinnerNumber(int amount) { winnerNumber += amount; }
+
+	public void DecreaseWinnerNumber(int amount) { winnerNumber -= amount; }
 	//endregion
 	
 	//region CardWithTable

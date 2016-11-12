@@ -16,105 +16,89 @@ public class WinnerObject {
 	
 	private Table table;
 	private HandChecker checker;
-	
+
 	public WinnerObject(CircularList<Player> playerList, Table table)
 	{
-		actualWinningPlayers = new ArrayList<>();
-		
-		winningPlayers = (CircularList<Player>) playerList.clone();
-		checker = new HandChecker();
-		for (Player p : playerList) {
-			if (p.GetPlayerState() == PlayerState.FOLD) {
-				winningPlayers.remove(p);
-			} else {
-				p.SetCardsWithTable(table);
-			}
-		}
 		this.table = table;
-		
-		//Calculate List of winners
-		//-------------
-		//First Step: Bubblesort
-		//Second Step: Giving numeric representations
-		//Third Step: Getting Winners
-		for (int i = 0; i < winningPlayers.size() - (i + 1); i++) {
-			for (int j = 0; j < winningPlayers.size() - (i + 1); j++) {
-				if (checker.check(winningPlayers.get(j).GetCardsWithTable())
-					.compareTo(checker.check(winningPlayers.get(j + 1).GetCardsWithTable()))
-					== -1) {
-					//
-					Player p = winningPlayers.get(j);
-					winningPlayers.set(j, winningPlayers.get(j + 1));
-					winningPlayers.set(j + 1, p);
+		checker = new HandChecker();
+		CircularList<Player> playersInRound = (CircularList<Player>)table.GetPlayersOnTable().clone();
+		winningPlayers = new CircularList<>();
+		System.out.println("Players who can win:");
+		for (int i = 0; i < playersInRound.size(); i++){
+			Player p = playersInRound.get(i);
+			if (p.GetPlayerState() == PlayerState.ALLIN || p.GetPlayerState() == PlayerState.PLAYING) {
+				p.SetCardsWithTable(table);
+				p.SetWinnerNumber(i);
+				winningPlayers.add(p);
+				System.out.println(p.GetNickname() + " with roundBet " + p.GetRoundBetAll() + " Number " + p.GetWinnerNumber());
+			}
+		}
+
+		//Bubblesort, easy and with max amount of 23 players
+		//Still doing well (529 iterations)
+		//Highest winner is on top
+		System.out.println("\nStarting Winner Comparison");
+		for (int i = 0; i < winningPlayers.size() - 1; i++){
+			for (int j = 0; j < winningPlayers.size() - (1 + i); j++) {
+				//indexPlayerOne = j
+				//indexPlayerTwo = j + 1
+				Player p1 = winningPlayers.get(j);
+				Player p2 = winningPlayers.get(j + 1);
+				System.out.println("\nComparing "
+						+ p1.GetNickname()
+						+ " to "
+						+ p2.GetNickname());
+				System.out.println(p1.GetNickname() + " Cards: "
+						+ p1.GetCardsWithTable());
+				System.out.println(p2.GetNickname() + " Cards: "
+						+ p2.GetCardsWithTable());
+				int result = checker.check(p1.GetCardsWithTable()).compareTo(checker.check(p2.GetCardsWithTable()));
+				//p1 == p2	=>	0
+				//p1 < p2	=> -1
+				//p1 > p2	=>	1 => swap
+				switch (result) {
+					case 0:
+						System.out.println(p1.GetNickname() + " equal to " + p2.GetNickname());
+						break;
+					case 1:
+						System.out.println(p1.GetNickname() + " worse than " + p2.GetNickname());
+						break;
+					case -1:
+						System.out.println(p1.GetNickname() + " better than " + p2.GetNickname());
+						p2.DecreaseWinnerNumber(1);
+						p1.IncreaseWinnerNumber(1);
+						winningPlayers.Swap(j, j + 1);
+						break;
 				}
 			}
 		}
-		//Setting numeric values
-		int winnerNumber = 0;
-		winningPlayers.get(0).SetWinnerNumber(winnerNumber);
-		for (int i = 0; i < winningPlayers.size() - 1; i++) {
-			if (checker.check(winningPlayers.get(i).GetCardsWithTable())
-				.compareTo(checker.check(winningPlayers.get(i + 1).GetCardsWithTable()))
-				!= -1) {
-				winnerNumber += 1;
-				winningPlayers.get(i + 1).SetWinnerNumber(winnerNumber);
-			}
+	}
+
+	public void dumpWinnerListAsc() {
+		System.out.println("\n#### Winning Players Output Desc Start");
+		for (int i = 0; i < winningPlayers.size(); i++) {
+			System.out.println(winningPlayers.get(i).GetNickname()
+					+ " with RoundBet " + winningPlayers.get(i).GetRoundBetAll()
+					+ " Number " + winningPlayers.get(i).GetWinnerNumber());
+			System.out.println("Cards: " + winningPlayers.get(i).GetCardsWithTable());
 		}
-	}
-	
-	public void CalculateActualWinnerList()
-	{
-		int highestNumeric = winningPlayers.get(winningPlayers.size() - 1).GetWinnerNumber();
-		for (int i = winningPlayers.size() - 1;
-		     winningPlayers.size() > 0 && winningPlayers.get(i).GetWinnerNumber() == highestNumeric;
-		     i--) {
-			actualWinningPlayers.add(winningPlayers.get(i));
-			winningPlayers.remove(i);
+		for (int i = 0; i < winningPlayers.size(); i++){
+			System.out.print(winningPlayers.get(i).GetWinnerNumber() + " ");
 		}
-		//actualWinnerList is done
-		//need calculation for highest Bets (if they are not equal, anyway dont care if)
-		for (int i = 0; i < actualWinningPlayers.size() - (i + 1); i++) {
-			for (int j = 0; j < actualWinningPlayers.size() - (i + 1); j++) {
-				if (actualWinningPlayers.get(j).GetRoundBetAll() < actualWinningPlayers.get(j + 1).GetRoundBetAll()) {
-					Player p = actualWinningPlayers.get(j);
-					actualWinningPlayers.set(j, actualWinningPlayers.get(j + 1));
-					actualWinningPlayers.set(j + 1, p);
-				}
-			}
+		System.out.println("\n#### Winning Players Output Desc End\n");
+	}
+
+	public void dumpWinnerListDesc() {
+		System.out.println("\n#### Winning Players Output Asc Start");
+		for (int i = winningPlayers.size() - 1; i >= 0; i--) {
+			System.out.println(winningPlayers.get(i).GetNickname()
+					+ " with RoundBet " + winningPlayers.get(i).GetRoundBetAll()
+					+ " Number " + winningPlayers.get(i).GetWinnerNumber());
+			System.out.println("Cards: " + winningPlayers.get(i).GetCardsWithTable());
 		}
-		//lowest RoudnBet is on top
-		//.size() - 1 Player is Player with smallest RoundBet
-	}
-	
-	public List<Player> GetActualWinnerList()
-	{
-		return actualWinningPlayers;
-	}
-	
-	public Player PopActualWinner()
-	{
-		Player p = actualWinningPlayers.get(actualWinningPlayers.size() - 1);
-		actualWinningPlayers.remove(p);
-		return p;
-	}
-	
-	public int GetWinnerAmount()
-	{
-		return this.winningPlayers.size();
-	}
-	
-	public int GetActualWinnerAmount()
-	{
-		return this.actualWinningPlayers.size();
-	}
-	
-	public boolean IsSomeActualWinnerAllIn()
-	{
-		for (Player p : actualWinningPlayers) {
-			if (p.GetPlayerState() == PlayerState.ALLIN) {
-				return true;
-			}
+		for (int i = winningPlayers.size() - 1;  i >= 0; i--){
+			System.out.print(winningPlayers.get(i).GetWinnerNumber() + " ");
 		}
-		return false;
+		System.out.println("\n#### Winning Players Output Asc End\n");
 	}
 }

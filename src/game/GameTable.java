@@ -45,7 +45,7 @@ public class GameTable {
 		 */
 		table.SetRoundState(RoundState.PREFLOP);
 		table.SetPot(0);
-		playersInRound = (CircularList<Player>) table.GetPlayersOnTable().clone();
+		playersInRound = (CircularList<Player>) table.GetPlayersOnTable();
 		isShowdown = false;
 		
 		playersInRound.forEach((Player p) -> p.SetPlayerState(PlayerState.PLAYING));
@@ -146,35 +146,8 @@ public class GameTable {
 		table.SetRoundState(RoundState.SHOWDOWN);
 		
 		roundBeginOutput();
-		
 		WinnerObject winner = new WinnerObject(playersInRound, table);
-		winner.CalculateActualWinnerList();
-
-
-		int oldActualWinnerAmount = winner.GetActualWinnerAmount();
-		Player actualWinner;
-		while (table.GetPotValue() != 0) {
-			winner.CalculateActualWinnerList();																			//Solange der Topf nicht ausgezahlt ist
-			while ((actualWinner = winner.PopActualWinner()) != null) {													//Pop Top Element & look if not zero
-				List<Player> actualWinnerList = winner.GetActualWinnerList();
-				int actualWinnerAmount = winner.GetActualWinnerAmount() + 1;                                        	//Popped Top Element, so we need to increase about 1
-				int moneyPerPlayer = 0;
-				for (Player p : playersInRound) {
-					moneyPerPlayer += p.DecreaseRoundBetAll(actualWinner.GetRoundBetAll());
-				}
-				table.DecreasePot(moneyPerPlayer);
-				for (Player p : actualWinnerList) {
-					p.IncreaseMoney(moneyPerPlayer / actualWinnerAmount);
-				}
-				//Work done for now, let the process start again
-				//Will traverse through all the players, and if they've got 0 so no problem, nothing changes, perfect
-			}
-			if (table.GetPotValue() <= oldActualWinnerAmount) {															//Pot Value less than players who got paid
-				//Vorerst PotValue 0 setzen
-				table.SetPot(0);
-				return 1;				//Success
-			}
-		}
+		winner.dumpWinnerListAsc();
 		/**
 		 * Everything needed for showdown comes here
 		 */
@@ -276,19 +249,24 @@ public class GameTable {
 				} else {																								//Spieler foldet
 					actualPlayer.SetPlayerState(PlayerState.FOLD);
 					electivePlayersCount -= 1;
+					//Happens when only 1 Player left
 					if (GetPlayingPlayers() == 1) {
 						int nextPlayer = playersInRound.indexOf(actualPlayer) + 1;
-						while (table.GetPlayersOnTable().get(nextPlayer).GetPlayerState().GetNumeric() >= 1) {
+						//Bestimmung des Spielers welcher noch spielt (einer muss es sein)
+						while (table.GetPlayersOnTable().get(nextPlayer).GetPlayerState().GetNumeric() > 1) {
 							nextPlayer += 1;
 						}
+						//
 						playersInRound.get(nextPlayer).IncreaseMoney(table.GetPotValue());
 						table.SetGameFinished(true);
 						isShowdown = true;
 						System.out.println("Only " + playersInRound.get(nextPlayer).GetNickname() + " left.");
 						System.out.println("Money increased about " + table.GetPotValue());
+					//Spieler sind handlungsunfähig, alle haben gecallt und mehr als 2 drin
 					} else if (electivePlayersCount == 1 && IsAllPlayersCalled()) {
 						//return ShowdownPreRiver();
 						//Müssen durchgehen, also hier Schleife abbrechen
+						System.out.println("Earlier showdown set");
 						isShowdown = true;
 					}
 				}

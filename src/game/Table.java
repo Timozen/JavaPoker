@@ -68,15 +68,18 @@ public class Table {
 	{
 		System.out.println("The seed for this Table is: " + seed);
 		
-		while (playersOnTable.size() != 1) {
-			
+		while (playersOnTable.size() >= 1) {
+			System.out.println("####################################################");
+			System.out.println("Players & Money:");
+			for(Player p : playersOnTable) {
+				System.out.println(p.GetNickname() + " with " + p.GetMoney());
+			}
 			if (generateRoundSeed) {
 				seed = generateSeed();
 				random.setSeed(seed);
 			} else {
 				generateRoundSeed = true;
 			}
-			System.out.println("####################################################");
 			System.out.println("The seed for this Round is: " + seed);
 			
 			actualRoundBet = 0;
