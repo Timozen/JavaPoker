@@ -146,8 +146,28 @@ public class GameTable {
 		table.SetRoundState(RoundState.SHOWDOWN);
 		
 		roundBeginOutput();
-		WinnerObject winner = new WinnerObject(playersInRound, table);
-		winner.dumpWinnerListAsc();
+
+
+		WinnerHandler winner = new WinnerHandler(table);
+		CircularList<WinnerPlayer> winners;
+
+		while (table.GetPotValue() > 0) {
+			winners = winner.CalculateWinnerPlayerList();
+			System.out.println("\nPot Value: " + table.GetPotValue());
+			for (WinnerPlayer wp : winners) {
+				System.out.println("Paying " + wp.GetPlayerHandle().GetNickname() + ". Old amount: " + wp.GetPlayerHandle().GetMoney());
+				wp.GetPlayerHandle().IncreaseMoney(wp.GetWinAmount());
+				table.DecreasePot(wp.GetWinAmount());
+				System.out.println("New player amount: " + wp.GetPlayerHandle().GetMoney());
+				System.out.println("New pot value: " + table.GetPotValue());
+			}
+
+			//Sicherstellung beim Split-Pot
+			if (table.GetPotValue() <= winners.size()) {
+				table.SetPot(0);
+			}
+		}
+
 		/**
 		 * Everything needed for showdown comes here
 		 */
@@ -258,6 +278,7 @@ public class GameTable {
 						}
 						//
 						playersInRound.get(nextPlayer).IncreaseMoney(table.GetPotValue());
+						table.SetPot(0);
 						table.SetGameFinished(true);
 						isShowdown = true;
 						System.out.println("Only " + playersInRound.get(nextPlayer).GetNickname() + " left.");

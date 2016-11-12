@@ -403,8 +403,7 @@ public class Table {
 	{
 		this.actualRoundBet = actualRoundBet;
 	}
-	
-	
+
 	public void SetNextDealer()
 	{
 		//TODO
@@ -434,6 +433,14 @@ public class Table {
 	public Random GetRandom()
 	{
 		return random;
+	}
+
+	public int GetHighestAmountToSubstractFromPot(int amount)
+	{
+		if (pot - amount < 0) {
+			return amount;
+		}
+		return pot;
 	}
 }
 

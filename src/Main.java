@@ -15,13 +15,11 @@ public class Main {
 		}else{
 			table = new Table(seed);
 		}
-		
-		
 
 		table.AddPlayerToTable("Tim");
 		table.AddPlayerToTable("Niklas");
-		table.AddPlayerToTable("Matthias");
-		table.AddPlayerToTable("Fabian");
+		//table.AddPlayerToTable("Matthias");
+		//table.AddPlayerToTable("Fabian");
 		table.AddPlayerToTable("Jan");
 		
 		table.StartGame();
