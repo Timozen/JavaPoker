@@ -125,6 +125,45 @@ public class WinnerHandler {
 			//SPLITPOT
 			if (isPlayerAllIn) {
 				//Splitpot with All-In State
+                System.out.println("Splitpot with minimum 1 Player All-In");
+
+                int lowestAllInBet = winningPlayers.get(0).GetPlayerHandle().GetRoundBetAll();
+                WinnerPlayer lowestAllInWinner = winningPlayers.get(0);
+
+                for (WinnerPlayer wp : winningPlayers) {
+                    System.out.println(wp.GetPlayerHandle().GetNickname()
+                            + " has RoundBetAll "
+                            + wp.GetPlayerHandle().GetRoundBetAll()
+                            + "and State "
+                            + wp.GetPlayerHandle().GetPlayerState());
+                    //If the actual is lowest player
+                    if (wp.GetPlayerHandle().GetRoundBetAll() < lowestAllInBet) {
+                        lowestAllInWinner = wp;
+                        lowestAllInBet = wp.GetPlayerHandle().GetRoundBetAll();
+                    }
+                }
+                //Now we know who's lowest player and which is lowest bet
+                System.out.println("\n" + lowestAllInWinner.GetPlayerHandle().GetNickname()
+                        + " has lowest All-In bet with "
+                        + lowestAllInBet);
+
+                int winPerPlayer = lowestAllInBet * winningPlayers.size();
+                //If pot is less than win per player, we need to calculate it down
+                //It's guaranteed this is less than lowestAllInBet bc obvious
+                if (winPerPlayer < table.GetPotValue()) {
+                    winPerPlayer = table.GetPotValue() / winningPlayers.size();
+                }
+                System.out.println("WinPerPlayer: " + winPerPlayer);
+                for (WinnerPlayer wp : winningPlayers) {
+                    wp.SetWinAmount(winPerPlayer);
+
+                    //Person with RoundBet equal to lowestAllInBet is definitely paid
+                    //and can be removed for further calculations
+                    if (wp.GetPlayerHandle().GetRoundBetAll() == lowestAllInBet) {
+                        wp.SetFullyPaid(true);
+                        playingAndPayingPlayers.remove(wp.GetPlayerHandle());
+                    }
+                }
 
 			} else {
 				//SplitPot without AllIn => Every player gets part of table value
