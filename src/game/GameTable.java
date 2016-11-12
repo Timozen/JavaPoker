@@ -20,7 +20,6 @@ public class GameTable {
 	
 	private CircularList<Player> playersInRound;
 	private boolean isShowdown;
-	private int actualSetRoundBet;
 	
 	
 	public GameTable(Table table)
@@ -57,7 +56,7 @@ public class GameTable {
 		
 		table.SetRoundState(RoundState.PREFLOP);
 		table.SetPot(0);
-		playersInRound = (CircularList<Player>) table.GetPlayersOnTable();
+		playersInRound = table.GetPlayersOnTable();
 		isShowdown = false;
 		
 		playersInRound.forEach((Player p) -> p.SetPlayerState(PlayerState.PLAYING));
@@ -306,6 +305,7 @@ public class GameTable {
 			//die Information dass der Spieler dran ist erfolgt erst später
 			//da es sein könnte, dass der Listen Nächste keine Wahlmöglichkeit hat
 			System.out.println("Current Pot Value: " + table.GetPotValue());
+			System.out.println();
 		}
 		
 		//Zurücksetzen der Spieler für die nächste Setzrunde

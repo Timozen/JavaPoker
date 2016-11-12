@@ -335,4 +335,11 @@ class Player {
 	}
 	//endregion
 	//endregion
+	public void ResetPlayerExceptMoney()
+	{
+		cards = new LinkedList<>();
+		cardsWithTable = new LinkedList<>();
+		roundBetCurrent = 0;
+		roundBetAll = 0;
+	}
 }

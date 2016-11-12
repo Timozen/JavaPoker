@@ -3,6 +3,7 @@ package game;
 import game.models.BettingOperations;
 import game.models.CircularList;
 import game.models.RoundState;
+import handChecker.PokerCard;
 
 import java.util.*;
 
@@ -87,6 +88,9 @@ public class Table {
 			System.out.println("Players & Money:");
 			for(Player p : playersOnTable) {
 				System.out.println(p.GetNickname() + " with " + p.GetMoney());
+				//initializing standard values
+				p.ResetPlayerExceptMoney();
+				boardCards = new ArrayList<>();
 			}
 			if (generateRoundSeed) {
 				seed = generateSeed();

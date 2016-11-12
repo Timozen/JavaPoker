@@ -58,10 +58,10 @@ public class WinnerHandler {
 						p1.SetWinnerNumber(p2.GetWinnerNumber());
 						System.out.println(p1.GetNickname() + " equal to " + p2.GetNickname());
 						break;
-					case 1:
+					case -1:
 						System.out.println(p1.GetNickname() + " worse than " + p2.GetNickname());
 						break;
-					case -1:
+					case 1:
 						System.out.println(p1.GetNickname() + " better than " + p2.GetNickname());
 						p2.DecreaseWinnerNumber(1);
 						p1.IncreaseWinnerNumber(1);
@@ -74,6 +74,7 @@ public class WinnerHandler {
 
 	public CircularList<WinnerPlayer> CalculateWinnerPlayerList()
 	{
+		this.dumpWinnerListDesc();
 		System.out.println("\n#### Starting WinnerList Calculation");
 		System.out.println("Current pot value: " + table.GetPotValue());
 		winningPlayers = new CircularList<>();
@@ -90,10 +91,10 @@ public class WinnerHandler {
 
 		for (int i = playingAndPayingPlayers.size() - 2; i >= 0; i--) {
 			Player p1 = playingAndPayingPlayers.get(i + 1);	//already contained
-			Player p2 = playingAndPayingPlayers.get(i + 2);	//not contained
+			Player p2 = playingAndPayingPlayers.get(i);	//not contained
 			if (checker.check(p1.GetCardsWithTable()).compareTo(
 					checker.check(p2.GetCardsWithTable())) == 0) {
-				System.out.println(playingAndPayingPlayers.get(playingAndPayingPlayers.size() - 1).GetNickname() + " added to actual winners.");
+				System.out.println(p2.GetNickname() + " added to actual winners.");
 				winningPlayers.add(new WinnerPlayer(p2));
 				if (p2.GetPlayerState() == PlayerState.ALLIN) {
 					isPlayerAllIn = true;
@@ -134,7 +135,7 @@ public class WinnerHandler {
                     System.out.println(wp.GetPlayerHandle().GetNickname()
                             + " has RoundBetAll "
                             + wp.GetPlayerHandle().GetRoundBetAll()
-                            + "and State "
+                            + " and State "
                             + wp.GetPlayerHandle().GetPlayerState());
                     //If the actual is lowest player
                     if (wp.GetPlayerHandle().GetRoundBetAll() < lowestAllInBet) {
