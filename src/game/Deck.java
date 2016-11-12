@@ -2,6 +2,8 @@ package game;
 
 import handChecker.PokerCard;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 public class Deck {
@@ -10,7 +12,7 @@ public class Deck {
 	public Deck(Random r){
 		this.r = r;
 	}
-	
+	public Deck(){}
 	/**
 	 * Draw - Draws a card
 	 *
@@ -59,5 +61,36 @@ public class Deck {
 			cards.set(i, cards.get(tmpPos));
 			cards.set(tmpPos, tmpCard);
 		}
+	}
+	
+	public static Deck LoadPreDefinedDeck(String filePath){
+		Deck deck = new Deck();
+		File file = new File(filePath);
+		List<Card> cards = new LinkedList<>();
+		
+		
+		try {
+			Scanner scanner = new Scanner(file);
+			
+			while(scanner.hasNextLine()){
+				String line = scanner.nextLine();
+				
+				String[] input = line.split(" ");
+				Card card = new Card(PokerCard.Color.valueOf(input[0]), PokerCard.Value.valueOf(input[1]));
+				cards.add(card);
+			}
+			scanner.close();
+			deck.SetQueue((Queue<Card>) cards);
+			
+		} catch (IOException ex){
+			ex.printStackTrace();
+		}
+				
+		return deck;
+	}
+	
+	public void SetQueue(Queue<Card> queue)
+	{
+		this.queue = queue;
 	}
 }

@@ -31,9 +31,23 @@ public class Table {
 	private Random random;
 	private boolean generateRoundSeed = false;
 	
+	private boolean isPreDef;
+	
+	public Table(String filePath){
+		seed = generateSeed();
+		random = new Random(seed);
+		playersOnTable = new CircularList<>();
+		
+		smallBlindValue = 100;
+		bigBlindValue = 2 * smallBlindValue;
+		
+		gameTable = new GameTable(this, filePath);
+		firstRound = true;
+		isPreDef = true;
+	}
+	
 	public Table(int seed)
 	{
-		
 		this.seed = seed;
 		random = new Random(seed);
 		
@@ -441,6 +455,11 @@ public class Table {
 			return amount;
 		}
 		return pot;
+	}
+	
+	public boolean IsPreDef()
+	{
+		return isPreDef;
 	}
 }
 
