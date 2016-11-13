@@ -33,6 +33,7 @@ public class Table {
 	private boolean generateRoundSeed = false;
 	
 	private boolean isPreDef;
+	private int dealerIndex;
 	
 	public Table(String filePath){
 		seed = generateSeed();
@@ -83,7 +84,7 @@ public class Table {
 	{
 		System.out.println("The seed for this Table is: " + seed);
 		
-		while (playersOnTable.size() >= 1) {
+		while (playersOnTable.size() > 1) {
 			System.out.println("####################################################");
 			System.out.println("Players & Money:");
 			for(Player p : playersOnTable) {
@@ -119,8 +120,9 @@ public class Table {
 			//---- Nach jeder Stufe muss eine Notification an die Player erfolgen
 			//Post-Showdown
 			//There is a workaround in need too, bc dealer index sucks after this
-			playersOnTable.removeIf(player -> player.GetMoney() == 0);
+			RemovePlayersWithZeroMoneyAndRecalculateDealerIndex();
 		}
+		System.out.println("\n\nMaximum 1 Player left => Ending");
 	}
 	
 	public void GetPlayerAction(Player player)
@@ -261,9 +263,9 @@ public class Table {
 	 */
 	public void RemovePlayerFromTable(Player player)
 	{
+		//TODO notify clients
 		this.playersOnTable.remove(player);
 	}
-	
 	
 	/**
 	 * IncreaseSmallBlind
@@ -425,16 +427,16 @@ public class Table {
 	{
 		this.actualRoundBet = actualRoundBet;
 	}
-
-	public void SetNextDealer()
-	{
-		//TODO
-	}
 	
 	public int GetDealerIndex()
 	{
 		//TODO
-		return 0;
+		return this.dealerIndex;
+	}
+
+	public void SetDealerIndex(int dealerIndex)
+	{
+		this.dealerIndex = dealerIndex;
 	}
 	
 	public List<Card> GetBoardCardList()
@@ -468,6 +470,29 @@ public class Table {
 	public boolean IsPreDef()
 	{
 		return isPreDef;
+	}
+
+	private void RemovePlayersWithZeroMoneyAndRecalculateDealerIndex()
+	{
+		CircularList<Player> tempPlayersOnTable = (CircularList<Player>)GetPlayersOnTable().clone();
+		System.out.println("\nRound at its end: Removing 0-Money Players");
+		Player oldDealer = this.GetDealer();
+		//next Dealer = oldDealer + 1
+		for (Player p : tempPlayersOnTable) {
+			System.out.println(p.GetNickname() + " money is " + p.GetMoney());
+			if (p.GetMoney() == 0 && p != oldDealer) {
+				System.out.println(p.GetNickname() + " will be removed.");
+				RemovePlayerFromTable(p);
+			}
+		}
+		int nextDealerIndex = playersOnTable.GetIndex(oldDealer) + 1;
+		this.SetDealerIndex(nextDealerIndex);
+		System.out.println("Current Dealer was " + oldDealer.GetNickname());
+		System.out.println("New Dealer will be " + playersOnTable.get(nextDealerIndex).GetNickname());
+		if (oldDealer.GetMoney() == 0) {
+			System.out.println("Old dealer (" + oldDealer.GetNickname() + ") got removed bc 0 money.");
+			RemovePlayerFromTable(oldDealer);
+		}
 	}
 }
 

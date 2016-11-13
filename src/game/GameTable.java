@@ -72,8 +72,9 @@ public class GameTable {
 			dealerIndex = roundRNG.nextInt(playersInRound.size());
 			table.SetFirstRound(false);
 			table.SetDealer(playersInRound.get(dealerIndex));
+			table.SetDealerIndex(dealerIndex);
 		} else {
-			table.SetNextDealer();
+			//SetNextDealer redundant, bc was set when round end
 			dealerIndex = table.GetDealerIndex();
 		}
 		
