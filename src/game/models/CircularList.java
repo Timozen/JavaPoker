@@ -20,4 +20,12 @@ public class CircularList<E> extends ArrayList<E> {
 		this.set(index1, this.get(index2));
 		this.set(index2, indexOneElement);
 	}
+
+	public int GetIndex(E element)
+	{
+		for(int i = 0; i < this.size() - 1; i++) {
+			if (get(i) == element) { return i; }
+		}
+		return -1;
+	}
 }
