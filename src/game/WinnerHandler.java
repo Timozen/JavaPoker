@@ -105,6 +105,7 @@ public class WinnerHandler {
 			}
 		}
 
+		System.out.println("There are " + winningPlayers.size() + " actual winner.");
 		if (winningPlayers.size() == 1) {
 			System.out.println(winningPlayers.get(0).GetPlayerHandle().GetNickname() + " is onliest winner.");
 			if (!isPlayerAllIn) {
@@ -113,10 +114,25 @@ public class WinnerHandler {
 				winningPlayers.get(0).SetFullyPaid(true);
 				System.out.println("The player will win " + winningPlayers.get(0).GetWinAmount());
 			} else {
+				int roundBetAll = winningPlayers.get(0).GetPlayerHandle().GetRoundBetAll();
 				System.out.println("The player is allin.");
-				winningPlayers.get(0).SetWinAmount(
-						table.GetHighestAmountToSubstractFromPot(
-								winningPlayers.get(0).GetPlayerHandle().GetRoundBetAll()));
+				System.out.println("The players RoundBetAll is: " + roundBetAll);
+				int winAmount = 0;
+				for (Player p : table.GetPlayersOnTable()) {
+					System.out.println(p.GetNickname() + " has RoundBetAll " + p.GetRoundBetAll());
+					int decreasingValue = p.DecreaseRoundBetAll(
+							roundBetAll);
+					System.out.println("Will be decreased about " + decreasingValue);
+					winAmount += decreasingValue;
+					//RemovePlayerFromWinningPlayers if roundBetAll == 0
+					if (p.GetRoundBetAll() == 0) {
+						System.out.println(p.GetNickname() + " is removed to be payed after this cycle, bc RoundBet = 0.");
+						playingAndPayingPlayers.remove(p);
+					}
+				}
+				table.DecreasePot(winAmount);
+				winningPlayers.get(0).GetPlayerHandle().IncreaseMoney(winAmount);
+				System.out.println("Player wins " + winAmount);
 				winningPlayers.get(0).SetFullyPaid(true);
 				//SetFullyPaid = Cam be removed from playingAndPayingPlayers
 				this.playingAndPayingPlayers.remove(winningPlayers.get(0).GetPlayerHandle());
@@ -148,19 +164,32 @@ public class WinnerHandler {
                         + " has lowest All-In bet with "
                         + lowestAllInBet);
 
-                int winPerPlayer = lowestAllInBet * winningPlayers.size();
+                int totalWinAmount = 0;
+				for (Player p : table.GetPlayersOnTable()) {
+					System.out.println(p.GetNickname() + " has RoundBetAll " + p.GetRoundBetAll());
+					int decreasingValue = p.DecreaseRoundBetAll(lowestAllInBet);
+					System.out.println(p.GetNickname() + " decreasing RoundBetAll about " + decreasingValue);
+					totalWinAmount += decreasingValue;
+
+					//If RoundBetAll = 0 P should be removed
+					if (p.GetRoundBetAll() == 0) {
+						playingAndPayingPlayers.remove(p);
+					}
+				}
                 //If pot is less than win per player, we need to calculate it down
                 //It's guaranteed this is less than lowestAllInBet bc obvious
-                if (winPerPlayer < table.GetPotValue()) {
-                    winPerPlayer = table.GetPotValue() / winningPlayers.size();
-                }
-                System.out.println("WinPerPlayer: " + winPerPlayer);
+				int winPerPlayer = totalWinAmount / winningPlayers.size();
+				System.out.println("Total Win Amount: " + totalWinAmount);
+                System.out.println("Win Per Player: " + winPerPlayer + " (TotalWinAmount / winningPlayers.size())");
+
                 for (WinnerPlayer wp : winningPlayers) {
                     wp.SetWinAmount(winPerPlayer);
 
-                    //Person with RoundBet equal to lowestAllInBet is definitely paid
+                    //Person with RoundBet equal to lowestAllInBet (RoundBetAll will now be 0
+					//according to line 157)
+					//is definitely paid
                     //and can be removed for further calculations
-                    if (wp.GetPlayerHandle().GetRoundBetAll() == lowestAllInBet) {
+                    if (wp.GetPlayerHandle().GetRoundBetAll() == 0) {
                         wp.SetFullyPaid(true);
                         playingAndPayingPlayers.remove(wp.GetPlayerHandle());
                     }

@@ -165,6 +165,10 @@ public class Table {
 	private int GetMoneyFromInput(Scanner scanner, Player p)
 	{
 		int maximumBet = p.GetMoney() - (actualRoundBet - p.GetRoundBetCurrent());
+		if (maximumBet < 0) {
+			p.SetBettingAction(BettingOperations.CALL);
+			maximumBet = 0;
+		}
 		int playerBet = maximumBet + 1;
 		System.out.println("Current Player Bet: " + p.GetRoundBetCurrent());
 		System.out.println("Current Table Bet: " + actualRoundBet);

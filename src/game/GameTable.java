@@ -15,7 +15,8 @@ public class GameTable {
 	private Random roundRNG;
 	private int dealerIndex;
 	private int electivePlayersCount = 0;
-	
+
+	private String filePath;
 	private Player actualPlayer;                //Aktueller Spieler für Runde
 	
 	private CircularList<Player> playersInRound;
@@ -33,6 +34,7 @@ public class GameTable {
 	public GameTable(Table table, String filePath)
 	{
 		this.table = table;
+		this.filePath = filePath;
 		roundRNG = table.GetRandom();
 		
 		deck = Deck.LoadPreDefinedDeck(filePath);
@@ -52,6 +54,8 @@ public class GameTable {
 		
 		if (!table.IsPreDef()) {
 			deck.CreateAndShuffle();
+		} else {
+			deck = Deck.LoadPreDefinedDeck(filePath);
 		}
 		
 		table.SetRoundState(RoundState.PREFLOP);
@@ -285,12 +289,12 @@ public class GameTable {
 							nextPlayer += 1;
 						}
 						//
+						System.out.println("Only " + playersInRound.get(nextPlayer).GetNickname() + " left.");
+						System.out.println("Money increased about " + table.GetPotValue());
 						playersInRound.get(nextPlayer).IncreaseMoney(table.GetPotValue());
 						table.SetPot(0);
 						table.SetGameFinished(true);
 						isShowdown = true;
-						System.out.println("Only " + playersInRound.get(nextPlayer).GetNickname() + " left.");
-						System.out.println("Money increased about " + table.GetPotValue());
 						//Spieler sind handlungsunfähig, alle haben gecallt und mehr als 2 drin
 					} else if (electivePlayersCount == 1 && IsAllPlayersCalled()) {
 						//return ShowdownPreRiver();
