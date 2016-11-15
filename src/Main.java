@@ -12,21 +12,19 @@ public class Main {
 		
 		String input = scanner.next();
 		
-		if(input.toUpperCase().contains("Y")){
+		if (input.toUpperCase().contains("Y")) {
 			table = new Table("content/decks/1.txt");
 			
-		} else if(input.toUpperCase().contains("N")){
-			System.out.print("Seed:" );
+		} else if (input.toUpperCase().contains("N")) {
+			System.out.print("Seed:");
 			
 			int seed = scanner.nextInt();
 			
-			if(seed == 0){
+			if (seed == 0) {
 				table = new Table();
-			}else{
+			} else {
 				table = new Table(seed);
 			}
-			
-			
 		} else {
 			System.out.println("Is is so hard to write?!?");
 			System.exit(2);

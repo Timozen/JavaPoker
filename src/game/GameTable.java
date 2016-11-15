@@ -255,6 +255,7 @@ public class GameTable {
 		System.out.println("Pot Value: " + table.GetPotValue());
 		table.SetBettingOperationsState(BettingOperations.CHECK);                                                                                                                //Das BettingOperations ist lediglich um Spieler zu informieren
 		SetPlayersUncalled();                                                                                                                                                                                        //Initialisiere alle Spieler mit uncalled state
+		table.SetPreBet(true);
 		
 		while (!IsAllPlayersCalled() && !isShowdown) {                                                                                                                                        //Solange nicht alle (Playing) Spieler gecallt / gecheckt haben
 			if (actualPlayer.GetPlayerState().GetNumeric() == 0) {                                                                                                                //Wenn gewählter Spieler noch Wahlmöglichkeit hat (State 1, 0 = AllIn/Fold)
@@ -270,6 +271,11 @@ public class GameTable {
 						//=> Rundeneinsatz wird incrementiert
 						SetPlayersUncalled();
 						table.SetRoundBetCurrent(needToPay);
+						
+						if(playerAction == BettingOperations.BET){
+							table.SetPreBet(false);
+						}
+						
 						//TODO informiere clients, falls Bet => Raise & Call
 					}
 					//Kommentar: Bei einem Check / Call wird der GetBetAmountFromInput auf 0 gesetzt, dann geht Fkt weiterhin

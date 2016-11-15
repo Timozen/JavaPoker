@@ -36,6 +36,12 @@ public class Table {
 	private boolean isPreDef;
 	private int dealerIndex;
 	
+	private boolean preBet;
+	private final BettingOperations[] betOptionsPreBet = {BettingOperations.FOLD, BettingOperations.BET, BettingOperations.CHECK};
+	private final BettingOperations[] betOptionsPostBet = {BettingOperations.FOLD, BettingOperations.RAISE, BettingOperations.CALL};
+	
+	
+	
 	public Table(String filePath){
 		seed = generateSeed();
 		random = new Random(seed);
@@ -128,8 +134,9 @@ public class Table {
 	
 	public void GetPlayerAction(Player player)
 	{
-		//TODO das muss noch zur laufzeit rausgefunden werden!!!
-		BettingOperations[] options = {BettingOperations.RAISE, BettingOperations.FOLD, BettingOperations.BET, BettingOperations.CALL, BettingOperations.CHECK};
+		
+		BettingOperations[] options = IsPreBet() ?  betOptionsPreBet : betOptionsPostBet;
+		
 		Scanner scanner = new Scanner(System.in);
 		List<BettingOperations> operationsList = Arrays.asList(options);
 		
@@ -177,19 +184,21 @@ public class Table {
 		System.out.println("Current Table Bet: " + actualRoundBet);
 		System.out.println("Maximum Player Bet: " + maximumBet);
 		System.out.print("Value: ");
-		while (playerBet > maximumBet) {
+		while (playerBet > maximumBet || playerBet < 0) {
 			while (!scanner.hasNextInt()) {
 				System.out.println("Invalid input!");
 				System.out.print("Value: ");
 				scanner.next();
 			}
 			playerBet = scanner.nextInt();
-			if (playerBet > maximumBet) {
+			if (playerBet > maximumBet || playerBet < 0) {
 				System.out.println("Invalid input!");
 				System.out.print("Value: ");
 			}
 		}
-		System.out.println("Player will pay " + playerBet + " + " + (actualRoundBet - p.GetRoundBetCurrent()) + " = " + (playerBet + (actualRoundBet - p.GetRoundBetCurrent())));
+		System.out.println("Player will pay " + playerBet
+			+ " + " + (actualRoundBet - p.GetRoundBetCurrent())
+			+ " = " + (playerBet + (actualRoundBet - p.GetRoundBetCurrent())));
 		System.out.println();
 		return playerBet;
 	}
@@ -494,6 +503,16 @@ public class Table {
 			System.out.println("Old dealer (" + oldDealer.GetNickname() + ") got removed bc 0 money.");
 			RemovePlayerFromTable(oldDealer);
 		}
+	}
+	
+	public boolean IsPreBet()
+	{
+		return preBet;
+	}
+	
+	public void SetPreBet(boolean preBet)
+	{
+		this.preBet = preBet;
 	}
 }
 
