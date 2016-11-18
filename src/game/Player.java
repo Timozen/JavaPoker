@@ -38,7 +38,7 @@ class Player {
 	public Player(String nickname)
 	{
 		this.nickname = nickname;
-		this.money = 5000;
+		this.money = 200;
 		this.cards = new LinkedList<>();
 		this.roundBetAll = 0;
 		this.betAmountFromInput = 0;

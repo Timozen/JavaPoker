@@ -32,8 +32,8 @@ public class Main {
 		
 		table.AddPlayerToTable("Tim");
 		table.AddPlayerToTable("Niklas");
-		table.AddPlayerToTable("Matthias");
-		table.AddPlayerToTable("Jan");
+		//table.AddPlayerToTable("Matthias");
+		//table.AddPlayerToTable("Jan");
 		
 		table.StartGame();
 	}

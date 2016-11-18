@@ -85,9 +85,6 @@ public class GameTable {
 		//Falls aus einem unerfindlichen Grunde die Blinds höher sind als das Geld von Spieler X und Spieler Y
 		//dann sollten wir gewappnet sein, um uns dem Kampf gegen den Deadlock der PokerRunde() zu stellen.
 		//Dafür ziehen wir den Showdown einfach vor
-		if (electivePlayersCount <= 1) {
-			isShowdown = true;
-		}
 		
 		//Debug
 		for (Player p : playersInRound) {
