@@ -1,0 +1,155 @@
+Codingstyle
+===========
+
+Fokus nicht auf den Style, sondern auf die Substanz.
+
+= Namensgebung
+* Camelcase für Bezeichnung
+* *private* Methoden kleingeschriebener Anfang
+* *public* Methoden  großgeschriebener Anfang
+* analog für Variablen
+* Konstanten werden nur großgeschrieben und mit _ getrennt (INT_VAL)
+* *this* muss hingeschrieben werden
+
+= Tabs
+* Nur Tabs zum Einrücken verwenden
+* Ein Tab entspricht 8 Zeichen
+* Ist der Code zu eingerückt, dann fix ihn.
+
+= Zeilenlänge und -umbruch
+* Eine Zeilenlänge sollte nicht länger als 80 Zeichen sein
+* Umbruch nach Komma
+* Umbruch vor Operator
+* Neue Zeile gleichsetzen wie die vorherige
+
+Beispiele:
+[source/java]
+	someMethod(longExpression1, longExpression2, longExpression3
+        longExpression4, longExpression5);
+
+    var = someMethod1(longExpression1,
+						someMethod2(longExpression2,
+                            longExpression3));
+
+Arithmetische Ausdrücke:
+[source/java]
+	longName1 = longName2 * (longName3 + longName4 - longName5)
+	           + 4 * longname6; // PREFER
+
+	longName1 = longName2 * (longName3 + longName4
+	                       - longName5) + 4 * longname6; // AVOID
+
+= Anweisungen, Funktionen, Klassen
+
+== Einfache Anweisungen
+[source/java]
+	argv++;         // Correct
+	argc--;         // Correct
+	argv++; argc--; // AVOID!
+
+== Verbundene Anweisungen
+[source/java]
+	obj.func1(val1)
+	   .func2(val2)
+	   .func3(val3)
+	   .func4(val4);
+
+== Funktionen
+Geschweifte Klammer auf extra Zeile.
+Funktionen sollten kurz und knapp sein (max 24. Zeilen) und einen eindeutigen Namen haben.
+
+[source/java]
+	private void someFunk(Arg arg)
+	{
+		statements;
+	}
+
+== Klassen, Enum, Interface
+Öffnende geschweifte Klammer bleibt auf Zeile
+[source/java]
+	class Test {
+		statements;
+	}
+
+== if, if-else, if-else if- else, for, while, try-catch-finally
+
+* Leerzeichen nach den Anweisungen und Rundenklammern
+
+[source/java]
+	if (condition) {
+		statements;
+	}
+	if (condition)
+		statements;
+
+
+	if (condition) {
+		statements;
+	} else {
+		statements;
+	}
+
+	if (condition) {
+		statements;
+	} else if (condition){
+		statements;
+	} else {
+		statements;
+	}
+
+	for (initialization; condition; update) {
+    	statements;
+	}
+
+	while (condition) {
+		statements;
+	}
+
+	try {
+		statements;
+	} catch (Exception ex) {
+		statements;
+	} finally {
+		statements;
+	}
+
+= Whitespace
+* Zwischen Abschnitten im Quelltext
+* Zwischen Klassen und Interface Definitionen
+* Zwischen Methoden
+* Zwischen lokalen Variablen und dem ersten Statement
+* Vor einem Block
+* Logischen Abschnitten im inneren einer Methode um Lesbarkeit zu gewährleisten
+
+= Kommentare
+Kommentare sollten:
+
+* Was macht die Funktion kläaren
+* Warum man die Funktion braucht
+* Am Anfang der Funktion sein
+* (Schimpfworte sind nicht schlimm)
+
+Und nicht:
+
+* Erklären wie der Code funktioniert (dann solltest du es neuschreiben, wenn zu schwer)
+* Wer was an quelltext geschrieben hat
+* ein zuletzt verändert Datum besitzen (dafür ist git da)
+* andere triviale Sachen enthalten
+
+Falls dies doch von Nöten ist muss es wahrscheinlich neugeschrieben werden.
+
+[source/java]
+	/**
+	 * MyFunc - does stuff
+	 * @arg1 - 	Argument explained
+	 *
+	 * Does stuff explained
+	 */
+	 public void MyFunc(Arg arg1)
+	 {
+		 ...
+	 }
+
+= Sonstiges
+* Keine "nicht offentsichtlichen" hard-gecodeden Zahlen
+* Wir wollen das Rad nicht neu erfinden, nutze was schon da ist.

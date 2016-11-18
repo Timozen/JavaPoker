@@ -16,4 +16,5 @@ hs_err_pid*
 
 #Files
 Server/.idea/workspace.xml
+Client/.idea/workspace.xml
 
