@@ -33,43 +33,56 @@ public class Card implements PokerCard {
 	
 	public String toPrettyString()
 	{
-		String output = "";
-		
+		return getPrettyColor() + getPrettyValue();
+	}
+	
+	private String getPrettyColor()
+	{
 		switch (getColor()) {
 			case HEARTS:
-				output += "♥";
-				break;
+				return "♥";
 			case DIAMONDS:
-				output += "♦";
-				break;
+				return "♦";
 			case SPADES:
-				output += "♠";
-				break;
+				return "♠";
 			case CLUBS:
-				output += "♣";
-				break;
+				return "♣";
+			default:
+				return "INVALID!!!";
 		}
-		output += getPrettyValue();
-		return output;
 	}
 	
 	private String getPrettyValue()
 	{
 		switch (getValue()) {
-			case ASS: return "A";
-			case TWO: return "2";
-			case THREE: return "3";
-			case FOUR: return "4";
-			case FIVE: return "5";
-			case SIX: return "6";
-			case SEVEN: return "7";
-			case EIGHT: return "8";
-			case NINE: return "9";
-			case TEN:  return "10";
-			case JACK: return "J";
-			case QUEEN: return "Q";
-			case KING: return "K";
-			default: return "";
+			case ASS:
+				return "A";
+			case TWO:
+				return "2";
+			case THREE:
+				return "3";
+			case FOUR:
+				return "4";
+			case FIVE:
+				return "5";
+			case SIX:
+				return "6";
+			case SEVEN:
+				return "7";
+			case EIGHT:
+				return "8";
+			case NINE:
+				return "9";
+			case TEN:
+				return "10";
+			case JACK:
+				return "J";
+			case QUEEN:
+				return "Q";
+			case KING:
+				return "K";
+			default:
+				return "";
 		}
 	}
 }

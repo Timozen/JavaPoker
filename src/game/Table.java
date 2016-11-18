@@ -495,7 +495,7 @@ public class Table {
 				RemovePlayerFromTable(p);
 			}
 		}
-		int nextDealerIndex = playersOnTable.GetIndex(oldDealer) + 1;
+		int nextDealerIndex = playersOnTable.indexOf(oldDealer) + 1;
 		this.SetDealerIndex(nextDealerIndex);
 		System.out.println("Current Dealer was " + oldDealer.GetNickname());
 		System.out.println("New Dealer will be " + playersOnTable.get(nextDealerIndex).GetNickname());
