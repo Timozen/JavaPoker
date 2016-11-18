@@ -81,6 +81,7 @@ public class GameTable {
 		SelectStartPlayerPreFlop();
 		PayBlinds();
 		SpreadPlayerCards();
+		table.GetBigBlind().SetIsCalledHighestBet(true);
 		
 		//Falls aus einem unerfindlichen Grunde die Blinds höher sind als das Geld von Spieler X und Spieler Y
 		//dann sollten wir gewappnet sein, um uns dem Kampf gegen den Deadlock der PokerRunde() zu stellen.
@@ -253,9 +254,14 @@ public class GameTable {
 		table.SetBettingOperationsState(BettingOperations.CHECK);                                                                                                                //Das BettingOperations ist lediglich um Spieler zu informieren
 		SetPlayersUncalled();                                                                                                                                                                                        //Initialisiere alle Spieler mit uncalled state
 		table.SetPreBet(true);
-		
+
+		//PreFlop muss Ausnahme bilden wegen Smallblind
+		//Falls außerhalb des PreFlops kann durchgerusht werden
+		if (electivePlayersCount == 1 && table.GetRoundState() != RoundState.PREFLOP) {
+			SetAllPlayersCalledHighestBet();
+		}
 		while (!IsAllPlayersCalled() && !isShowdown) {                                                                                                                                        //Solange nicht alle (Playing) Spieler gecallt / gecheckt haben
-			if (actualPlayer.GetPlayerState().GetNumeric() == 0) {                                                                                                                //Wenn gewählter Spieler noch Wahlmöglichkeit hat (State 1, 0 = AllIn/Fold)
+			if (actualPlayer.GetPlayerState() == PlayerState.PLAYING) {                                                                                                                //Wenn gewählter Spieler noch Wahlmöglichkeit hat (State 1, 0 = AllIn/Fold)
 				//--------------------------
 				table.GetPlayerAction(actualPlayer);
 				BettingOperations playerAction = actualPlayer.GetBettingAction();                                                                                //Hier muss gewartet werden!!!
@@ -383,6 +389,13 @@ public class GameTable {
 			}
 		}
 		return true;
+	}
+
+	private void SetAllPlayersCalledHighestBet()
+	{
+		for (Player p : playersInRound) {
+			p.SetIsCalledHighestBet(true);
+		}
 	}
 	
 	private int GetPlayingPlayers()
