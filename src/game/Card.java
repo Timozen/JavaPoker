@@ -4,8 +4,8 @@ import handChecker.PokerCard;
 
 public class Card implements PokerCard {
 	
-	private PokerCard.Color color;
-	private PokerCard.Value value;
+	private final PokerCard.Color color;
+	private final PokerCard.Value value;
 	
 	Card(PokerCard.Color color, PokerCard.Value value)
 	{

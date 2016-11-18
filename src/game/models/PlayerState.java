@@ -8,7 +8,7 @@ public enum PlayerState {
     ALLIN (1),
     FOLD (2),
     PAID (3);
-    private int state;
+    private final int state;
     PlayerState (int state) {
         this.state = state;
     }

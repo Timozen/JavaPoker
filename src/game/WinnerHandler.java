@@ -215,14 +215,14 @@ public class WinnerHandler {
 	public void dumpWinnerListAsc()
 	{
 		System.out.println("\n#### Winning Players Output Asc Start");
-		for (int i = 0; i < playingAndPayingPlayers.size(); i++) {
-			System.out.println(playingAndPayingPlayers.get(i).GetNickname()
-					+ " with RoundBet " + playingAndPayingPlayers.get(i).GetRoundBetAll()
-					+ " Number " + playingAndPayingPlayers.get(i).GetWinnerNumber());
-			System.out.println("Cards: " + playingAndPayingPlayers.get(i).GetCardsWithTable());
+		for (Player playingAndPayingPlayer : playingAndPayingPlayers) {
+			System.out.println(playingAndPayingPlayer.GetNickname()
+				+ " with RoundBet " + playingAndPayingPlayer.GetRoundBetAll()
+				+ " Number " + playingAndPayingPlayer.GetWinnerNumber());
+			System.out.println("Cards: " + playingAndPayingPlayer.GetCardsWithTable());
 		}
-		for (int i = 0; i < playingAndPayingPlayers.size(); i++){
-			System.out.print(playingAndPayingPlayers.get(i).GetWinnerNumber() + " ");
+		for (Player playingAndPayingPlayer : playingAndPayingPlayers) {
+			System.out.print(playingAndPayingPlayer.GetWinnerNumber() + " ");
 		}
 		System.out.println("\n#### Winning Players Output Asc End\n");
 	}
