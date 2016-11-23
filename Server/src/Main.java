@@ -13,6 +13,7 @@
  * If not, see http://www.gnu.org/licenses/.
  */
 
+import connection.ConnectionServer;
 import game.Table;
 
 import java.util.Scanner;
@@ -20,6 +21,11 @@ import java.util.Scanner;
 public class Main {
 	public static void main(String[] args)
 	{
+		ConnectionServer connectionServer = new ConnectionServer(9090);
+		connectionServer.start();
+		
+		
+		/**
 		Scanner scanner = new Scanner(System.in);
 		Table table = null;
 		
@@ -51,5 +57,7 @@ public class Main {
 		table.AddPlayerToTable("Jan");
 		
 		table.StartGame();
+		 
+	 	**/
 	}
 }
