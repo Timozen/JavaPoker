@@ -15,38 +15,25 @@
 
 package connection;
 
-import java.io.IOException;
-import java.net.ServerSocket;
+import connection.events.ConnectionEvent;
 
-public abstract class Server extends ConnectionEventListener implements Runnable {
+import java.util.ArrayList;
+
+public class ConnectionEventManager {
+	private ArrayList<ConnectionEventListener> listeners = new ArrayList<>();
 	
-	private ServerSocket socketListener;
-	private int port;
-	
-	Server(int port)
+	public void AddListener(ConnectionEventListener listener)
 	{
-		this.port = port;
+		listeners.add(listener);
 	}
 	
-	boolean init()
+	public void RemoveListener(ConnectionEventListener listener)
 	{
-		try {
-			//add address
-			this.socketListener = new ServerSocket(port);
-			return true;
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
-		return false;
+		listeners.remove(listener);
 	}
 	
-	public int GetPort()
+	public void handle(ConnectionEvent e)
 	{
-		return port;
-	}
-	
-	public ServerSocket GetSocketListener()
-	{
-		return socketListener;
+		listeners.forEach(listener -> listener.OnConnectionEvent(e));
 	}
 }

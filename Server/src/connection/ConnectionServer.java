@@ -15,6 +15,8 @@
 
 package connection;
 
+import connection.events.ClientConnectEvent;
+
 import java.io.IOException;
 import java.net.Socket;
 import java.util.HashMap;
@@ -23,6 +25,8 @@ public class ConnectionServer extends Server {
 	
 	private HashMap<Integer, Client> connectedClients;
 	private int id;
+	private ConnectionEventManager connectionEventManager;
+		
 	public ConnectionServer(int port)
 	{
 		super(port);
@@ -30,10 +34,11 @@ public class ConnectionServer extends Server {
 		id = 0;
 	}
 	
-	@Override
 	public synchronized void start()
 	{
 		boolean successfulStart = init();
+		connectionEventManager = new ConnectionEventManager();
+		connectionEventManager.AddListener(this);
 		
 		if (successfulStart) {
 			System.out.println("The connection server has started and listens on port: " + GetPort());
@@ -50,9 +55,8 @@ public class ConnectionServer extends Server {
 		try {
 			while (true) {
 				Socket newClientSocket = GetSocketListener().accept();
-				System.out.println("New Client has connected!");
-				Client client = new Client(newClientSocket, id);
-				connectedClients.put(id, client);
+				Client client = new Client(newClientSocket, id, connectionEventManager);
+				//connectedClients.put(id, client);
 				client.start();
 			}
 		} catch (IOException ex) {
@@ -66,5 +70,11 @@ public class ConnectionServer extends Server {
 				System.out.println("The connection server could not be shut down!");
 			}
 		}
+	}
+	
+	@Override
+	public void OnClientConnectEvent(ClientConnectEvent event)
+	{
+		System.out.println("A new client has connected!");
 	}
 }

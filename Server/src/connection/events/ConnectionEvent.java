@@ -13,40 +13,8 @@
  * If not, see http://www.gnu.org/licenses/.
  */
 
-package connection;
+package connection.events;
 
-import java.io.IOException;
-import java.net.ServerSocket;
+public abstract class ConnectionEvent {
 
-public abstract class Server extends ConnectionEventListener implements Runnable {
-	
-	private ServerSocket socketListener;
-	private int port;
-	
-	Server(int port)
-	{
-		this.port = port;
-	}
-	
-	boolean init()
-	{
-		try {
-			//add address
-			this.socketListener = new ServerSocket(port);
-			return true;
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
-		return false;
-	}
-	
-	public int GetPort()
-	{
-		return port;
-	}
-	
-	public ServerSocket GetSocketListener()
-	{
-		return socketListener;
-	}
 }

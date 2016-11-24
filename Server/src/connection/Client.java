@@ -15,6 +15,8 @@
 
 package connection;
 
+import connection.events.ClientConnectEvent;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -26,13 +28,15 @@ public class Client extends Thread {
 	private BufferedReader input;
 	private PrintWriter output;
 	private Socket socket;
+	private ConnectionEventManager connectionEventManager;
 	
-	public int id;
+	private int id;
 	
-	public Client(Socket socket, int id)
+	public Client(Socket socket, int id, ConnectionEventManager connectionEventManager)
 	{
 		this.socket = socket;
 		this.id = id;
+		this.connectionEventManager = connectionEventManager;
 	}
 	
 	private boolean init()
@@ -52,7 +56,7 @@ public class Client extends Thread {
 	public synchronized void start()
 	{
 		if (init()) {
-			
+			connectionEventManager.handle(new ClientConnectEvent());
 			//TODO log-in
 			
 			run();
