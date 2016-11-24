@@ -13,10 +13,7 @@
  * If not, see http://www.gnu.org/licenses/.
  */
 
-import connection.ConnectionServer;
-import game.Table;
-
-import java.util.Scanner;
+import connection.server.ConnectionServer;
 
 public class Main {
 	public static void main(String[] args)

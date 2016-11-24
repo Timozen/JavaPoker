@@ -13,9 +13,11 @@
  * If not, see http://www.gnu.org/licenses/.
  */
 
-package connection;
+package connection.server;
 
+import connection.ConnectionEventManager;
 import connection.events.ClientConnectEvent;
+import connection.client.Client;
 
 import java.io.IOException;
 import java.net.Socket;

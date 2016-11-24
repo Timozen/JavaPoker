@@ -13,8 +13,9 @@
  * If not, see http://www.gnu.org/licenses/.
  */
 
-package connection;
+package connection.client;
 
+import connection.ConnectionEventManager;
 import connection.events.ClientConnectEvent;
 
 import java.io.BufferedReader;
