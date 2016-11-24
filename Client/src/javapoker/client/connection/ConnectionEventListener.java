@@ -13,31 +13,21 @@
  * If not, see http://www.gnu.org/licenses/.
  */
 
-package javapoker.client;
+package javapoker.client.connection;
 
-import javapoker.client.connection.ConnectionEventListener;
-import javapoker.client.connection.ConnectionEventManager;
-import javapoker.client.connection.SocketConnection;
+import javapoker.client.connection.events.ConnectionEvent;
 import javapoker.client.connection.events.TestEvent;
 
-public class Main {
+public abstract class ConnectionEventListener {
 	
-	public static void main(String[] args)
-	{
-		ConnectionEventManager connectionEventManager = new ConnectionEventManager();
-		connectionEventManager.AddListener(new Listener());
-		
-		SocketConnection socketConnection = new SocketConnection("localhost", 9090, connectionEventManager);
-		socketConnection.start();
-	}
-}
-
-
-class Listener extends ConnectionEventListener {
-	
-	@Override
 	public void OnTestEvent(TestEvent e)
 	{
-		System.out.println(e.message);
+	}
+	
+	public void OnConnectionEvent(ConnectionEvent e)
+	{
+		if (e instanceof TestEvent) {
+			OnTestEvent((TestEvent)e);
+		}
 	}
 }

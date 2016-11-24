@@ -72,7 +72,7 @@ public class Client extends Thread {
 	public void run()
 	{
 		try {
-			output.println("Welcome!");
+			SendMessage("Welcome!");
 			/*while(true){
 				
 			}*/
@@ -87,5 +87,10 @@ public class Client extends Thread {
 				ex.printStackTrace();
 			}
 		}
+	}
+	
+	public void SendMessage(String msg)
+	{
+		output.println(msg);
 	}
 }

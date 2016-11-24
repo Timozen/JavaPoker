@@ -13,7 +13,9 @@
  * If not, see http://www.gnu.org/licenses/.
  */
 
-package javapoker.client;
+package javapoker.client.connection;
+
+import javapoker.client.connection.utils.ConnectionEventBuilder;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,10 +32,20 @@ public class SocketConnection extends Thread {
 	private BufferedReader input;
 	private PrintWriter output;
 	
-	public SocketConnection(String adr, int port)
+	private ConnectionEventManager connectionEventManager;
+	private ConnectionEventBuilder connectionEventBuilder;
+	public SocketConnection(String adr, int port, ConnectionEventManager connectionEventManager)
 	{
 		this.adr = adr;
 		this.port = port;
+		this.connectionEventManager = connectionEventManager;
+		this.connectionEventBuilder = new ConnectionEventBuilder(this.connectionEventManager);
+	}
+	
+	public SocketConnection SetConnectionEventManager(ConnectionEventManager connectionEventManager)
+	{
+		this.connectionEventManager = connectionEventManager;
+		return this;
 	}
 	
 	@Override
@@ -60,14 +72,14 @@ public class SocketConnection extends Thread {
 					break;
 				}
 				
-				System.out.println(msg);
+				connectionEventBuilder.CreateEvent(msg);
 			}
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
 	}
 	
-	public void sendMessage(String msg)
+	public void SendMessage(String msg)
 	{
 		output.println(msg);
 	}

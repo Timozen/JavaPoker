@@ -13,31 +13,24 @@
  * If not, see http://www.gnu.org/licenses/.
  */
 
-package javapoker.client;
+package javapoker.client.connection.utils;
 
-import javapoker.client.connection.ConnectionEventListener;
 import javapoker.client.connection.ConnectionEventManager;
-import javapoker.client.connection.SocketConnection;
+import javapoker.client.connection.events.ConnectionEvent;
 import javapoker.client.connection.events.TestEvent;
 
-public class Main {
+public class ConnectionEventBuilder {
 	
-	public static void main(String[] args)
+	private ConnectionEventManager connectionEventManager;
+	
+	public ConnectionEventBuilder(ConnectionEventManager connectionEventManager)
 	{
-		ConnectionEventManager connectionEventManager = new ConnectionEventManager();
-		connectionEventManager.AddListener(new Listener());
-		
-		SocketConnection socketConnection = new SocketConnection("localhost", 9090, connectionEventManager);
-		socketConnection.start();
+		this.connectionEventManager = connectionEventManager;
 	}
-}
-
-
-class Listener extends ConnectionEventListener {
 	
-	@Override
-	public void OnTestEvent(TestEvent e)
+	public void CreateEvent(String msg)
 	{
-		System.out.println(e.message);
+		//TODO create the JSON object from string and decode it and fire the correct event!
+		connectionEventManager.handle(new TestEvent(msg));
 	}
 }
