@@ -13,24 +13,11 @@
  * If not, see http://www.gnu.org/licenses/.
  */
 
-package connection;
+package connection.events;
 
-
-import connection.events.ClientDisconnectEvent;
-import connection.events.ConnectionEvent;
-import connection.events.ClientConnectEvent;
-
-public abstract class ConnectionEventListener {
+public class ClientDisconnectEvent extends ConnectionEvent {
 	
-	public void OnClientConnectEvent(ClientConnectEvent event){}
-	public void OnClientDisconnectEvent(ClientDisconnectEvent event){}
-
-	public void OnConnectionEvent(ConnectionEvent e)
+	public ClientDisconnectEvent()
 	{
-		if(e instanceof ClientConnectEvent){
-			OnClientConnectEvent((ClientConnectEvent) e);
-		} else if (e instanceof ClientDisconnectEvent){
-			OnClientDisconnectEvent((ClientDisconnectEvent) e);
-		}
 	}
 }

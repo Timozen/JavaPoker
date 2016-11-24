@@ -17,6 +17,7 @@ package connection.client;
 
 import connection.ConnectionEventManager;
 import connection.events.ClientConnectEvent;
+import connection.events.ClientDisconnectEvent;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -72,14 +73,15 @@ public class Client extends Thread {
 	{
 		try {
 			output.println("Welcome!");
-			while(true){
+			/*while(true){
 				
-			}
+			}*/
 		} catch (Exception ex){ //todo find out the right exception
 			ex.printStackTrace();
 		} finally {
 			try {
 				socket.close();
+				connectionEventManager.handle(new ClientDisconnectEvent());
 				//TODO Fire disconnect event
 			} catch (IOException ex){
 				ex.printStackTrace();

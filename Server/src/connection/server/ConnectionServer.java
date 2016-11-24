@@ -18,6 +18,7 @@ package connection.server;
 import connection.ConnectionEventManager;
 import connection.events.ClientConnectEvent;
 import connection.client.Client;
+import connection.events.ClientDisconnectEvent;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -78,5 +79,11 @@ public class ConnectionServer extends Server {
 	public void OnClientConnectEvent(ClientConnectEvent event)
 	{
 		System.out.println("A new client has connected!");
+	}
+	
+	@Override
+	public void OnClientDisconnectEvent(ClientDisconnectEvent event)
+	{
+		System.out.println("A client has disconnected!");
 	}
 }
