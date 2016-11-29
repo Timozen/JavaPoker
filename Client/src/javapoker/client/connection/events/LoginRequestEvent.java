@@ -15,12 +15,18 @@
 
 package javapoker.client.connection.events;
 
-public class TestEvent extends ConnectionEvent {
-	
-	public String message;
-	
-	public TestEvent(String message)
+import javapoker.client.connection.SocketConnection;
+
+public class LoginRequestEvent extends ConnectionEvent {
+		
+	public LoginRequestEvent(SocketConnection socketConnection)
 	{
-		this.message = message;
+		super(socketConnection);
+	}
+	
+	@Override
+	public void Build()
+	{
+		
 	}
 }

@@ -18,7 +18,7 @@ package javapoker.client;
 import javapoker.client.connection.ConnectionEventListener;
 import javapoker.client.connection.ConnectionEventManager;
 import javapoker.client.connection.SocketConnection;
-import javapoker.client.connection.events.TestEvent;
+import javapoker.client.connection.events.LoginRequestEvent;
 
 public class Main {
 	
@@ -36,8 +36,8 @@ public class Main {
 class Listener extends ConnectionEventListener {
 	
 	@Override
-	public void OnTestEvent(TestEvent e)
+	public void OnLoginRequest(LoginRequestEvent event)
 	{
-		System.out.println(e.message);
+		super.OnLoginRequest(event);
 	}
 }

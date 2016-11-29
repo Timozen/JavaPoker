@@ -16,18 +16,16 @@
 package javapoker.client.connection;
 
 import javapoker.client.connection.events.ConnectionEvent;
-import javapoker.client.connection.events.TestEvent;
+import javapoker.client.connection.events.LoginRequestEvent;
 
 public abstract class ConnectionEventListener {
 	
-	public void OnTestEvent(TestEvent e)
-	{
-	}
+	public void OnLoginRequest(LoginRequestEvent event){}
 	
 	public void OnConnectionEvent(ConnectionEvent e)
 	{
-		if (e instanceof TestEvent) {
-			OnTestEvent((TestEvent)e);
+		if (e instanceof LoginRequestEvent) {
+			OnLoginRequest((LoginRequestEvent)e);
 		}
 	}
 }

@@ -15,6 +15,15 @@
 
 package javapoker.client.connection.events;
 
+import javapoker.client.connection.SocketConnection;
+
 public abstract class ConnectionEvent {
 
+	public SocketConnection socketConnection;
+	
+	public ConnectionEvent(SocketConnection socketConnection){
+		this.socketConnection = socketConnection;
+	}
+	
+	public abstract void Build();
 }

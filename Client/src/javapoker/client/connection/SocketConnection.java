@@ -39,7 +39,7 @@ public class SocketConnection extends Thread {
 		this.adr = adr;
 		this.port = port;
 		this.connectionEventManager = connectionEventManager;
-		this.connectionEventBuilder = new ConnectionEventBuilder(this.connectionEventManager);
+		this.connectionEventBuilder = new ConnectionEventBuilder(this.connectionEventManager, this);
 	}
 	
 	public SocketConnection SetConnectionEventManager(ConnectionEventManager connectionEventManager)
@@ -71,7 +71,6 @@ public class SocketConnection extends Thread {
 				if (msg == null) {
 					break;
 				}
-				
 				connectionEventBuilder.CreateEvent(msg);
 			}
 		} catch (IOException ex) {

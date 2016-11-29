@@ -78,7 +78,12 @@ public class ConnectionServer extends Server {
 	@Override
 	public void OnClientConnectEvent(ClientConnectEvent event)
 	{
-		System.out.println("A new client has connected!");
+		Client client = event.GetClient();
+		
+		System.out.println("A new client has connected");
+		System.out.println("Send login request");
+		
+		client.LoginRequest();
 	}
 	
 	@Override

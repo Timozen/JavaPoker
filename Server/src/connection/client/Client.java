@@ -18,6 +18,8 @@ package connection.client;
 import connection.ConnectionEventManager;
 import connection.events.ClientConnectEvent;
 import connection.events.ClientDisconnectEvent;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -58,7 +60,7 @@ public class Client extends Thread {
 	public synchronized void start()
 	{
 		if (init()) {
-			connectionEventManager.handle(new ClientConnectEvent());
+			connectionEventManager.handle(new ClientConnectEvent(this));
 			//TODO log-in
 			
 			run();
@@ -72,7 +74,7 @@ public class Client extends Thread {
 	public void run()
 	{
 		try {
-			SendMessage("Welcome!");
+			//SendMessage("Welcome!");
 			/*while(true){
 				
 			}*/
@@ -93,4 +95,14 @@ public class Client extends Thread {
 	{
 		output.println(msg);
 	}
+	public void SendMessage(JSONObject obj)
+	{
+		output.println(obj.toString());
+	}
+	
+	public void LoginRequest()
+	{
+		SendMessage(new JSONObject().put("op", 1).put("type", "LOGIN_REQUEST").put("data", new JSONObject()));
+	}
+	
 }

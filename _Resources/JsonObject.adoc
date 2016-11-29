@@ -1,0 +1,31 @@
+JsonObjects
+===========
+
+LOGIN_REQUEST
+[source/json]
+	{
+		"op" : 1,
+		"data" : {},
+		"type" : "LOGIN_REQUEST"
+	}
+
+LOGIN_REQUEST_ANSWER
+[source/json]
+	{
+		"op" : 1,
+		"data" : {
+			"username" : "USERNAME",
+			"password" : "PASSWORD"
+			},
+		"type" : "LOGIN_REQUEST_ANSWER"
+	}
+
+LOGIN_REQUEST_ANSWER
+[source/json]
+	{
+		"op" : 1,
+		"data" : {
+			"valid" : "TRUE/FALSE"
+			},
+		"type" : "LOGIN_RESULT"
+	}

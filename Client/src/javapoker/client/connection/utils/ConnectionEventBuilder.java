@@ -16,21 +16,32 @@
 package javapoker.client.connection.utils;
 
 import javapoker.client.connection.ConnectionEventManager;
-import javapoker.client.connection.events.ConnectionEvent;
-import javapoker.client.connection.events.TestEvent;
+import javapoker.client.connection.SocketConnection;
+import javapoker.client.connection.events.LoginRequestEvent;
+import org.json.JSONObject;
 
 public class ConnectionEventBuilder {
 	
 	private ConnectionEventManager connectionEventManager;
+	private SocketConnection socketConnection;
 	
-	public ConnectionEventBuilder(ConnectionEventManager connectionEventManager)
+	public ConnectionEventBuilder(ConnectionEventManager connectionEventManager, SocketConnection socketConnection)
 	{
 		this.connectionEventManager = connectionEventManager;
+		this.socketConnection = socketConnection;
 	}
 	
 	public void CreateEvent(String msg)
 	{
-		//TODO create the JSON object from string and decode it and fire the correct event!
-		connectionEventManager.handle(new TestEvent(msg));
+		JSONObject obj = new JSONObject(msg);
+		
+		switch (obj.getString("type")) {
+			case "LOGIN_REQUEST":
+				connectionEventManager.handle(new LoginRequestEvent(socketConnection));
+				break;
+			default:
+				System.out.println("Unknown event type: " + obj.getString("type"));
+				break;
+		}
 	}
 }

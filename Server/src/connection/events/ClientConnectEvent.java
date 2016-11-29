@@ -15,9 +15,18 @@
 
 package connection.events;
 
+import connection.client.Client;
+
 public class ClientConnectEvent extends ConnectionEvent{
 	
-	public ClientConnectEvent(){
-		
+	private Client client;
+	
+	public ClientConnectEvent(Client client){
+		this.client = client;
+	}
+	
+	public Client GetClient()
+	{
+		return client;
 	}
 }
