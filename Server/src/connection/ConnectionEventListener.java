@@ -19,18 +19,22 @@ package connection;
 import connection.events.ClientDisconnectEvent;
 import connection.events.ConnectionEvent;
 import connection.events.ClientConnectEvent;
+import connection.events.LoginRequestAnswerEvent;
 
 public abstract class ConnectionEventListener {
 	
 	public void OnClientConnectEvent(ClientConnectEvent event){}
 	public void OnClientDisconnectEvent(ClientDisconnectEvent event){}
-
+	public void OnLoginRequestAnswerEvent(LoginRequestAnswerEvent event) {}
+	
 	public void OnConnectionEvent(ConnectionEvent e)
 	{
 		if(e instanceof ClientConnectEvent){
 			OnClientConnectEvent((ClientConnectEvent) e);
 		} else if (e instanceof ClientDisconnectEvent){
 			OnClientDisconnectEvent((ClientDisconnectEvent) e);
+		} else if (e instanceof  LoginRequestAnswerEvent){
+			OnLoginRequestAnswerEvent((LoginRequestAnswerEvent) e);
 		}
 	}
 }

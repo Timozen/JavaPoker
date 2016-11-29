@@ -15,6 +15,24 @@
 
 package connection.events;
 
-public abstract class ConnectionEvent {
+import connection.client.Client;
+import org.json.JSONObject;
 
+public abstract class ConnectionEvent {
+	private Client client;
+	public JSONObject object;
+	
+	
+	public ConnectionEvent(Client client, JSONObject object)
+	{
+		this.client = client;
+		this.object = object;
+	}
+	
+	public abstract void Build();
+	
+	public Client GetClient()
+	{
+		return client;
+	}
 }

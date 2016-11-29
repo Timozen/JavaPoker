@@ -16,6 +16,7 @@
 package javapoker.client.connection;
 
 import javapoker.client.connection.utils.ConnectionEventBuilder;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -81,5 +82,10 @@ public class SocketConnection extends Thread {
 	public void SendMessage(String msg)
 	{
 		output.println(msg);
+	}
+	
+	public void SendMessage(JSONObject obj)
+	{
+		SendMessage(obj.toString());
 	}
 }

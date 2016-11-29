@@ -13,38 +13,34 @@
  * If not, see http://www.gnu.org/licenses/.
  */
 
-package javapoker.client.connection.utils;
+package connection.utils;
 
-import javapoker.client.connection.ConnectionEventManager;
-import javapoker.client.connection.SocketConnection;
-import javapoker.client.connection.events.LoginRequestEvent;
-import javapoker.client.connection.events.LoginResultEvent;
+import connection.ConnectionEventManager;
+import connection.client.Client;
+import connection.events.LoginRequestAnswerEvent;
 import org.json.JSONObject;
 
 public class ConnectionEventBuilder {
 	
 	private ConnectionEventManager connectionEventManager;
-	private SocketConnection socketConnection;
+	private Client client;
 	
-	public ConnectionEventBuilder(ConnectionEventManager connectionEventManager, SocketConnection socketConnection)
+	public ConnectionEventBuilder(ConnectionEventManager connectionEventManager, Client client)
 	{
 		this.connectionEventManager = connectionEventManager;
-		this.socketConnection = socketConnection;
+		this.client = client;
 	}
 	
 	public void CreateEvent(String msg)
 	{
 		JSONObject obj = new JSONObject(msg);
-		
+		JSONObject data = obj.getJSONObject("data");
 		switch (obj.getString("type")) {
-			case "LOGIN_REQUEST":
-				connectionEventManager.handle(new LoginRequestEvent(socketConnection));
-				break;
-			case "LOGIN_RESULT":
-				connectionEventManager.handle(new LoginResultEvent(socketConnection, obj.getJSONObject("data")));
+			case "LOGIN_REQUEST_ANSWER":
+				connectionEventManager.handle(new LoginRequestAnswerEvent(client, data));
 				break;
 			default:
-				System.out.println("Unknown event type: " + obj.getString("type") + " not implemented or spelling mistake");
+				System.out.println("Unknown event type: " + obj.getString("type"));
 				break;
 		}
 	}

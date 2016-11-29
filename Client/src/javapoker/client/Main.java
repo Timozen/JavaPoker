@@ -19,6 +19,8 @@ import javapoker.client.connection.ConnectionEventListener;
 import javapoker.client.connection.ConnectionEventManager;
 import javapoker.client.connection.SocketConnection;
 import javapoker.client.connection.events.LoginRequestEvent;
+import javapoker.client.connection.events.LoginResultEvent;
+import org.json.JSONObject;
 
 public class Main {
 	
@@ -38,6 +40,21 @@ class Listener extends ConnectionEventListener {
 	@Override
 	public void OnLoginRequest(LoginRequestEvent event)
 	{
-		super.OnLoginRequest(event);
+		System.out.println("Received LoginRequest");
+		event.GetConnection().SendMessage(new JSONObject().put("op", 1)
+								  .put("type", "LOGIN_REQUEST_ANSWER")
+								  .put("data", new JSONObject().put("username", "Test")
+											       .put("password", "1234")
+								  )
+						 );
+	}
+	
+	
+	@Override
+	public void OnLoginResult(LoginResultEvent event)
+	{
+		System.out.println("Received LoginResult");
+		System.out.println("Information is: " + event.validLogin);
+		super.OnLoginResult(event);
 	}
 }

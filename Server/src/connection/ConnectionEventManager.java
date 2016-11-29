@@ -34,6 +34,7 @@ public class ConnectionEventManager {
 	
 	public void handle(ConnectionEvent e)
 	{
+		e.Build();
 		listeners.forEach(listener -> listener.OnConnectionEvent(e));
 	}
 }

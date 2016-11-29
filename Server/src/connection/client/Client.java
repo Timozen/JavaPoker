@@ -18,6 +18,7 @@ package connection.client;
 import connection.ConnectionEventManager;
 import connection.events.ClientConnectEvent;
 import connection.events.ClientDisconnectEvent;
+import connection.utils.ConnectionEventBuilder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -26,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class Client extends Thread {
 	
@@ -33,7 +35,7 @@ public class Client extends Thread {
 	private PrintWriter output;
 	private Socket socket;
 	private ConnectionEventManager connectionEventManager;
-	
+	private ConnectionEventBuilder connectionEventBuilder;
 	private int id;
 	
 	public Client(Socket socket, int id, ConnectionEventManager connectionEventManager)
@@ -41,6 +43,7 @@ public class Client extends Thread {
 		this.socket = socket;
 		this.id = id;
 		this.connectionEventManager = connectionEventManager;
+		this.connectionEventBuilder = new ConnectionEventBuilder(connectionEventManager, this);
 	}
 	
 	private boolean init()
@@ -60,7 +63,7 @@ public class Client extends Thread {
 	public synchronized void start()
 	{
 		if (init()) {
-			connectionEventManager.handle(new ClientConnectEvent(this));
+			connectionEventManager.handle(new ClientConnectEvent(this, null));
 			//TODO log-in
 			
 			run();
@@ -75,15 +78,19 @@ public class Client extends Thread {
 	{
 		try {
 			//SendMessage("Welcome!");
-			/*while(true){
-				
-			}*/
-		} catch (Exception ex){ //todo find out the right exception
-			ex.printStackTrace();
+			while(true){
+				String msg = input.readLine();
+				if(msg == null){
+					break;
+				}
+				connectionEventBuilder.CreateEvent(msg);
+			}
+		} catch (IOException ex){
+			//ex.printStackTrace();
 		} finally {
 			try {
 				socket.close();
-				connectionEventManager.handle(new ClientDisconnectEvent());
+				connectionEventManager.handle(new ClientDisconnectEvent(this, null));
 				//TODO Fire disconnect event
 			} catch (IOException ex){
 				ex.printStackTrace();

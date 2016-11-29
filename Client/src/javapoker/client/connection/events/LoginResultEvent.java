@@ -16,19 +16,21 @@
 package javapoker.client.connection.events;
 
 import javapoker.client.connection.SocketConnection;
+import org.json.JSONObject;
 
-public abstract class ConnectionEvent {
-
-	public SocketConnection socketConnection;
+public class LoginResultEvent extends ConnectionEvent {
 	
-	public ConnectionEvent(SocketConnection socketConnection){
-		this.socketConnection = socketConnection;
+	private JSONObject object;
+	public boolean validLogin;
+	
+	public LoginResultEvent(SocketConnection socketConnection, JSONObject object)
+	{
+		super(socketConnection);
+		this.object = object;
 	}
 	
-	public abstract void Build();
-	
-	public SocketConnection GetConnection()
+	public void Build()
 	{
-		return socketConnection;
+		validLogin = object.getBoolean("valid");
 	}
 }

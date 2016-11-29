@@ -17,15 +17,19 @@ package javapoker.client.connection;
 
 import javapoker.client.connection.events.ConnectionEvent;
 import javapoker.client.connection.events.LoginRequestEvent;
+import javapoker.client.connection.events.LoginResultEvent;
 
 public abstract class ConnectionEventListener {
 	
 	public void OnLoginRequest(LoginRequestEvent event){}
+	public void OnLoginResult(LoginResultEvent event) {}
 	
 	public void OnConnectionEvent(ConnectionEvent e)
 	{
 		if (e instanceof LoginRequestEvent) {
 			OnLoginRequest((LoginRequestEvent)e);
+		} else if(e instanceof LoginResultEvent) {
+			OnLoginResult((LoginResultEvent) e);
 		}
 	}
 }

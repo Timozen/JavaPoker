@@ -19,6 +19,8 @@ import connection.ConnectionEventManager;
 import connection.events.ClientConnectEvent;
 import connection.client.Client;
 import connection.events.ClientDisconnectEvent;
+import connection.events.LoginRequestAnswerEvent;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -90,5 +92,22 @@ public class ConnectionServer extends Server {
 	public void OnClientDisconnectEvent(ClientDisconnectEvent event)
 	{
 		System.out.println("A client has disconnected!");
+	}
+	
+	@Override
+	public void OnLoginRequestAnswerEvent(LoginRequestAnswerEvent event)
+	{
+		System.out.println("A client has send its login information");
+		System.out.println("The information is:");
+		System.out.println("Username: " + event.username);
+		System.out.println("Password: " + event.password);
+		
+		//TODO check if valid
+		
+		event.GetClient().SendMessage( new JSONObject().put("op", 1)
+								.put("type", "LOGIN_RESULT")
+								.put("data", new JSONObject().put("valid", true)
+								)
+					     );
 	}
 }

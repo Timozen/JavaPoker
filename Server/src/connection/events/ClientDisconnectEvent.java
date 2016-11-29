@@ -15,9 +15,19 @@
 
 package connection.events;
 
+import connection.client.Client;
+import org.json.JSONObject;
+
 public class ClientDisconnectEvent extends ConnectionEvent {
 	
-	public ClientDisconnectEvent()
+	public ClientDisconnectEvent(Client client, JSONObject object)
 	{
+		super(client, object);
+	}
+	
+	@Override
+	public void Build()
+	{
+		
 	}
 }

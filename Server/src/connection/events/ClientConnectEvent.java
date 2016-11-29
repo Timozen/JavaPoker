@@ -16,17 +16,17 @@
 package connection.events;
 
 import connection.client.Client;
+import org.json.JSONObject;
 
 public class ClientConnectEvent extends ConnectionEvent{
 	
-	private Client client;
-	
-	public ClientConnectEvent(Client client){
-		this.client = client;
+	public ClientConnectEvent(Client client, JSONObject object){
+		super(client, object);
 	}
 	
-	public Client GetClient()
+	@Override
+	public void Build()
 	{
-		return client;
+		
 	}
 }

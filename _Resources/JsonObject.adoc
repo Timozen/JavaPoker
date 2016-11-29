@@ -20,7 +20,7 @@ LOGIN_REQUEST_ANSWER
 		"type" : "LOGIN_REQUEST_ANSWER"
 	}
 
-LOGIN_REQUEST_ANSWER
+LOGIN_RESULT
 [source/json]
 	{
 		"op" : 1,
