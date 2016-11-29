@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="org.codeartisans:org.json:20150729" type="repository">
+    <properties maven-id="org.codeartisans:org.json:20150729" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/org.json-20150729.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/lib/org.json-20150729-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/org.json-20150729-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
