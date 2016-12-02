@@ -16,10 +16,12 @@
 //Milestone 1 finished
 package game;
 
+import connection.ConnectionEventListener;
 import game.models.BettingOperations;
 import game.models.CircularList;
 import game.models.RoundState;
 import handChecker.PokerCard;
+import org.json.JSONObject;
 
 import java.util.*;
 
@@ -149,6 +151,19 @@ public class Table {
 	
 	public void GetPlayerAction(Player player)
 	{
+		/*
+		JSONObject answer = player.GetClient().sendMessage();
+		
+		while(gotNoAnswer && time < timeOut){
+		
+		}
+		if(time > timeOut || !gotNotAnswer){
+			default answer
+		} else {
+			last received answer
+		}
+		
+		*/
 		
 		BettingOperations[] options = IsPreBet() ?  betOptionsPreBet : betOptionsPostBet;
 		

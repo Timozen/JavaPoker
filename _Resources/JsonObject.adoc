@@ -1,31 +1,100 @@
 JsonObjects
 ===========
 
-LOGIN_REQUEST
+==== LOGIN_REQUEST
 [source/json]
 	{
-		"op" : 1,
-		"data" : {},
-		"type" : "LOGIN_REQUEST"
+	    "op" : 1,
+	    "data" : {},
+	    "type" : "LOGIN_REQUEST"
 	}
 
-LOGIN_REQUEST_ANSWER
+==== LOGIN_REQUEST_ANSWER
 [source/json]
 	{
-		"op" : 1,
-		"data" : {
-			"username" : "USERNAME",
-			"password" : "PASSWORD"
-			},
-		"type" : "LOGIN_REQUEST_ANSWER"
+	    "op" : 1,
+	    "data" :
+	    {
+	        "username" : "USERNAME",
+	        "password" : "PASSWORD"
+	    },
+	    "type" : "LOGIN_REQUEST_ANSWER"
 	}
 
-LOGIN_RESULT
+==== LOGIN_RESULT
 [source/json]
 	{
-		"op" : 1,
-		"data" : {
-			"valid" : "TRUE/FALSE"
-			},
-		"type" : "LOGIN_RESULT"
+	    "op" : 1,
+	    "data" :
+	    {
+	        "valid" : "TRUE/FALSE"
+        },
+        "type" : "LOGIN_RESULT"
 	}
+
+==== ON_TABLE_JOIN
+If you join a table, you receive and JSONobject with all usefull information
+from the table, eg. a list of all already connected players,...
+[source/json]
+
+==== PLAYER_JOINS_TABLE
+
+If you already connected to the table, and the game hasn't started yet, so another
+play can still join.
+
+
+==== PLAYER_ACTION_REQUEST
+If it is the turn of a player. The server will send him an request with the important
+information for the player. The client will have a time limit
+[source/json]
+    {
+        "op":1,
+        "data":
+        {
+            "actions": ["FOLD","BET", "CHECK"] || ["FOLD", "RAISE", "CALL"],
+            "currentPlayerBet" : value,
+            "currentTableBet" : value,
+            "maximumPlayerBet" : value
+        }
+        "type": "PLAYER_ACTION_REQUEST"
+    }
+
+==== PLAYER_ACTION_ANSWER
+
+[source/json]
+    {
+        "op":1,
+        "data":
+        {
+            "action": "ACTION",
+            "betAmount": value,
+            "isAllIn": boolean //dunno maybe interesting
+        }
+        "type": "PLAYER_ACTION_ANSWER"
+    }
+
+==== ROUND_UPDATE_TURN
+[source/json]
+    {
+        "op":1,
+        "data":
+        {
+            "oldTurn": "PREFLOP" || "FLOP" || "TURN" || ...,
+            "newTurn": "PREFLOP" || "FLOP" || "TURN" || ...,
+            "newBoardCard": CARD
+        }
+        "type": "ROUND_UPDATE_TURN"
+    }
+
+==== ROUND_UPDATE_PLAYER
+[source/json]
+    {
+        "op":1,
+        "data":
+        {
+            "player": PlayerObject,
+            "action": "ACTION"
+            "betAmount": value
+        }
+        "type": "ROUND_UPDATE_PLAYER"
+    }

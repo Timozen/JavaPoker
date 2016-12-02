@@ -28,6 +28,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
+import java.time.Duration;
+import java.time.Instant;
 
 public class Client extends Thread {
 	
@@ -102,11 +104,25 @@ public class Client extends Thread {
 	{
 		output.println(msg);
 	}
-	public void SendMessage(JSONObject obj)
+	
+	public Client SendMessage(JSONObject obj)
 	{
 		output.println(obj.toString());
+		return this;
 	}
 	
+	public JSONObject ObtainAnswer(int timeout)
+	{
+		boolean gotAnswer = true;
+				
+		while(!gotAnswer){
+			
+		}
+		
+		return null; //todo entfernen
+	}
+	
+		
 	public void LoginRequest()
 	{
 		SendMessage(new JSONObject().put("op", 1).put("type", "LOGIN_REQUEST").put("data", new JSONObject()));
