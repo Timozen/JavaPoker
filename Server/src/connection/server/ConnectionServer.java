@@ -20,18 +20,22 @@ import connection.events.ClientConnectEvent;
 import connection.client.Client;
 import connection.events.ClientDisconnectEvent;
 import connection.events.LoginRequestAnswerEvent;
+import game.Table;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ConnectionServer extends Server {
 	
-	private HashMap<Integer, Client> connectedClients;
+	private HashMap<String, Client> connectedClients;
 	private int id;
 	private ConnectionEventManager connectionEventManager;
 		
+	private ArrayList<Table> tables = new ArrayList<>();
+	
 	public ConnectionServer(int port)
 	{
 		super(port);
@@ -47,6 +51,7 @@ public class ConnectionServer extends Server {
 		
 		if (successfulStart) {
 			System.out.println("The connection server has started and listens on port: " + GetPort());
+			CreateNewTable(5);
 			run();
 		} else {
 			System.out.println("The connection server could not start!");
@@ -109,5 +114,19 @@ public class ConnectionServer extends Server {
 								.put("data", new JSONObject().put("valid", true)
 								)
 					     );
+		//setup player and add client to hashmap
+		event.GetClient().SetUpAfterLogIn(event.username, true);
+		connectedClients.put(event.username, event.GetClient());
+	
+		//TODO fill the first not full table
+		tables.get(0).AddPlayerToTable(event.GetClient().GetPlayer());
 	}
+	
+	public void CreateNewTable(int playerCount)
+	{
+		Table table = new Table(tables.size(), playerCount);
+		table.start();
+		tables.add(table);
+	}
+	
 }

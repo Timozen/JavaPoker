@@ -19,8 +19,8 @@ public class Main {
 	public static void main(String[] args)
 	{
 		ConnectionServer connectionServer = new ConnectionServer(9090);
-		connectionServer.start();
 		
+		connectionServer.start();
 		
 		/**
 		Scanner scanner = new Scanner(System.in);

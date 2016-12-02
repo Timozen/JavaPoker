@@ -19,7 +19,7 @@ import connection.ConnectionEventManager;
 import connection.events.ClientConnectEvent;
 import connection.events.ClientDisconnectEvent;
 import connection.utils.ConnectionEventBuilder;
-import org.json.JSONArray;
+import game.Player;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -27,9 +27,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.SocketException;
-import java.time.Duration;
-import java.time.Instant;
 
 public class Client extends Thread {
 	
@@ -40,12 +37,16 @@ public class Client extends Thread {
 	private ConnectionEventBuilder connectionEventBuilder;
 	private int id;
 	
+	private String username;
+	private boolean loggedIn;
+	private Player player;
 	public Client(Socket socket, int id, ConnectionEventManager connectionEventManager)
 	{
 		this.socket = socket;
 		this.id = id;
 		this.connectionEventManager = connectionEventManager;
 		this.connectionEventBuilder = new ConnectionEventBuilder(connectionEventManager, this);
+		this.loggedIn = false;
 	}
 	
 	private boolean init()
@@ -110,22 +111,49 @@ public class Client extends Thread {
 		output.println(obj.toString());
 		return this;
 	}
-	
-	public JSONObject ObtainAnswer(int timeout)
-	{
-		boolean gotAnswer = true;
-				
-		while(!gotAnswer){
-			
-		}
-		
-		return null; //todo entfernen
-	}
-	
 		
 	public void LoginRequest()
 	{
 		SendMessage(new JSONObject().put("op", 1).put("type", "LOGIN_REQUEST").put("data", new JSONObject()));
 	}
+	
+	public void SetUpAfterLogIn(String username, boolean loggedIn)
+	{
+		this.username = username;
+		this.loggedIn = loggedIn;
+		this.player = new Player(username);
+		this.player.SetConnectionClient(this);
+	}
+	
+	//region Getter and Setter
+	
+	
+	public Player GetPlayer()
+	{
+		return player;
+	}
+	
+	public String GetUsername()
+	{
+		return username;
+	}
+	
+	public void SetUsername(String username)
+	{
+		this.username = username;
+	}
+	
+	public boolean IsLoggedIn()
+	{
+		return loggedIn;
+	}
+	
+	public void SetLoggedIn(boolean loggedIn)
+	{
+		this.loggedIn = loggedIn;
+	}
+	
+	//endregion
+	
 	
 }

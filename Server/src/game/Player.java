@@ -15,6 +15,7 @@
 
 package game;
 
+import connection.client.Client;
 import game.models.BettingOperations;
 import game.models.PlayerState;
 import handChecker.PokerCard;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-class Player {
+public class Player {
 	
 	private int money;
 	private List<Card> cards;
@@ -45,6 +46,8 @@ class Player {
 	
 	private List<PokerCard> cardsWithTable;
 	private int winnerNumber;
+	
+	private Client connectionClient;
 	
 	
 	/**
@@ -166,8 +169,29 @@ class Player {
 		this.roundBetAll -= roundBet;
 		return roundBet;
 	}
+	public void ResetPlayerExceptMoney()
+	{
+		cards = new LinkedList<>();
+		cardsWithTable = new LinkedList<>();
+		roundBetCurrent = 0;
+		roundBetAll = 0;
+	}
 	
 	//region Getter and Setter
+	
+	//region Client
+	public Client GetConnectionClient()
+	{
+		return connectionClient;
+	}
+	
+	public void SetConnectionClient(Client connectionClient)
+	{
+		this.connectionClient = connectionClient;
+	}
+	//endregion
+	
+	
 	//region WinnerNumber
 	public void SetWinnerNumber(int winnerNumber)
 	{
@@ -350,11 +374,5 @@ class Player {
 	}
 	//endregion
 	//endregion
-	public void ResetPlayerExceptMoney()
-	{
-		cards = new LinkedList<>();
-		cardsWithTable = new LinkedList<>();
-		roundBetCurrent = 0;
-		roundBetAll = 0;
-	}
+	
 }

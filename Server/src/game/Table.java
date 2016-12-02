@@ -16,16 +16,13 @@
 //Milestone 1 finished
 package game;
 
-import connection.ConnectionEventListener;
 import game.models.BettingOperations;
 import game.models.CircularList;
 import game.models.RoundState;
-import handChecker.PokerCard;
-import org.json.JSONObject;
 
 import java.util.*;
 
-public class Table {
+public class Table extends Thread{
 	private boolean gameInProgress;
 	
 	private CircularList<Player> playersOnTable;
@@ -57,7 +54,8 @@ public class Table {
 	private final BettingOperations[] betOptionsPreBet = {BettingOperations.FOLD, BettingOperations.BET, BettingOperations.CHECK};
 	private final BettingOperations[] betOptionsPostBet = {BettingOperations.FOLD, BettingOperations.RAISE, BettingOperations.CALL};
 	
-	
+	private int neededPlayerCount = 5;
+	private int id;
 	
 	public Table(String filePath){
 		seed = generateSeed();
@@ -72,6 +70,7 @@ public class Table {
 		isPreDef = true;
 	}
 	
+	/*
 	public Table(int seed)
 	{
 		this.seed = seed;
@@ -84,9 +83,9 @@ public class Table {
 		
 		gameTable = new GameTable(this);
 		firstRound = true;
-	}
+	}*/
 	
-	public Table()
+	public Table(int id)
 	{
 		seed = generateSeed();
 		random = new Random(seed);
@@ -97,15 +96,35 @@ public class Table {
 		
 		gameTable = new GameTable(this);
 		firstRound = true;
+		this.id = id;
 	}
+	
+	public Table(int id, int neededPlayerCount)
+	{
+		this(id);
+		this.neededPlayerCount = neededPlayerCount;
+	}
+	
 	
 	private int generateSeed()
 	{
 		return (int) (new Date().getTime() / 1000);
 	}
 	
-	public void StartGame()
+	@Override
+	public void run()
 	{
+	
+		//wait for players to connect
+		while(playersOnTable.size() < neededPlayerCount){
+			System.out.println("Table "+ id + ": Players " + playersOnTable.size() + "/" + neededPlayerCount);
+			try {
+				sleep(2000);
+			} catch (InterruptedException ex){
+				ex.printStackTrace();
+			}
+		}
+
 		System.out.println("The seed for this Table is: " + seed);
 		
 		while (playersOnTable.size() > 1) {
@@ -276,6 +295,39 @@ public class Table {
 		}
 	}
 	
+	private void RemovePlayersWithZeroMoneyAndRecalculateDealerIndex()
+	{
+		CircularList<Player> tempPlayersOnTable = (CircularList<Player>)GetPlayersOnTable().clone();
+		System.out.println("\nRound at its end: Removing 0-Money Players");
+		Player oldDealer = this.GetDealer();
+		//next Dealer = oldDealer + 1
+		for (Player p : tempPlayersOnTable) {
+			System.out.println(p.GetNickname() + " money is " + p.GetMoney());
+			if (p.GetMoney() == 0 && p != oldDealer) {
+				System.out.println(p.GetNickname() + " will be removed.");
+				RemovePlayerFromTable(p);
+			}
+		}
+		int nextDealerIndex = playersOnTable.indexOf(oldDealer) + 1;
+		this.SetDealerIndex(nextDealerIndex);
+		System.out.println("Current Dealer was " + oldDealer.GetNickname());
+		System.out.println("New Dealer will be " + playersOnTable.get(nextDealerIndex).GetNickname());
+		if (oldDealer.GetMoney() == 0) {
+			System.out.println("Old dealer (" + oldDealer.GetNickname() + ") got removed bc 0 money.");
+			RemovePlayerFromTable(oldDealer);
+		}
+	}
+	
+	public void AddPlayerToTable(Player player)
+	{
+		if(!playersOnTable.contains(player)){
+			playersOnTable.add(player);
+		} else {
+			System.out.println("Cannot add the same player again to the table!");
+		}
+	}
+	
+	//region Getter and Setter
 	
 	/**
 	 * AddPlayerToTable
@@ -512,28 +564,7 @@ public class Table {
 		return isPreDef;
 	}
 
-	private void RemovePlayersWithZeroMoneyAndRecalculateDealerIndex()
-	{
-		CircularList<Player> tempPlayersOnTable = (CircularList<Player>)GetPlayersOnTable().clone();
-		System.out.println("\nRound at its end: Removing 0-Money Players");
-		Player oldDealer = this.GetDealer();
-		//next Dealer = oldDealer + 1
-		for (Player p : tempPlayersOnTable) {
-			System.out.println(p.GetNickname() + " money is " + p.GetMoney());
-			if (p.GetMoney() == 0 && p != oldDealer) {
-				System.out.println(p.GetNickname() + " will be removed.");
-				RemovePlayerFromTable(p);
-			}
-		}
-		int nextDealerIndex = playersOnTable.indexOf(oldDealer) + 1;
-		this.SetDealerIndex(nextDealerIndex);
-		System.out.println("Current Dealer was " + oldDealer.GetNickname());
-		System.out.println("New Dealer will be " + playersOnTable.get(nextDealerIndex).GetNickname());
-		if (oldDealer.GetMoney() == 0) {
-			System.out.println("Old dealer (" + oldDealer.GetNickname() + ") got removed bc 0 money.");
-			RemovePlayerFromTable(oldDealer);
-		}
-	}
+	
 	
 	public boolean IsPreBet()
 	{
@@ -544,5 +575,6 @@ public class Table {
 	{
 		this.preBet = preBet;
 	}
+	
+	//endregion
 }
-
