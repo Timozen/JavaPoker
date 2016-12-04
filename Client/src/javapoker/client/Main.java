@@ -18,8 +18,7 @@ package javapoker.client;
 import javapoker.client.connection.ConnectionEventListener;
 import javapoker.client.connection.ConnectionEventManager;
 import javapoker.client.connection.SocketConnection;
-import javapoker.client.connection.events.LoginRequestEvent;
-import javapoker.client.connection.events.LoginResultEvent;
+import javapoker.client.connection.events.*;
 import org.json.JSONObject;
 
 public class Main {
@@ -36,7 +35,7 @@ public class Main {
 
 
 class Listener extends ConnectionEventListener {
-	
+		
 	@Override
 	public void OnLoginRequest(LoginRequestEvent event)
 	{
@@ -49,12 +48,85 @@ class Listener extends ConnectionEventListener {
 						 );
 	}
 	
-	
 	@Override
 	public void OnLoginResult(LoginResultEvent event)
 	{
 		System.out.println("Received LoginResult");
 		System.out.println("Information is: " + event.validLogin);
 		super.OnLoginResult(event);
+	}
+	
+	@Override
+	public void OnOpenTables(OpenTablesEvent event)
+	{
+		System.out.println("Not implemented " + (new Object() {}.getClass().getEnclosingMethod().getName()));
+	}
+	
+	@Override
+	public void OnTableJoinEvent(TableJoinEvent event)
+	{
+		System.out.println("Not implemented " + (new Object() {}.getClass().getEnclosingMethod().getName()));
+	}
+	
+	@Override
+	public void OnTableLeaveEvent(TableLeaveEvent event)
+	{
+		System.out.println("Not implemented " + (new Object() {}.getClass().getEnclosingMethod().getName()));
+	}
+		
+	@Override
+	public void OnPlayerJoinsTableEvent(PlayerJoinsTableEvent event)
+	{
+		System.out.println("Not implemented " + (new Object() {}.getClass().getEnclosingMethod().getName()));
+		
+	}
+	
+	@Override
+	public void OnPlayerLeavesTableEvent(PlayerLeavesTableEvent event)
+	{
+		System.out.println("Not implemented " + (new Object() {}.getClass().getEnclosingMethod().getName()));
+		
+	}
+	
+	@Override
+	public void OnPlayerActionRequestEvent(PlayerActionRequestEvent event)
+	{
+		System.out.println("Not implemented " + (new Object() {}.getClass().getEnclosingMethod().getName()));
+		
+	}
+	
+	@Override
+	public void OnRoundUpdateStartEvent(RoundUpdateStartEvent event)
+	{
+		System.out.println("Not implemented " + (new Object() {}.getClass().getEnclosingMethod().getName()));
+		
+	}
+	
+	@Override
+	public void OnRoundUpdateCardDrawEvent(RoundUpdateCardDrawEvent event)
+	{
+		System.out.println("Not implemented " + (new Object() {}.getClass().getEnclosingMethod().getName()));
+		
+	}
+	
+	@Override
+	public void OnRoundUpdateRoundEvent(RoundUpdateRoundEvent event)
+	{
+		System.out.println("Not implemented " + (new Object() {}.getClass().getEnclosingMethod().getName()));
+		
+	}
+	
+	@Override
+	public void OnRoundUpdateShowdownEvent(RoundUpdateShowdownEvent event)
+	{
+		System.out.println("Not implemented " + (new Object() {}.getClass().getEnclosingMethod().getName()));
+		
+	}
+	
+	@Override
+	public void OnRoundUpdatePlayerEvent(RoundUpdatePlayerEvent event)
+	{
+		System.out.println("Not implemented " + (new Object() {}.getClass().getEnclosingMethod().getName()));
+		
 	}
 }

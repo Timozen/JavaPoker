@@ -20,17 +20,15 @@ import org.json.JSONObject;
 
 public class LoginResultEvent extends ConnectionEvent {
 	
-	private JSONObject object;
 	public boolean validLogin;
 	
-	public LoginResultEvent(SocketConnection socketConnection, JSONObject object)
+	public LoginResultEvent(SocketConnection socketConnection, JSONObject data)
 	{
-		super(socketConnection);
-		this.object = object;
+		super(socketConnection, data);
 	}
 	
 	public void Build()
 	{
-		validLogin = object.getBoolean("valid");
+		validLogin = GetData().getBoolean("valid");
 	}
 }

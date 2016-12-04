@@ -123,6 +123,10 @@ from the table, eg. a list of all already connected players,...
         }
     }
 
+==== ON_TABLE_LEAVE
+
+[TODO] todo
+
 ==== PLAYER_JOINS_TABLE
 
 If you already connected to the table, and the game hasn't started yet, so another
@@ -137,6 +141,10 @@ play can still join.
         }
         "type": "PLAYER_JOINS_TABLE"
     }
+
+==== PLAYER_LEAVES_TABLE
+
+[TODO] todo
 
 ==== PLAYER_ACTION_REQUEST
 

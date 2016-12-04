@@ -18,25 +18,19 @@ package javapoker.client.connection.events;
 import javapoker.client.connection.SocketConnection;
 import org.json.JSONObject;
 
-public abstract class ConnectionEvent {
-
-	private SocketConnection socketConnection;
-	private JSONObject data;
+/**
+ * Created by Tim on 04.12.2016.
+ */
+public class PlayerLeavesTableEvent extends ConnectionEvent{
 	
-	public ConnectionEvent(SocketConnection socketConnection, JSONObject data){
-		this.socketConnection = socketConnection;
-		this.data = data;
+	public PlayerLeavesTableEvent(SocketConnection socketConnection, JSONObject data)
+	{
+		super(socketConnection, data);
 	}
 	
-	public abstract void Build();
-	
-	public SocketConnection GetConnection()
+	@Override
+	public void Build()
 	{
-		return socketConnection;
-	}
-	
-	public JSONObject GetData()
-	{
-		return data;
+		
 	}
 }

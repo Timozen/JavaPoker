@@ -17,8 +17,7 @@ package javapoker.client.connection.utils;
 
 import javapoker.client.connection.ConnectionEventManager;
 import javapoker.client.connection.SocketConnection;
-import javapoker.client.connection.events.LoginRequestEvent;
-import javapoker.client.connection.events.LoginResultEvent;
+import javapoker.client.connection.events.*;
 import org.json.JSONObject;
 
 public class ConnectionEventBuilder {
@@ -35,13 +34,47 @@ public class ConnectionEventBuilder {
 	public void CreateEvent(String msg)
 	{
 		JSONObject obj = new JSONObject(msg);
+		JSONObject data = obj.getJSONObject("data");
 		
 		switch (obj.getString("type")) {
 			case "LOGIN_REQUEST":
-				connectionEventManager.handle(new LoginRequestEvent(socketConnection));
+				connectionEventManager.handle(new LoginRequestEvent(socketConnection, data));
 				break;
 			case "LOGIN_RESULT":
-				connectionEventManager.handle(new LoginResultEvent(socketConnection, obj.getJSONObject("data")));
+				connectionEventManager.handle(new LoginResultEvent(socketConnection, data));
+				break;
+			case "OPEN_TABLES":
+				connectionEventManager.handle((new OpenTablesEvent(socketConnection, data)));
+				break;
+			case "ON_TABLE_JOIN":
+				connectionEventManager.handle((new TableJoinEvent(socketConnection, data)));
+				break;
+			case "ON_TABLE_LEAVE":
+				connectionEventManager.handle((new TableLeaveEvent(socketConnection, data)));
+				break;
+			case "PLAYER_JOINS_TABLE":
+				connectionEventManager.handle((new PlayerJoinsTableEvent(socketConnection, data)));
+				break;
+			case "PLAYER_LEAVES_TABLE":
+				connectionEventManager.handle((new PlayerLeavesTableEvent(socketConnection, data)));
+				break;
+			case "PLAYER_ACTION_REQUEST":
+				connectionEventManager.handle((new PlayerActionRequestEvent(socketConnection, data)));
+				break;
+			case "ROUND_UPDATE_START":
+				connectionEventManager.handle((new RoundUpdateStartEvent(socketConnection, data)));
+				break;
+			case "ROUND_UPDATE_CARD_DRAW":
+				connectionEventManager.handle((new RoundUpdateCardDrawEvent(socketConnection, data)));
+				break;
+			case "ROUND_UPDATE_ROUND":
+				connectionEventManager.handle((new RoundUpdateRoundEvent(socketConnection, data)));
+				break;
+			case "ROUND_UPDATE_SHOWDOWN":
+				connectionEventManager.handle((new RoundUpdateShowdownEvent(socketConnection, data)));
+				break;
+			case "ROUND_UPDATE_PLAYER":
+				connectionEventManager.handle((new RoundUpdatePlayerEvent(socketConnection, data)));
 				break;
 			default:
 				System.out.println("Unknown event type: " + obj.getString("type") + " not implemented or spelling mistake");

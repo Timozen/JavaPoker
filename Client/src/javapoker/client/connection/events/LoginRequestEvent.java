@@ -16,12 +16,13 @@
 package javapoker.client.connection.events;
 
 import javapoker.client.connection.SocketConnection;
+import org.json.JSONObject;
 
 public class LoginRequestEvent extends ConnectionEvent {
 		
-	public LoginRequestEvent(SocketConnection socketConnection)
+	public LoginRequestEvent(SocketConnection socketConnection, JSONObject data)
 	{
-		super(socketConnection);
+		super(socketConnection, data);
 	}
 	
 	@Override
