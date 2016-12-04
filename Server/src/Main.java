@@ -20,7 +20,8 @@ public class Main {
 	{
 		ConnectionServer connectionServer = new ConnectionServer(9090);
 		
-		connectionServer.start();
+		Thread mainThread = new Thread(connectionServer);
+		mainThread.start();
 		
 		/**
 		Scanner scanner = new Scanner(System.in);

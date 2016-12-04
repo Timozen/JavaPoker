@@ -42,8 +42,9 @@ public class ConnectionServer extends Server {
 		connectedClients = new HashMap<>();
 		id = 0;
 	}
-	
-	public synchronized void start()
+		
+	@Override
+	public void run()
 	{
 		boolean successfulStart = init();
 		connectionEventManager = new ConnectionEventManager();
@@ -51,17 +52,11 @@ public class ConnectionServer extends Server {
 		
 		if (successfulStart) {
 			System.out.println("The connection server has started and listens on port: " + GetPort());
-			CreateNewTable(5);
-			run();
 		} else {
 			System.out.println("The connection server could not start!");
+			return;
 		}
 		
-	}
-	
-	@Override
-	public void run()
-	{
 		try {
 			while (true) {
 				Socket newClientSocket = GetSocketListener().accept();
@@ -125,8 +120,8 @@ public class ConnectionServer extends Server {
 	public void CreateNewTable(int playerCount)
 	{
 		Table table = new Table(tables.size(), playerCount);
-		table.start();
 		tables.add(table);
+		table.start();
 	}
 	
 }
