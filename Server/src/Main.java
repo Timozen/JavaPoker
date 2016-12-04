@@ -23,6 +23,14 @@ public class Main {
 		Thread mainThread = new Thread(connectionServer);
 		mainThread.start();
 		
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException ex) {
+			ex.printStackTrace();
+		}
+		
+		connectionServer.CreateNewTable(5);
+		
 		/**
 		Scanner scanner = new Scanner(System.in);
 		Table table = null;

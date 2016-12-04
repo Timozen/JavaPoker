@@ -122,6 +122,11 @@ public class ConnectionServer extends Server {
 		Table table = new Table(tables.size(), playerCount);
 		tables.add(table);
 		table.start();
+		
+		table.AddPlayerToTable("Amme");
+		table.AddPlayerToTable("Vogel");
+		table.AddPlayerToTable("Grajetzki");
+		table.AddPlayerToTable("Neumann");
 	}
 	
 }
