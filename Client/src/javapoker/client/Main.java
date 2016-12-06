@@ -66,6 +66,9 @@ class Listener extends ConnectionEventListener {
 	public void OnTableJoinEvent(TableJoinEvent event)
 	{
 		System.out.println("Not implemented " + (new Object() {}.getClass().getEnclosingMethod().getName()));
+		
+		System.out.println(event.GetData().toString(4));
+	
 	}
 	
 	@Override

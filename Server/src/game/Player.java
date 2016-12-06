@@ -19,6 +19,7 @@ import connection.client.Client;
 import game.models.BettingOperations;
 import game.models.PlayerState;
 import handChecker.PokerCard;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -176,6 +177,21 @@ public class Player {
 		roundBetCurrent = 0;
 		roundBetAll = 0;
 	}
+	
+	public JSONObject ToJSON()
+	{
+		JSONObject obj = new JSONObject();
+		
+		obj.put("nickname", nickname);
+		obj.put("playerState", playerState);
+		obj.put("roundBetAll", roundBetAll);
+		obj.put("roundBetCurrent", roundBetCurrent);
+		obj.put("lastBettingOption", bettingAction);
+		obj.put("money", money);
+
+		return obj;
+	}
+	
 	
 	//region Getter and Setter
 	
@@ -374,5 +390,4 @@ public class Player {
 	}
 	//endregion
 	//endregion
-	
 }

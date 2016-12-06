@@ -19,8 +19,12 @@ package game;
 import game.models.BettingOperations;
 import game.models.CircularList;
 import game.models.RoundState;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 public class Table extends Thread{
 	private boolean gameInProgress;
@@ -56,6 +60,7 @@ public class Table extends Thread{
 	
 	private int neededPlayerCount = 5;
 	private int id;
+	private boolean receivedAnswer;
 	
 	public Table(String filePath){
 		seed = generateSeed();
@@ -186,19 +191,51 @@ public class Table extends Thread{
 		
 		BettingOperations[] options = IsPreBet() ?  betOptionsPreBet : betOptionsPostBet;
 		
-		Scanner scanner = new Scanner(System.in);
-		List<BettingOperations> operationsList = Arrays.asList(options);
+		if(player.GetConnectionClient() != null){
+			receivedAnswer = false;
+			boolean timeElapsed = false;
+			playerActionRequest(player, options);
+			
+			long initTime = System.currentTimeMillis();
+			//wait for answer from the client
+			while(!receivedAnswer && !timeElapsed){
+				if(System.currentTimeMillis() - initTime > 30000){
+					timeElapsed = true;
+					System.out.println("wait for response has stopped!");
+				} else {
+					try{
+						sleep(1000);
+					} catch (InterruptedException ex) {
+						ex.printStackTrace();
+					}
+				}
+			}
+			
+			if(!receivedAnswer) {
+				player.SetBettingAction(BettingOperations.FOLD);
+				player.SetBetAmountFromInput(0);
+			} else {
+				//todo
+			}
+			
+		} else {
+			Scanner scanner = new Scanner(System.in);
+			List<BettingOperations> operationsList = Arrays.asList(options);
+			
+			System.out.println("Turn of " + player.GetNickname() + "(" + player.GetMoney() + ")");
+			System.out.print("Options: ");
+			
+			operationsList.forEach((BettingOperations op) -> System.out.print(op + " "));
+			
+			player.SetBettingAction(GetValidBettingOperationInput(operationsList, scanner));
+			player.SetBetAmountFromInput(GetValidMoneyFromBettingOperation(player.GetBettingAction(), scanner, player));
+			
+			System.out.println("Player " + player.GetNickname() + " " + player.GetBettingAction() + " " + player.GetBetAmountFromInput());
+			if (player.GetBettingAction() != BettingOperations.BET && player.GetBettingAction() != BettingOperations.RAISE) { System.out.println(); }
+		}
 		
-		System.out.println("Turn of " + player.GetNickname() + "(" + player.GetMoney() + ")");
-		System.out.print("Options: ");
 		
-		operationsList.forEach((BettingOperations op) -> System.out.print(op + " "));
 		
-		player.SetBettingAction(GetValidBettingOperationInput(operationsList, scanner));
-		player.SetBetAmountFromInput(GetValidMoneyFromBettingOperation(player.GetBettingAction(), scanner, player));
-		
-		System.out.println("Player " + player.GetNickname() + " " + player.GetBettingAction() + " " + player.GetBetAmountFromInput());
-		if (player.GetBettingAction() != BettingOperations.BET && player.GetBettingAction() != BettingOperations.RAISE) { System.out.println(); }
 	}
 	
 	private int GetValidMoneyFromBettingOperation(BettingOperations op, Scanner scanner, Player p)
@@ -318,13 +355,67 @@ public class Table extends Thread{
 		}
 	}
 	
+	private void playerActionRequest(Player player, BettingOperations[] bettingOperations)
+	{
+		int maximumBet = player.GetMoney() - (actualRoundBet - player.GetRoundBetCurrent());
+		if (maximumBet < 0) {
+			player.SetBettingAction(BettingOperations.CALL);
+			maximumBet = 0;
+		}
+		
+		JSONObject obj = new JSONObject();
+		
+		obj.put("op", 1);
+		obj.put("type", "PLAYER_ACTION_REQUEST");
+		obj.put("data", new JSONObject().put("actions", new JSONArray().put(bettingOperations))
+						.put("currentPlayerBet", player.GetRoundBetCurrent())
+						.put("currentTableBet", GetRoundBetCurrent())
+						.put("maximumPlayerBet", maximumBet)
+		);
+		
+		
+		System.out.println("Send request to client!!!!!");
+		
+		player.GetConnectionClient().SendMessage(obj);
+	}
+	
 	public void AddPlayerToTable(Player player)
 	{
 		if(!playersOnTable.contains(player)){
 			playersOnTable.add(player);
+			player.GetConnectionClient().SendMessage(joinAnswer());
+			
 		} else {
 			System.out.println("Cannot add the same player again to the table!");
 		}
+	}
+	
+	private JSONObject joinAnswer()
+	{
+		JSONObject ob = new JSONObject();
+		
+		JSONArray players = new JSONArray();
+		
+		playersOnTable.forEach(p -> players.put(p.ToJSON()));
+		
+		ob.put("op", 1);
+		ob.put("type", "ON_TABLE_JOIN");
+		ob.put("data", new JSONObject().put("table", this.ToJSONObject())
+		       				.put("players", players)
+		);
+		
+		return ob;
+	}
+	
+	private JSONObject ToJSONObject()
+	{
+		JSONObject table = new JSONObject();
+					
+		table.put("neededPlayers", neededPlayerCount);
+		table.put("smallBlindValue", smallBlindValue);
+		table.put("bigBlindValue", bigBlindValue);
+		
+		return table;
 	}
 	
 	//region Getter and Setter
