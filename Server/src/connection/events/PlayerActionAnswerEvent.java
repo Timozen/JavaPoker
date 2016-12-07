@@ -13,34 +13,30 @@
  * If not, see http://www.gnu.org/licenses/.
  */
 
-package javapoker.client.connection.events;
+package connection.events;
 
-import javapoker.client.connection.SocketConnection;
-import javapoker.client.game.Player;
-import javapoker.client.game.Table;
-import org.json.JSONArray;
+import connection.client.Client;
+import game.models.BettingOperations;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
-public class TableJoinEvent extends ConnectionEvent{
+public class PlayerActionAnswerEvent extends ConnectionEvent{
 	
-	public Table table;
+	public int tableId;
+	public BettingOperations action;
+	public int betAmount;
+	public boolean isAllIn;
 	
-	public TableJoinEvent(SocketConnection socketConnection, JSONObject data)
+	public PlayerActionAnswerEvent(Client client, JSONObject object)
 	{
-		super(socketConnection, data);
+		super(client, object);
 	}
 	
 	@Override
 	public void Build()
 	{
-		table = Table.Build(GetData().getJSONObject("table"));
-				
-		JSONArray players = GetData().getJSONArray("players");
-		
-		for(int i = 0; i < players.length(); i++){
-			table.players.add(Player.Build(players.getJSONObject(i)));
-		}
+		tableId = object.getInt("tableId");
+		action = BettingOperations.valueOf(object.getString("action"));
+		betAmount = object.getInt("betAmount");
+		isAllIn = object.getBoolean("isAllIn");
 	}
 }

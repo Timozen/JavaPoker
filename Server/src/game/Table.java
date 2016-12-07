@@ -16,6 +16,8 @@
 //Milestone 1 finished
 package game;
 
+import connection.ConnectionEventListener;
+import connection.events.PlayerActionAnswerEvent;
 import game.models.BettingOperations;
 import game.models.CircularList;
 import game.models.RoundState;
@@ -26,7 +28,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-public class Table extends Thread{
+public class Table implements Runnable {
 	private boolean gameInProgress;
 	
 	private CircularList<Player> playersOnTable;
@@ -60,7 +62,7 @@ public class Table extends Thread{
 	
 	private int neededPlayerCount = 5;
 	private int id;
-	private boolean receivedAnswer;
+	public boolean receivedAnswer;
 	
 	public Table(String filePath){
 		seed = generateSeed();
@@ -110,7 +112,6 @@ public class Table extends Thread{
 		this.neededPlayerCount = neededPlayerCount;
 	}
 	
-	
 	private int generateSeed()
 	{
 		return (int) (new Date().getTime() / 1000);
@@ -124,7 +125,7 @@ public class Table extends Thread{
 		while(playersOnTable.size() < neededPlayerCount){
 			System.out.println("Table "+ id + ": Players " + playersOnTable.size() + "/" + neededPlayerCount);
 			try {
-				sleep(2000);
+				Thread.sleep(2000);
 			} catch (InterruptedException ex){
 				ex.printStackTrace();
 			}
@@ -204,7 +205,7 @@ public class Table extends Thread{
 					System.out.println("wait for response has stopped!");
 				} else {
 					try{
-						sleep(1000);
+						Thread.sleep(1000);
 					} catch (InterruptedException ex) {
 						ex.printStackTrace();
 					}
@@ -215,7 +216,7 @@ public class Table extends Thread{
 				player.SetBettingAction(BettingOperations.FOLD);
 				player.SetBetAmountFromInput(0);
 			} else {
-				//todo
+				System.out.println("got an answer");
 			}
 			
 		} else {
@@ -382,6 +383,17 @@ public class Table extends Thread{
 	public void AddPlayerToTable(Player player)
 	{
 		if(!playersOnTable.contains(player)){
+			
+			//send PLAYER_JOINS_TABLE Event to every already connected player
+			playersOnTable.forEach(p -> {
+				if (p.GetConnectionClient() != null) {
+					p.GetConnectionClient().SendMessage(new JSONObject().put("op",1)
+										    .put("type", "PLAYER_JOINS_TABLE")
+										    .put("data", player.ToJSON())
+					);
+				}
+			});
+			
 			playersOnTable.add(player);
 			player.GetConnectionClient().SendMessage(joinAnswer());
 			
@@ -414,6 +426,18 @@ public class Table extends Thread{
 		table.put("neededPlayers", neededPlayerCount);
 		table.put("smallBlindValue", smallBlindValue);
 		table.put("bigBlindValue", bigBlindValue);
+		table.put("id", id);
+		
+		if(smallBlind != null){
+			table.put("smallBlind", smallBlind.ToJSON());
+		}
+		if(bigBlind != null) {
+			table.put("bigBlind", bigBlind.ToJSON());
+		}
+		if(dealer != null) {
+			table.put("dealer", dealer.ToJSON());
+		}
+		table.put("pot", pot);
 		
 		return table;
 	}

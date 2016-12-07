@@ -26,6 +26,7 @@ Contains the information of the decisions a player made on his turn.
         "op":1,
         "data":
         {
+            "tableId": ID,
             "action": "ACTION",
             "betAmount": value,
             "isAllIn": boolean //dunno maybe interesting

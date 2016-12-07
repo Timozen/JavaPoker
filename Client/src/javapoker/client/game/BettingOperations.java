@@ -13,34 +13,8 @@
  * If not, see http://www.gnu.org/licenses/.
  */
 
-package javapoker.client.connection.events;
+package javapoker.client.game;
 
-import javapoker.client.connection.SocketConnection;
-import javapoker.client.game.Player;
-import javapoker.client.game.Table;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-
-public class TableJoinEvent extends ConnectionEvent{
-	
-	public Table table;
-	
-	public TableJoinEvent(SocketConnection socketConnection, JSONObject data)
-	{
-		super(socketConnection, data);
-	}
-	
-	@Override
-	public void Build()
-	{
-		table = Table.Build(GetData().getJSONObject("table"));
-				
-		JSONArray players = GetData().getJSONArray("players");
-		
-		for(int i = 0; i < players.length(); i++){
-			table.players.add(Player.Build(players.getJSONObject(i)));
-		}
-	}
+public enum BettingOperations {
+	CALL, RAISE, BET, CHECK, FOLD, INVALID
 }

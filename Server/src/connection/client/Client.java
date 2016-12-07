@@ -35,15 +35,13 @@ public class Client extends Thread {
 	private Socket socket;
 	private ConnectionEventManager connectionEventManager;
 	private ConnectionEventBuilder connectionEventBuilder;
-	private int id;
 	
 	private String username;
 	private boolean loggedIn;
 	private Player player;
-	public Client(Socket socket, int id, ConnectionEventManager connectionEventManager)
+	public Client(Socket socket, ConnectionEventManager connectionEventManager)
 	{
 		this.socket = socket;
-		this.id = id;
 		this.connectionEventManager = connectionEventManager;
 		this.connectionEventBuilder = new ConnectionEventBuilder(connectionEventManager, this);
 		this.loggedIn = false;

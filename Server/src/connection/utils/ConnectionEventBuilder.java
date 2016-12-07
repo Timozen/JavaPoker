@@ -18,6 +18,7 @@ package connection.utils;
 import connection.ConnectionEventManager;
 import connection.client.Client;
 import connection.events.LoginRequestAnswerEvent;
+import connection.events.PlayerActionAnswerEvent;
 import org.json.JSONObject;
 
 public class ConnectionEventBuilder {
@@ -38,6 +39,9 @@ public class ConnectionEventBuilder {
 		switch (obj.getString("type")) {
 			case "LOGIN_REQUEST_ANSWER":
 				connectionEventManager.handle(new LoginRequestAnswerEvent(client, data));
+				break;
+			case "PLAYER_ACTION_ANSWER":
+				connectionEventManager.handle(new PlayerActionAnswerEvent(client, data));
 				break;
 			default:
 				System.out.println("Unknown event type: " + obj.getString("type"));

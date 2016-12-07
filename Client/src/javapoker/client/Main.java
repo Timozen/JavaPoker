@@ -19,6 +19,8 @@ import javapoker.client.connection.ConnectionEventListener;
 import javapoker.client.connection.ConnectionEventManager;
 import javapoker.client.connection.SocketConnection;
 import javapoker.client.connection.events.*;
+import javapoker.client.game.BettingOperations;
+import javapoker.client.game.Table;
 import org.json.JSONObject;
 
 public class Main {
@@ -36,6 +38,8 @@ public class Main {
 
 class Listener extends ConnectionEventListener {
 		
+	Table table;
+	
 	@Override
 	public void OnLoginRequest(LoginRequestEvent event)
 	{
@@ -65,10 +69,10 @@ class Listener extends ConnectionEventListener {
 	@Override
 	public void OnTableJoinEvent(TableJoinEvent event)
 	{
-		System.out.println("Not implemented " + (new Object() {}.getClass().getEnclosingMethod().getName()));
+		table = event.table;
 		
-		System.out.println(event.GetData().toString(4));
-	
+		System.out.println("table id:" + table.id);
+		System.out.println("with " + table.players.size() + " players");
 	}
 	
 	@Override
@@ -94,8 +98,14 @@ class Listener extends ConnectionEventListener {
 	@Override
 	public void OnPlayerActionRequestEvent(PlayerActionRequestEvent event)
 	{
-		System.out.println("Not implemented " + (new Object() {}.getClass().getEnclosingMethod().getName()));
-		
+		event.GetConnection().SendMessage(new JSONObject().put("op", 1)
+								.put("type", "PLAYER_ACTION_ANSWER")
+								.put("data", new JSONObject()
+									.put("tableId", table.id)
+									.put("action", BettingOperations.FOLD)
+									.put("betAmount", 0)
+									.put("isAllIn", false)
+								));
 	}
 	
 	@Override

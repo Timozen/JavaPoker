@@ -20,27 +20,27 @@ import connection.events.ClientConnectEvent;
 import connection.client.Client;
 import connection.events.ClientDisconnectEvent;
 import connection.events.LoginRequestAnswerEvent;
+import connection.events.PlayerActionAnswerEvent;
 import game.Table;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ConnectionServer extends Server {
 	
 	private HashMap<String, Client> connectedClients;
-	private int id;
 	private ConnectionEventManager connectionEventManager;
-		
-	private ArrayList<Table> tables = new ArrayList<>();
+	private HashMap<Integer, Table> tables = new HashMap<>();
+	private int idCounter;
 	
+		
 	public ConnectionServer(int port)
 	{
 		super(port);
 		connectedClients = new HashMap<>();
-		id = 0;
+		idCounter = 0;
 	}
 		
 	@Override
@@ -60,7 +60,7 @@ public class ConnectionServer extends Server {
 		try {
 			while (true) {
 				Socket newClientSocket = GetSocketListener().accept();
-				Client client = new Client(newClientSocket, id, connectionEventManager);
+				Client client = new Client(newClientSocket, connectionEventManager);
 				//connectedClients.put(id, client);
 				client.start();
 			}
@@ -120,13 +120,23 @@ public class ConnectionServer extends Server {
 	public void CreateNewTable(int playerCount)
 	{
 		Table table = new Table(tables.size(), playerCount);
-		tables.add(table);
-		table.start();
+		tables.put(idCounter, table);
+		idCounter++;
+		
+		Thread thread = new Thread(table);
+		thread.start();
 		
 		table.AddPlayerToTable("Amme");
 		table.AddPlayerToTable("Vogel");
 		table.AddPlayerToTable("Grajetzki");
 		table.AddPlayerToTable("Neumann");
+	}
+	
+	@Override
+	public void OnPlayerActionAnswerEvent(PlayerActionAnswerEvent event)
+	{
+		Table t = tables.get(event.tableId);
+		t.receivedAnswer = true;
 	}
 	
 }

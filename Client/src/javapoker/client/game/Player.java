@@ -13,34 +13,41 @@
  * If not, see http://www.gnu.org/licenses/.
  */
 
-package javapoker.client.connection.events;
+package javapoker.client.game;
 
-import javapoker.client.connection.SocketConnection;
-import javapoker.client.game.Player;
-import javapoker.client.game.Table;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
-public class TableJoinEvent extends ConnectionEvent{
+public class Player {
 	
-	public Table table;
+	public int money;
+	public int roundBetAll;
+	public String nickname;
+	public int roundBetCurrent;
 	
-	public TableJoinEvent(SocketConnection socketConnection, JSONObject data)
+	public BettingOperations playerState;
+	public BettingOperations bettingAction;
+	
+	public Player()
 	{
-		super(socketConnection, data);
 	}
 	
-	@Override
-	public void Build()
+	public static Player Build(JSONObject obj)
 	{
-		table = Table.Build(GetData().getJSONObject("table"));
-				
-		JSONArray players = GetData().getJSONArray("players");
+		Player player = new Player();
 		
-		for(int i = 0; i < players.length(); i++){
-			table.players.add(Player.Build(players.getJSONObject(i)));
+		player.nickname = obj.getString("nickname");
+		player.money = obj.getInt("money");
+		player.roundBetAll = obj.getInt("roundBetAll");
+		player.roundBetCurrent = obj.getInt("roundBetCurrent");
+		
+		if (obj.has("playerState")) {
+			player.playerState = BettingOperations.valueOf(obj.getString("playerState"));
 		}
+		if (obj.has("bettingAction")) {
+			player.bettingAction = BettingOperations.valueOf(obj.getString("bettingAction"));
+		}
+		
+		return player;
 	}
+	
 }

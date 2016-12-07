@@ -16,16 +16,15 @@
 package connection;
 
 
-import connection.events.ClientDisconnectEvent;
-import connection.events.ConnectionEvent;
-import connection.events.ClientConnectEvent;
-import connection.events.LoginRequestAnswerEvent;
+import connection.events.*;
+import game.Player;
 
 public abstract class ConnectionEventListener {
 	
 	public void OnClientConnectEvent(ClientConnectEvent event){}
 	public void OnClientDisconnectEvent(ClientDisconnectEvent event){}
 	public void OnLoginRequestAnswerEvent(LoginRequestAnswerEvent event) {}
+	public void OnPlayerActionAnswerEvent(PlayerActionAnswerEvent event){}
 	
 	public void OnConnectionEvent(ConnectionEvent e)
 	{
@@ -35,6 +34,8 @@ public abstract class ConnectionEventListener {
 			OnClientDisconnectEvent((ClientDisconnectEvent) e);
 		} else if (e instanceof  LoginRequestAnswerEvent){
 			OnLoginRequestAnswerEvent((LoginRequestAnswerEvent) e);
+		} else if (e instanceof PlayerActionAnswerEvent) {
+			OnPlayerActionAnswerEvent((PlayerActionAnswerEvent) e);
 		}
 	}
 }
