@@ -16,15 +16,12 @@
 //Milestone 1 finished
 package game;
 
-import connection.ConnectionEventListener;
-import connection.events.PlayerActionAnswerEvent;
 import game.models.BettingOperations;
 import game.models.CircularList;
 import game.models.RoundState;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 
@@ -395,14 +392,14 @@ public class Table implements Runnable {
 			});
 			
 			playersOnTable.add(player);
-			player.GetConnectionClient().SendMessage(joinAnswer());
+			player.GetConnectionClient().SendMessage(SendJoinAnswer());
 			
 		} else {
 			System.out.println("Cannot add the same player again to the table!");
 		}
 	}
 	
-	private JSONObject joinAnswer()
+	private JSONObject SendJoinAnswer()
 	{
 		JSONObject ob = new JSONObject();
 		

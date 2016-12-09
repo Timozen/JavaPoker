@@ -43,7 +43,7 @@ If the client wants to join a table.
         "op":1,
         "data":
         {
-            "table": TABLE_IDENTIFCATION
+            "tableId": ID
         }
         "type": "TABLE_JOIN_REQUEST"
     }
@@ -63,7 +63,7 @@ Sends the open tables information.
 
 ==== LOGIN_REQUEST
 
-If a client connectes to the server, a login request is send.
+If a client connects to the server, a login request is send.
 
 [source/json]
 	{
@@ -82,7 +82,7 @@ Information for the client if the log-in was successful.
         "op" : 1,
         "data" :
         {
-            "valid" : "TRUE/
+            "valid" : "TRUE/FALSE
             "reason"" : "STRING"
         },
         "type" : "LOGIN_RESULT"
@@ -99,9 +99,9 @@ Contains all the possible tables the client can join.
         {
             "tables": [
                 {
-                    "id":ID,
+                    "tableId":ID,
                     "currentPlayers": value,
-                    "maximumPlayers": value,
+                    "neededPlayers": value,
                 },
                 ...
             ]
@@ -111,7 +111,7 @@ Contains all the possible tables the client can join.
 
 ==== ON_TABLE_JOIN
 
-If you join a table, you receive and JSONobject with all usefull information
+If you join a table, you receive a JSONobject with all usefull information
 from the table, eg. a list of all already connected players,...
 
 [source/json]
@@ -120,13 +120,22 @@ from the table, eg. a list of all already connected players,...
         "data":
         {
             "players": [PlayerObject, PlayerObject, ...]
-            //Todo
+            "table" : TableObject
         }
+        "type": "ON_TABLE_JOIN"
     }
 
 ==== ON_TABLE_LEAVE
 
-[TODO] todo
+[source/json]
+    {
+        "op":1,
+        "data":
+        {
+            "reason" : STRING
+        }
+        "type" : "ON_TABLE_LEAVE"
+    }
 
 ==== PLAYER_JOINS_TABLE
 
@@ -145,8 +154,18 @@ play can still join.
 
 ==== PLAYER_LEAVES_TABLE
 
-[TODO] todo
+send player which leaves
 
+[source/json]
+    {
+        "op":1,
+        "data":
+        {
+            "playerId": playerId
+            "reason" : string
+        }
+        "type": "PLAYER_LEAVES_TABLE"
+    }
 ==== PLAYER_ACTION_REQUEST
 
 If it is the turn of a player. The server will send him an request with the
@@ -158,9 +177,9 @@ important for the player. The client will have a time limit
         "data":
         {
             "actions": ["FOLD","BET", "CHECK"] || ["FOLD", "RAISE", "CALL"],
-            "currentPlayerBet" : value,
-            "currentTableBet" : value,
-            "maximumPlayerBet" : value
+            //"currentPlayerBet" : value,
+            //"currentTableBet" : value,
+            //"maximumPlayerBet" : value
         }
         "type": "PLAYER_ACTION_REQUEST"
     }
@@ -174,23 +193,40 @@ If a new round starts, the information will be send
         "op":1,
         "data":
         {
-            "dealer": PlayerObject,
-            "smallBlind": PlayerObject,
-            "bigBlind": PlayerObject
+            "dealer": PlayerId,
+            "smallBlind": PlayerId,
+            "bigBlind": PlayerId,
         },
         "type": "ROUND_UPDATE_START"
     }
 
+==== ROUND_UPDATE_PAY_BLINDS
+
+every client received this event for information purpose
+every client
+[source/json]
+    {
+        "op":1,
+        "data":
+        {
+            "playerId" : playerId,
+            "blindtype" : small/big
+            "allin": true/false
+        },
+        "type": "ROUND_UPDATE_PAY_BLINDS"
+    }
+
+
 ==== ROUND_UPDATE_CARD_DRAW
 
-A player draws a card (in PREFLOP)
+A player gets a card (in PREFLOP)
 
 [source/json]
     {
         "op":1,
         "data":
         {
-            "card": CARD,
+            "card": CARD
         },
         "type": "ROUND_UPDATE_CARD_DRAW"
     }
@@ -213,7 +249,7 @@ information.
     }
 
 
-==== ROUND_UPDATE_SHOWDOWN
+==== ROUND_UPDATE_SHOWDOWN_PRE_PAYMENT
 
 Will contain the information for the showdown.
 
@@ -222,7 +258,30 @@ Will contain the information for the showdown.
         "op":1,
         "data":
         {
-            //todo
+            "information" : [ {
+                        "playerId": playerId,
+                        "card1" : card,
+                        "card2" : card
+                   }, ...
+                ]
+        },
+        "type": "ROUND_UPDATE_SHOWDOWN"
+    }
+
+==== ROUND_UPDATE_SHOWDOWN_POST_PAYMENT
+
+Will contain the information for the showdown.
+
+[source/json]
+    {
+        "op":1,
+        "data":
+        {
+            "winners": [{
+                "playerId":playerId,
+                "winAmount": value,
+                "money"}
+               ]
         },
         "type": "ROUND_UPDATE_SHOWDOWN"
     }
@@ -237,9 +296,11 @@ to the other players.
         "op":1,
         "data":
         {
-            "player": PlayerObject,
-            "action": "ACTION"
-            "betAmount": value
+            "playerId": playerId,
+            "action": "ACTION",
+            "betAmount": value,
+            "currentTableBet" : value,
+            "pot" : value
         }
         "type": "ROUND_UPDATE_PLAYER"
     }
