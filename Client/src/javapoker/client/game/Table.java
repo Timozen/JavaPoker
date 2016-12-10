@@ -34,7 +34,9 @@ public class Table {
 	public int roundBet;
 	public String playerId;
 	
-	public Table(){}
+	public Table(){
+		players = new ArrayList<>();
+	}
 
 
 	public static Table Build(JSONObject obj)

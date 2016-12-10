@@ -22,7 +22,7 @@ import org.json.JSONObject;
  * Created by Tim on 04.12.2016.
  */
 public class RoundUpdateCardDrawEvent extends ConnectionEvent{
-	
+	public String card;
 	public RoundUpdateCardDrawEvent(SocketConnection socketConnection, JSONObject data)
 	{
 		super(socketConnection, data);
@@ -31,6 +31,6 @@ public class RoundUpdateCardDrawEvent extends ConnectionEvent{
 	@Override
 	public void Build()
 	{
-		
+		card = GetData().getString("card");
 	}
 }

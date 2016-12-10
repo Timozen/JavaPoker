@@ -36,6 +36,7 @@ public class OpenTablesEvent extends ConnectionEvent {
 	public void Build()
 	{
 		JSONArray openTables = GetData().getJSONArray("table");
+		this.openTables = new ArrayList<>();
 		for(int i = 0; i < openTables.length(); i++) {
 			JSONObject itTable = openTables.getJSONObject(i);
 			String tableId = itTable.getString("tableId");

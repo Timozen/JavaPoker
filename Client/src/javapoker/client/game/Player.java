@@ -17,8 +17,10 @@ package javapoker.client.game;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class Player {
-	
+	public ArrayList<String> cards;
 	public int money;
 	public int roundBetAll;
 	public String nickname;
@@ -30,6 +32,7 @@ public class Player {
 	
 	public Player()
 	{
+		cards = new ArrayList<>();
 	}
 	
 	public static Player Build(JSONObject obj)

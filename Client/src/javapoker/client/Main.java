@@ -108,7 +108,6 @@ class Listener extends ConnectionEventListener {
 	@Override
 	public void OnPlayerActionRequestEvent(PlayerActionRequestEvent event)
 	{
-
 		//TODO Eingabe
 		event.GetConnection().SendMessage(new JSONObject().put("op", 1)
 								.put("type", "PLAYER_ACTION_ANSWER")
@@ -132,15 +131,13 @@ class Listener extends ConnectionEventListener {
 	@Override
 	public void OnRoundUpdateCardDrawEvent(RoundUpdateCardDrawEvent event)
 	{
-		System.out.println("Not implemented " + (new Object() {}.getClass().getEnclosingMethod().getName()));
-		//TODO implement datatype card
-		
+		System.out.println("Triggered " + (new Object() {}.getClass().getEnclosingMethod().getName()));
+		table.GetPlayerById(table.playerId).cards.add(event.card);
 	}
 	
 	@Override
 	public void OnRoundUpdateRoundEvent(RoundUpdateRoundEvent event)
 	{
-		//TODO implement datatype for roundstatus
 		System.out.println("Not implemented " + (new Object() {}.getClass().getEnclosingMethod().getName()));
 		
 	}
