@@ -19,7 +19,7 @@ import javapoker.client.connection.SocketConnection;
 import org.json.JSONObject;
 
 public class LoginResultEvent extends ConnectionEvent {
-	
+	public String playerId;
 	public boolean validLogin;
 	
 	public LoginResultEvent(SocketConnection socketConnection, JSONObject data)
@@ -30,5 +30,6 @@ public class LoginResultEvent extends ConnectionEvent {
 	public void Build()
 	{
 		validLogin = GetData().getBoolean("valid");
+		playerId = GetData().getString("playerId");
 	}
 }

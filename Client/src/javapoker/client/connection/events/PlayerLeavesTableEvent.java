@@ -22,7 +22,7 @@ import org.json.JSONObject;
  * Created by Tim on 04.12.2016.
  */
 public class PlayerLeavesTableEvent extends ConnectionEvent{
-	
+	public String playerId;
 	public PlayerLeavesTableEvent(SocketConnection socketConnection, JSONObject data)
 	{
 		super(socketConnection, data);
@@ -31,6 +31,6 @@ public class PlayerLeavesTableEvent extends ConnectionEvent{
 	@Override
 	public void Build()
 	{
-		
+		this.playerId = GetData().getString("playerId");
 	}
 }

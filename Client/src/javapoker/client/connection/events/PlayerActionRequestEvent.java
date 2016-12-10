@@ -16,13 +16,16 @@
 package javapoker.client.connection.events;
 
 import javapoker.client.connection.SocketConnection;
+import javapoker.client.game.BettingOperations;
 import org.json.JSONObject;
 
 /**
  * Created by Tim on 04.12.2016.
  */
 public class PlayerActionRequestEvent extends ConnectionEvent{
-	
+	public BettingOperations[] operations;
+	private final BettingOperations[] betOptionsPreBet = {BettingOperations.FOLD, BettingOperations.BET, BettingOperations.CHECK};
+	private final BettingOperations[] betOptionsPostBet = {BettingOperations.FOLD, BettingOperations.RAISE, BettingOperations.CALL};
 	public PlayerActionRequestEvent(SocketConnection socketConnection, JSONObject data)
 	{
 		super(socketConnection, data);
@@ -31,6 +34,11 @@ public class PlayerActionRequestEvent extends ConnectionEvent{
 	@Override
 	public void Build()
 	{
-		
+
+		if (GetData().getInt("actions") == 0) {
+			operations = betOptionsPreBet;
+		} else {
+			operations = betOptionsPostBet;
+		}
 	}
 }

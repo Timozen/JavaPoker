@@ -22,7 +22,12 @@ import org.json.JSONObject;
  * Created by Tim on 04.12.2016.
  */
 public class RoundUpdatePlayerEvent extends ConnectionEvent{
-	
+	public int playerBetAmount;
+	public int totalPlayerBetAmount;
+	public int currentRoundBet;
+	public int tablePotValue;
+	public String playerId;
+	public int playerMoney;
 	public RoundUpdatePlayerEvent(SocketConnection socketConnection, JSONObject data)
 	{
 		super(socketConnection, data);
@@ -31,6 +36,12 @@ public class RoundUpdatePlayerEvent extends ConnectionEvent{
 	@Override
 	public void Build()
 	{
-		
+		JSONObject data = GetData();
+		playerBetAmount = data.getInt("betAmount");
+		totalPlayerBetAmount = data.getInt("totalBetAmount");
+		currentRoundBet = data.getInt("currentRoundBet");
+		tablePotValue = data.getInt("pot");
+		playerId = data.getString("playerId");
+		playerMoney = data.getInt("money");
 	}
 }

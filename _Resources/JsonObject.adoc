@@ -71,7 +71,7 @@ If a client connects to the server, a login request is send.
 	    "data" : {},
 	    "type" : "LOGIN_REQUEST"
 	}
-
+//Done
 
 ==== LOGIN_RESULT
 
@@ -82,11 +82,13 @@ Information for the client if the log-in was successful.
         "op" : 1,
         "data" :
         {
-            "valid" : "TRUE/FALSE
-            "reason"" : "STRING"
+            "valid" : "TRUE/FALSE,
+            "reason"" : "STRING",
+            "playerId" : "STRING"
         },
         "type" : "LOGIN_RESULT"
     }
+//Done
 
 ==== OPEN_TABLES
 
@@ -108,6 +110,7 @@ Contains all the possible tables the client can join.
         },
         "type": "OPEN_TABLES"
     }
+//Done
 
 ==== ON_TABLE_JOIN
 
@@ -120,10 +123,11 @@ from the table, eg. a list of all already connected players,...
         "data":
         {
             "players": [PlayerObject, PlayerObject, ...]
-            "table" : TableObject
+            "table" : tableId,
         }
         "type": "ON_TABLE_JOIN"
     }
+//Done
 
 ==== ON_TABLE_LEAVE
 
@@ -136,6 +140,7 @@ from the table, eg. a list of all already connected players,...
         }
         "type" : "ON_TABLE_LEAVE"
     }
+//Done
 
 ==== PLAYER_JOINS_TABLE
 
@@ -151,6 +156,7 @@ play can still join.
         }
         "type": "PLAYER_JOINS_TABLE"
     }
+//Done
 
 ==== PLAYER_LEAVES_TABLE
 
@@ -166,6 +172,8 @@ send player which leaves
         }
         "type": "PLAYER_LEAVES_TABLE"
     }
+//Done
+
 ==== PLAYER_ACTION_REQUEST
 
 If it is the turn of a player. The server will send him an request with the
@@ -176,13 +184,15 @@ important for the player. The client will have a time limit
         "op":1,
         "data":
         {
-            "actions": ["FOLD","BET", "CHECK"] || ["FOLD", "RAISE", "CALL"],
+            "actions": 0 || 1,
+            //0 = prebet, 1 = pastbet
             //"currentPlayerBet" : value,
             //"currentTableBet" : value,
-            //"maximumPlayerBet" : value
+            "maximumPlayerBet" : value          //Better let the server calculate this for you
         }
         "type": "PLAYER_ACTION_REQUEST"
     }
+//Done, partially, needs to move logic there
 
 ==== ROUND_UPDATE_START
 
@@ -199,6 +209,7 @@ If a new round starts, the information will be send
         },
         "type": "ROUND_UPDATE_START"
     }
+//Done
 
 ==== ROUND_UPDATE_PAY_BLINDS
 
@@ -297,10 +308,16 @@ to the other players.
         "data":
         {
             "playerId": playerId,
-            "action": "ACTION",
+            "action": BettingOperation,
+            "gameState" : FOLD || ALLIN || PLAYING,
             "betAmount": value,
-            "currentTableBet" : value,
+            "money" : value,
+            "totalBetAmount" : value,
+
+            //of table
+            "currentRoundBet" : value,
             "pot" : value
         }
         "type": "ROUND_UPDATE_PLAYER"
     }
+//Done so far, still missing some values

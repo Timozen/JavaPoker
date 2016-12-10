@@ -22,6 +22,7 @@ public class Player {
 	public int money;
 	public int roundBetAll;
 	public String nickname;
+	public String id;
 	public int roundBetCurrent;
 	
 	public BettingOperations playerState;
@@ -36,6 +37,7 @@ public class Player {
 		Player player = new Player();
 		
 		player.nickname = obj.getString("nickname");
+		player.id = obj.getString("nickname");
 		player.money = obj.getInt("money");
 		player.roundBetAll = obj.getInt("roundBetAll");
 		player.roundBetCurrent = obj.getInt("roundBetCurrent");

@@ -16,13 +16,17 @@
 package javapoker.client.connection.events;
 
 import javapoker.client.connection.SocketConnection;
+import javapoker.client.game.OpenTable;
+import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Created by Tim on 04.12.2016.
  */
 public class OpenTablesEvent extends ConnectionEvent {
-	
+	public ArrayList<OpenTable> openTables;
 	public OpenTablesEvent(SocketConnection socketConnection, JSONObject data)
 	{
 		super(socketConnection, data);
@@ -31,6 +35,19 @@ public class OpenTablesEvent extends ConnectionEvent {
 	@Override
 	public void Build()
 	{
-		
+		JSONArray openTables = GetData().getJSONArray("table");
+		for(int i = 0; i < openTables.length(); i++) {
+			JSONObject itTable = openTables.getJSONObject(i);
+			String tableId = itTable.getString("tableId");
+			int currentPlayers = itTable.getInt("currentPlayers");
+			int neededPlayers = itTable.getInt("neededPlayers");
+			this.openTables.add(new OpenTable(
+							tableId,
+							currentPlayers,
+							neededPlayers
+					)
+			);
+			System.out.println("Received OpenTable " + tableId + " with " + currentPlayers + " of " + neededPlayers);
+		}
 	}
 }

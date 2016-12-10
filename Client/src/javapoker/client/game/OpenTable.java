@@ -18,12 +18,12 @@ package javapoker.client.game;
 /**
  * Created by Derpie on 10.12.2016.
  */
-public class TableWrapper {
-    String tableId;
-    int currentPlayers;
-    int neededPlayers;
+public class OpenTable {
+    public String tableId;
+    public int currentPlayers;
+    public int neededPlayers;
 
-    TableWrapper (String tableId, int currentPlayers, int neededPlayers) {
+    public OpenTable(String tableId, int currentPlayers, int neededPlayers) {
         this.tableId = tableId;
         this.currentPlayers = currentPlayers;
         this.neededPlayers = neededPlayers;

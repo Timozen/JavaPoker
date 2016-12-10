@@ -20,11 +20,13 @@ import javapoker.client.connection.ConnectionEventManager;
 import javapoker.client.connection.SocketConnection;
 import javapoker.client.connection.events.*;
 import javapoker.client.game.BettingOperations;
+import javapoker.client.game.OpenTable;
 import javapoker.client.game.Table;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class Main {
-	
 	public static void main(String[] args)
 	{
 		ConnectionEventManager connectionEventManager = new ConnectionEventManager();
@@ -37,8 +39,8 @@ public class Main {
 
 
 class Listener extends ConnectionEventListener {
-		
 	Table table;
+	ArrayList<OpenTable> openTables;
 	
 	@Override
 	public void OnLoginRequest(LoginRequestEvent event)
@@ -49,6 +51,7 @@ class Listener extends ConnectionEventListener {
 								  .put("data", new JSONObject().put("username", "Test")
 											       .put("password", "1234")
 								  )
+				//TODO implement pwd and uname set by client
 						 );
 	}
 	
@@ -57,13 +60,17 @@ class Listener extends ConnectionEventListener {
 	{
 		System.out.println("Received LoginResult");
 		System.out.println("Information is: " + event.validLogin);
+		if (event.validLogin) {
+			table.playerId = event.playerId;
+		}
 		super.OnLoginResult(event);
 	}
 	
 	@Override
 	public void OnOpenTables(OpenTablesEvent event)
 	{
-		System.out.println("Not implemented " + (new Object() {}.getClass().getEnclosingMethod().getName()));
+		System.out.println("Triggered " + (new Object() {}.getClass().getEnclosingMethod().getName()));
+		this.openTables = event.openTables;
 	}
 	
 	@Override
@@ -71,37 +78,42 @@ class Listener extends ConnectionEventListener {
 	{
 		table = event.table;
 		
-		System.out.println("table id:" + table.id);
+		System.out.println("table id:" + table.tableId);
 		System.out.println("with " + table.players.size() + " players");
 	}
 	
 	@Override
 	public void OnTableLeaveEvent(TableLeaveEvent event)
 	{
-		System.out.println("Not implemented " + (new Object() {}.getClass().getEnclosingMethod().getName()));
+		System.out.println("Triggered " + (new Object() {}.getClass().getEnclosingMethod().getName()));
+		System.out.println("Reason: " + event.reason);
 	}
 		
 	@Override
 	public void OnPlayerJoinsTableEvent(PlayerJoinsTableEvent event)
 	{
-		System.out.println("Not implemented " + (new Object() {}.getClass().getEnclosingMethod().getName()));
-		
+		System.out.println("Triggered " + (new Object() {}.getClass().getEnclosingMethod().getName()));
+		if (!event.player.id.equals(table.playerId)) {
+			table.AddPlayer(event.player);
+		}
 	}
 	
 	@Override
 	public void OnPlayerLeavesTableEvent(PlayerLeavesTableEvent event)
 	{
-		System.out.println("Not implemented " + (new Object() {}.getClass().getEnclosingMethod().getName()));
-		
+		System.out.println("Triggered " + (new Object() {}.getClass().getEnclosingMethod().getName()));
+		table.RemovePlayer(event.playerId);
 	}
 	
 	@Override
 	public void OnPlayerActionRequestEvent(PlayerActionRequestEvent event)
 	{
+
+		//TODO Eingabe
 		event.GetConnection().SendMessage(new JSONObject().put("op", 1)
 								.put("type", "PLAYER_ACTION_ANSWER")
 								.put("data", new JSONObject()
-									.put("tableId", table.id)
+									.put("tableId", table.tableId)
 									.put("action", BettingOperations.FOLD)
 									.put("betAmount", 0)
 									.put("isAllIn", false)
@@ -111,20 +123,24 @@ class Listener extends ConnectionEventListener {
 	@Override
 	public void OnRoundUpdateStartEvent(RoundUpdateStartEvent event)
 	{
-		System.out.println("Not implemented " + (new Object() {}.getClass().getEnclosingMethod().getName()));
-		
+		System.out.println("Triggered " + (new Object() {}.getClass().getEnclosingMethod().getName()));
+		table.dealerId = event.dealerId;
+		table.smallBlindId = event.smallBlindId;
+		table.bigBlindId = event.bigBlindId;
 	}
 	
 	@Override
 	public void OnRoundUpdateCardDrawEvent(RoundUpdateCardDrawEvent event)
 	{
 		System.out.println("Not implemented " + (new Object() {}.getClass().getEnclosingMethod().getName()));
+		//TODO implement datatype card
 		
 	}
 	
 	@Override
 	public void OnRoundUpdateRoundEvent(RoundUpdateRoundEvent event)
 	{
+		//TODO implement datatype for roundstatus
 		System.out.println("Not implemented " + (new Object() {}.getClass().getEnclosingMethod().getName()));
 		
 	}
@@ -132,14 +148,28 @@ class Listener extends ConnectionEventListener {
 	@Override
 	public void OnRoundUpdateShowdownEvent(RoundUpdateShowdownEvent event)
 	{
+		//Late
+		//TODO will be implemented first in the server...
+		//also see last commit, needs refactor
 		System.out.println("Not implemented " + (new Object() {}.getClass().getEnclosingMethod().getName()));
 		
 	}
 	
 	@Override
 	public void OnRoundUpdatePlayerEvent(RoundUpdatePlayerEvent event)
-	{
-		System.out.println("Not implemented " + (new Object() {}.getClass().getEnclosingMethod().getName()));
-		
+	{	//TODO new Datatype
+		System.out.println("Triggered " + (new Object() {}.getClass().getEnclosingMethod().getName()));
+		System.out.println(event.playerId + " paid " + event.playerBetAmount);
+
+		//TODO Print betting Operation & if fold then set state fold
+		//TODO Set player GameState
+		System.out.println(event.playerId + " put " + event.playerBetAmount);
+		table.SetPlayerMoneyAmount(event.playerId, event.playerMoney);
+		table.SetPlayerTotalBetAmount(event.playerId, event.totalPlayerBetAmount);
+
+
+		table.roundBet = event.currentRoundBet;
+		table.pot = event.tablePotValue;
+
 	}
 }

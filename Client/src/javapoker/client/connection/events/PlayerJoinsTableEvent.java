@@ -16,13 +16,14 @@
 package javapoker.client.connection.events;
 
 import javapoker.client.connection.SocketConnection;
+import javapoker.client.game.Player;
 import org.json.JSONObject;
 
 /**
  * Created by Tim on 04.12.2016.
  */
 public class PlayerJoinsTableEvent extends ConnectionEvent{
-	
+	public Player player;
 	public PlayerJoinsTableEvent(SocketConnection socketConnection, JSONObject data)
 	{
 		super(socketConnection, data);
@@ -31,6 +32,6 @@ public class PlayerJoinsTableEvent extends ConnectionEvent{
 	@Override
 	public void Build()
 	{
-		
+		player = Player.Build(GetData().getJSONObject("player"));
 	}
 }

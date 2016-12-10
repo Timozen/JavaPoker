@@ -22,23 +22,29 @@ import java.util.ArrayList;
 public class Table {
 	
 	public ArrayList<Player> players = new ArrayList<>();
+
 	public int neededPlayers;
-	public Player dealer;
-	public Player smallBlind;
-	public Player bigBlind;
+	public String dealerId;
+	public String smallBlindId;
+	public String bigBlindId;
 	public int bigBlindValue;
 	public int smallBlindValue;
 	public int pot;
-	public int id;
+	public int tableId;
+	public int roundBet;
+	public String playerId;
 	
 	public Table(){}
-	
-	
+
+
 	public static Table Build(JSONObject obj)
 	{
 		Table table = new Table();
 		table.neededPlayers = obj.getInt("neededPlayers");
-		table.id = obj.getInt("id");
+		table.tableId = obj.getInt("tableId");
+
+		/*Never join existing table... bc easier
+
 		table.bigBlindValue = obj.getInt("bigBlindValue");
 		table.smallBlindValue = obj.getInt("smallBlindValue");
 		table.pot = obj.getInt("pot");
@@ -52,7 +58,57 @@ public class Table {
 		if(obj.has("dealer")){
 			table.dealer = Player.Build(obj.getJSONObject("dealer"));
 		}
-		
+		*/
 		return table;
 	}
+
+	public void AddPlayer(Player p)
+	{
+		this.players.add(p);
+	}
+
+	public void RemovePlayer(String playerId)
+	{
+		Player p = GetPlayerById(playerId);
+		players.remove(p);
+	}
+
+	public Player GetPlayerById(String playerId)
+	{
+		for (int i = 0; i < players.size(); i++) {
+			if (players.get(i).id.equals(playerId)) {
+				return players.get(i);
+			}
+		}
+		return null;
+	}
+
+	public int SetPlayerMoneyAmount(String playerId, int amount)
+	{
+		Player p = GetPlayerById(playerId);
+		if (p != null) {
+			p.money = amount;
+			return 1;
+		}
+		return -1;
+	}
+
+	//TODO
+	public int SetPlayerState(String playerId, int playingState)
+	{
+		Player p = GetPlayerById(playerId);
+		if (p != null) {
+
+		}
+		return -1;
+	}
+
+	public int SetPlayerTotalBetAmount(String playerId, int totalBetAmount) {
+		Player p = GetPlayerById(playerId);
+		if (p != null) {
+			p.roundBetAll = totalBetAmount;
+		}
+		return -1;
+	}
+
 }

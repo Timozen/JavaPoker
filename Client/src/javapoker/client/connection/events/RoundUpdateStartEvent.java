@@ -22,7 +22,10 @@ import org.json.JSONObject;
  * Created by Tim on 04.12.2016.
  */
 public class RoundUpdateStartEvent extends ConnectionEvent{
-	
+	public String dealerId;
+	public String smallBlindId;
+	public String bigBlindId;
+
 	public RoundUpdateStartEvent(SocketConnection socketConnection, JSONObject data)
 	{
 		super(socketConnection, data);
@@ -31,6 +34,8 @@ public class RoundUpdateStartEvent extends ConnectionEvent{
 	@Override
 	public void Build()
 	{
-		
+		this.dealerId = GetData().getString("dealerId");
+		this.smallBlindId = GetData().getString("smallBlind");
+		this.bigBlindId = GetData().getString("bigBlind");
 	}
 }
