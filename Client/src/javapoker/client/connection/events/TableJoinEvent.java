@@ -36,7 +36,8 @@ public class TableJoinEvent extends ConnectionEvent{
 	public void Build()
 	{
 		if(GetData().getBoolean("success")) {
-			table = Table.Build(GetData().getJSONObject("table"));
+			table = new Table();
+			table.tableId = GetData().getInt("tableId");
 
 			JSONArray players = GetData().getJSONArray("players");
 

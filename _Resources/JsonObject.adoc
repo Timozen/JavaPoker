@@ -123,7 +123,7 @@ from the table, eg. a list of all already connected players,...
         "data":
         {
             "players": [PlayerObject, PlayerObject, ...]
-            "table" : tableId,
+            "tableId" : tableId,
             "success : boolean
         }
         "type": "ON_TABLE_JOIN"

@@ -41,7 +41,12 @@ public class Main {
 class Listener extends ConnectionEventListener {
 	Table table;
 	ArrayList<OpenTable> openTables;
-	
+
+	Listener() {
+		table = new Table();
+		openTables = new ArrayList<>();
+	}
+
 	@Override
 	public void OnLoginRequest(LoginRequestEvent event)
 	{
@@ -63,7 +68,6 @@ class Listener extends ConnectionEventListener {
 		if (event.validLogin) {
 			table.playerId = event.playerId;
 		}
-		super.OnLoginResult(event);
 	}
 	
 	@Override
@@ -76,6 +80,7 @@ class Listener extends ConnectionEventListener {
 	@Override
 	public void OnTableJoinEvent(TableJoinEvent event)
 	{
+		System.out.println("Received TableJoin");
 		if (event.table == null) {
 			System.out.println("Error - Cannot connect to table");
 			return;

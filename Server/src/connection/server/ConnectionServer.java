@@ -105,7 +105,10 @@ public class ConnectionServer extends Server {
 		
 		event.GetClient().SendMessage( new JSONObject().put("op", 1)
 								.put("type", "LOGIN_RESULT")
-								.put("data", new JSONObject().put("valid", true)
+								.put("data", new JSONObject()
+										.put("valid", true)
+										.put("playerId", event.username)
+										.put("reason", "correct")
 								)
 					     );
 		//setup player and add client to hashmap
