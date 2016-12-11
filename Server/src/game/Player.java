@@ -30,6 +30,7 @@ public class Player {
 	private int money;
 	private List<Card> cards;
 	private String nickname;
+	private String id;
 	private PlayerState playerState;                //Gives information about what Player did (Fold / AllIn / Normal)
 	
 	//Field for the sum of all bet of all Setzrunden
@@ -57,6 +58,7 @@ public class Player {
 	public Player(String nickname)
 	{
 		this.nickname = nickname;
+		this.id = nickname;
 		this.money = 5000;
 		this.cards = new LinkedList<>();
 		this.roundBetAll = 0;
@@ -188,6 +190,7 @@ public class Player {
 		obj.put("roundBetCurrent", roundBetCurrent);
 		obj.put("lastBettingOption", bettingAction);
 		obj.put("money", money);
+		obj.put("id", id);
 
 		return obj;
 	}

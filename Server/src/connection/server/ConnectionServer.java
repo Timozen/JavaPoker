@@ -100,7 +100,7 @@ public class ConnectionServer extends Server {
 		System.out.println("The information is:");
 		System.out.println("Username: " + event.username);
 		System.out.println("Password: " + event.password);
-		
+
 		//TODO check if valid
 		
 		event.GetClient().SendMessage( new JSONObject().put("op", 1)

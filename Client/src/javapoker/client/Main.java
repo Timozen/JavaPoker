@@ -103,6 +103,7 @@ class Listener extends ConnectionEventListener {
 	{
 		System.out.println("Triggered " + (new Object() {}.getClass().getEnclosingMethod().getName()));
 		if (!event.player.id.equals(table.playerId)) {
+			System.out.println("Player with id " + event.player.id + " joined.");
 			table.AddPlayer(event.player);
 		}
 	}

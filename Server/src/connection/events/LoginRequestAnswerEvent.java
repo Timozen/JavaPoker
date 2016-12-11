@@ -10,6 +10,7 @@ public class LoginRequestAnswerEvent extends ConnectionEvent {
 	
 	public String username;
 	public String password;
+	public String id;
 	
 	public LoginRequestAnswerEvent(Client client, JSONObject object)
 	{
@@ -21,5 +22,6 @@ public class LoginRequestAnswerEvent extends ConnectionEvent {
 	{
 		username = object.getString("username");
 		password = object.getString("password");
+		id = object.getString("username");
 	}
 }

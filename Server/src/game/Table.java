@@ -390,7 +390,9 @@ public class Table implements Runnable {
 				if (p.GetConnectionClient() != null) {
 					p.GetConnectionClient().SendMessage(new JSONObject().put("op",1)
 										    .put("type", "PLAYER_JOINS_TABLE")
-										    .put("data", player.ToJSON())
+										    .put("data", new JSONObject()
+													.put("player", player.ToJSON())
+											)
 					);
 				}
 			});
