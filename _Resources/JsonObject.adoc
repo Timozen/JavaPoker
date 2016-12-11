@@ -322,3 +322,17 @@ to the other players.
         "type": "ROUND_UPDATE_PLAYER"
     }
 //Done so far, still missing some values
+
+==== ROUND_UPDATE_CHOOSER_PLAYER
+
+Informs other clients which client has to take his choice.
+
+[source/json]
+    {
+        "op":1,
+        "data":
+        {
+            "playerId": playerId
+        }
+        "type": "ROUND_UPDATE_CHOOSER_PLAYER"
+    }

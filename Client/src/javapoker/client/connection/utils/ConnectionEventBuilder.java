@@ -76,6 +76,9 @@ public class ConnectionEventBuilder {
 			case "ROUND_UPDATE_PLAYER":
 				connectionEventManager.handle((new RoundUpdatePlayerEvent(socketConnection, data)));
 				break;
+			case "ROUND_UPDATE_CHOOSER_PLAYER":
+				connectionEventManager.handle((new RoundUpdateChooserPlayer(socketConnection, data)));
+				break;
 			default:
 				System.out.println("Unknown event type: " + obj.getString("type") + " not implemented or spelling mistake");
 				break;

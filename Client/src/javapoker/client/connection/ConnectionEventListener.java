@@ -32,6 +32,7 @@ public abstract class ConnectionEventListener {
 	public void OnRoundUpdateRoundEvent(RoundUpdateRoundEvent event) {}
 	public void OnRoundUpdateShowdownEvent(RoundUpdateShowdownEvent event) {}
 	public void OnRoundUpdatePlayerEvent(RoundUpdatePlayerEvent event) {}
+	public void OnRoundUpdateChooserPlayer(RoundUpdateChooserPlayer event) {}
 	
 	public void OnConnectionEvent(ConnectionEvent e)
 	{
@@ -61,6 +62,8 @@ public abstract class ConnectionEventListener {
 			OnRoundUpdateShowdownEvent((RoundUpdateShowdownEvent) e);
 		} else if (e instanceof RoundUpdatePlayerEvent) {
 			OnRoundUpdatePlayerEvent((RoundUpdatePlayerEvent) e);
+		} else if (e instanceof RoundUpdateChooserPlayer) {
+			OnRoundUpdateChooserPlayer((RoundUpdateChooserPlayer) e);
 		}
 	}
 }

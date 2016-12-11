@@ -191,4 +191,10 @@ class Listener extends ConnectionEventListener {
 		table.roundBet = event.currentRoundBet;
 		table.pot = event.tablePotValue;
 	}
+
+	@Override
+	public void OnRoundUpdateChooserPlayer(RoundUpdateChooserPlayer event) {
+		System.out.println("Triggered " + (new Object() {}.getClass().getEnclosingMethod().getName()));
+		System.out.println(table.GetPlayerById(event.playerId).nickname + " makes choice...");
+	}
 }

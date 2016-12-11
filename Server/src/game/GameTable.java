@@ -279,6 +279,17 @@ public class GameTable {
 		while (!IsAllPlayersCalled() && !isShowdown) {                                                                                                                                        //Solange nicht alle (Playing) Spieler gecallt / gecheckt haben
 			if (actualPlayer.GetPlayerState() == PlayerState.PLAYING) {                                                                                                                //Wenn gewählter Spieler noch Wahlmöglichkeit hat (State 1, 0 = AllIn/Fold)
 				//--------------------------
+				for(Player p : playersInRound) {
+					if (!p.GetConnectionClient().GetPlayerId().equals(actualPlayer.GetConnectionClient().GetPlayerId())) {
+						p.GetConnectionClient().SendMessage(new JSONObject()
+								.put("op", "1")
+								.put("type", "ROUND_UPDATE_CHOOSER_PLAYER")
+								.put("data", new JSONObject()
+									.put("playerId", actualPlayer.GetConnectionClient().GetPlayerId())
+								)
+						);
+					}
+				}
 				table.GetPlayerAction(actualPlayer);
 				BettingOperations playerAction = actualPlayer.GetBettingAction();                                                                                //Hier muss gewartet werden!!!
 				//--------------------------
