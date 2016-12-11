@@ -50,22 +50,18 @@ public class SocketConnection extends Thread {
 	}
 	
 	@Override
-	public synchronized void start()
+	public void run()
 	{
 		try {
 			socket = new Socket(adr, port);
 			input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			output = new PrintWriter(socket.getOutputStream(), true);
 			
-			run();
 		} catch (IOException ex) {
 			ex.printStackTrace();
+			return;
 		}
-	}
-	
-	@Override
-	public void run()
-	{
+		
 		try {
 			while (true) {
 				String msg = input.readLine();

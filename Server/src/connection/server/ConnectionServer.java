@@ -161,7 +161,6 @@ public class ConnectionServer extends Server {
 		Thread thread = new Thread(table);
 		thread.start();
 
-		table.AddPlayerToTable("Amme");
 		table.AddPlayerToTable("Vogel");
 		table.AddPlayerToTable("Grajetzki");
 		table.AddPlayerToTable("Neumann");

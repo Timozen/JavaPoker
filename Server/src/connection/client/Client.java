@@ -62,22 +62,16 @@ public class Client extends Thread {
 	}
 	
 	@Override
-	public synchronized void start()
+	public void run()
 	{
 		if (init()) {
 			connectionEventManager.handle(new ClientConnectEvent(this, null));
 			//TODO log-in
-			
-			run();
 		} else {
 			System.out.println("Client could not be initiated!");
+			return;
 		}
 		
-	}
-	
-	@Override
-	public void run()
-	{
 		try {
 			//SendMessage("Welcome!");
 			while(true){
