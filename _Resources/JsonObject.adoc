@@ -5,8 +5,8 @@ Communication-Protocol
 ==== LOGIN_REQUEST_ANSWER
 
 The object the clients sends to identify itself at the server.
-
-[source/json]
+``
+``[source/json]
 	{
 	    "op" : 1,
 	    "data" :
@@ -124,6 +124,7 @@ from the table, eg. a list of all already connected players,...
         {
             "players": [PlayerObject, PlayerObject, ...]
             "table" : tableId,
+            "success : boolean
         }
         "type": "ON_TABLE_JOIN"
     }

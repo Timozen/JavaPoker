@@ -385,7 +385,6 @@ public class Table implements Runnable {
 	public void AddPlayerToTable(Player player)
 	{
 		if(!playersOnTable.contains(player)){
-
 			//send PLAYER_JOINS_TABLE Event to every already connected player
 			playersOnTable.forEach(p -> {
 				if (p.GetConnectionClient() != null) {
@@ -397,27 +396,34 @@ public class Table implements Runnable {
 			});
 			
 			playersOnTable.add(player);
-			player.GetConnectionClient().SendMessage(SendJoinAnswer());
+			player.GetConnectionClient().SendMessage(GenerateJoinAnswer(true));
 			
 		} else {
 			System.out.println("Cannot add the same player again to the table!");
 		}
 	}
 	
-	private JSONObject SendJoinAnswer()
+	public JSONObject GenerateJoinAnswer(boolean success)
 	{
 		JSONObject ob = new JSONObject();
 		
 		JSONArray players = new JSONArray();
 		
 		playersOnTable.forEach(p -> players.put(p.ToJSON()));
-		
+
+		JSONObject data = new JSONObject()
+				.put("table", this.id);
+		if (success) {
+			data.put("players", "");
+		}else {
+			data.put("players", new JSONArray(players));
+		}
+		data.put("success", success);
+
 		ob.put("op", 1);
 		ob.put("type", "ON_TABLE_JOIN");
-		ob.put("data", new JSONObject().put("table", this.ToJSONObject())
-		       				.put("players", players)
-		);
-		
+		ob.put("data", data);
+
 		return ob;
 	}
 	

@@ -138,8 +138,15 @@ public class ConnectionServer extends Server {
 	@Override
 	public void OnTableJoinRequestEvent(TableJoinRequestEvent event)
 	{
-		//TODO
-		//Send
+		if (!tables.get(event.tableId).HasStarted()) {
+			//let player join
+			tables.get(event.tableId).AddPlayerToTable(event.GetClient().GetPlayer());
+			//Table fires ON_TABLE_JOIN
+			//Table fires PLAYER_JOINS_TABLE
+		} else {
+			event.GetClient().SendMessage(tables.get(event.tableId).GenerateJoinAnswer(false));
+		}
+
 	}
 
 	public void CreateNewTable(int playerCount)
