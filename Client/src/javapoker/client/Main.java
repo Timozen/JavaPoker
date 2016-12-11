@@ -21,6 +21,7 @@ import javapoker.client.connection.SocketConnection;
 import javapoker.client.connection.events.*;
 import javapoker.client.game.BettingOperations;
 import javapoker.client.game.OpenTable;
+import javapoker.client.game.Player;
 import javapoker.client.game.Table;
 import org.json.JSONObject;
 
@@ -40,6 +41,7 @@ public class Main {
 
 
 class Listener extends ConnectionEventListener {
+	Player tempClientUntilTableIsReceived;
 	Table table;
 	ArrayList<OpenTable> openTables;
 
@@ -72,7 +74,8 @@ class Listener extends ConnectionEventListener {
 		System.out.println("Received LoginResult");
 		System.out.println("Information is: " + event.validLogin);
 		if (event.validLogin) {
-			table.playerId = event.playerId;
+			tempClientUntilTableIsReceived = new Player();
+			tempClientUntilTableIsReceived.id = event.playerId;
 		}
 	}
 	
@@ -92,6 +95,7 @@ class Listener extends ConnectionEventListener {
 			return;
 		}
 		table = event.table;
+		table.clientPlayer = tempClientUntilTableIsReceived;
 		
 		System.out.println("table id:" + table.tableId);
 		System.out.println("with " + table.players.size() + " players");
@@ -108,7 +112,7 @@ class Listener extends ConnectionEventListener {
 	public void OnPlayerJoinsTableEvent(PlayerJoinsTableEvent event)
 	{
 		System.out.println("Triggered " + (new Object() {}.getClass().getEnclosingMethod().getName()));
-		if (!event.player.id.equals(table.playerId)) {
+		if (!event.player.id.equals(table.clientPlayer.id)) {
 			System.out.println("Player with id " + event.player.id + " joined.");
 			table.AddPlayer(event.player);
 		}
@@ -156,7 +160,9 @@ class Listener extends ConnectionEventListener {
 	public void OnRoundUpdateCardDrawEvent(RoundUpdateCardDrawEvent event)
 	{
 		System.out.println("Triggered " + (new Object() {}.getClass().getEnclosingMethod().getName()));
-		table.GetPlayerById(table.playerId).cards.add(event.card);
+		System.out.println("Player received " + event.card);
+		table.clientPlayer.cards.add(event.card);
+		//TODO with GUI: Show other players retreived one too
 	}
 	
 	@Override
@@ -196,5 +202,14 @@ class Listener extends ConnectionEventListener {
 	public void OnRoundUpdateChooserPlayer(RoundUpdateChooserPlayer event) {
 		System.out.println("Triggered " + (new Object() {}.getClass().getEnclosingMethod().getName()));
 		System.out.println(table.GetPlayerById(event.playerId).nickname + " makes choice...");
+	}
+
+	@Override
+	public void OnLoginAcceptedPlayerSetup(LoginAcceptedPlayerSetup event) {
+		System.out.println("Triggered " + (new Object() {}.getClass().getEnclosingMethod().getName()));
+		tempClientUntilTableIsReceived.id = event.playerId;
+		tempClientUntilTableIsReceived.money = event.money;
+		System.out.println("Welcome on our Server, " + event.playerId);
+		System.out.println("Your money amount is " + event.money);
 	}
 }

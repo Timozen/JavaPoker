@@ -116,6 +116,15 @@ public class Client extends Thread {
 		this.loggedIn = loggedIn;
 		this.player = new Player(username);
 		this.player.SetConnectionClient(this);
+
+		this.SendMessage(new JSONObject()
+				.put("op", "1")
+				.put("type", "LOGIN_ACCEPTED_PLAYER_SETUP")
+				.put("data", new JSONObject()
+					.put("money", this.player.GetMoney())
+					.put("playerId", this.GetPlayerId())
+				)
+		);
 	}
 
 	public void OpenTablesAnswer(JSONArray tables)

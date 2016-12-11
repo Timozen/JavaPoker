@@ -32,10 +32,11 @@ public class Table {
 	public int pot;
 	public int tableId;
 	public int roundBet;
-	public String playerId;
+	public Player clientPlayer;
 	
 	public Table(){
 		players = new ArrayList<>();
+		clientPlayer = new Player();
 	}
 
 
@@ -114,7 +115,7 @@ public class Table {
 		return -1;
 	}
 
-	public int SetPlayerCurrentBetAmount(String playerid, int currentBetAmount) {
+	public int SetPlayerCurrentBetAmount(String playerId, int currentBetAmount) {
 		Player p = GetPlayerById(playerId);
 		if (p != null) {
 			p.roundBetCurrent = currentBetAmount;

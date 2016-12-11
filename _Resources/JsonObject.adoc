@@ -90,6 +90,22 @@ Information for the client if the log-in was successful.
     }
 //Done
 
+==== LOGIN_ACCEPTED_PLAYER_SETUP
+
+Client needs to setup his own player, therefor sent this information.
+[source/json]
+    {
+        "op" : 1,
+        "data" :
+        {
+            "money" : int,
+            "playerId" : int
+            //maybe more
+        },
+        "type" : "LOGIN_ACCEPTED_PLAYER_SETUP"
+    }
+
+
 ==== OPEN_TABLES
 
 Contains all the possible tables the client can join.
@@ -321,7 +337,7 @@ to the other players.
         }
         "type": "ROUND_UPDATE_PLAYER"
     }
-//Done so far, still missing some values
+//Done
 
 ==== ROUND_UPDATE_CHOOSER_PLAYER
 

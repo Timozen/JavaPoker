@@ -38,7 +38,7 @@ public class Player {
 	public static Player Build(JSONObject obj)
 	{
 		Player player = new Player();
-		
+
 		player.nickname = obj.getString("nickname");
 		player.id = obj.getString("nickname");
 		player.money = obj.getInt("money");

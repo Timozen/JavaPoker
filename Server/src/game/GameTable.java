@@ -215,12 +215,26 @@ public class GameTable {
 	public void SpreadPlayerCards()
 	{
 		for (int i = 0; i < playersInRound.size(); i++) {
+			Card tempCard = deck.Draw();
 			playersInRound.get(dealerIndex + i)
-				.AddCard(deck.Draw());
+				.AddCard(tempCard);
+			playersInRound.get(dealerIndex + i).GetConnectionClient().SendMessage(new JSONObject()
+					.put("op", "1")
+					.put("type", "ROUND_UPDATE_CARD_DRAW")
+					.put("data", new JSONObject()
+						.put("card", tempCard.toString()))
+			);
 		}
 		for (int i = 0; i < playersInRound.size(); i++) {
+			Card tempCard = deck.Draw();
 			playersInRound.get(dealerIndex + i)
-				.AddCard(deck.Draw());
+					.AddCard(tempCard);
+			playersInRound.get(dealerIndex + i).GetConnectionClient().SendMessage(new JSONObject()
+					.put("op", "1")
+					.put("type", "ROUND_UPDATE_CARD_DRAW")
+					.put("data", new JSONObject()
+							.put("card", tempCard.toString()))
+			);
 		}
 		//table muss Spieler informieren und Karten an Clients verteilen
 	}
@@ -291,6 +305,9 @@ public class GameTable {
 					}
 				}
 				table.GetPlayerAction(actualPlayer);
+				if (table.receivedAnswer) {
+					//TODO but optional: If no answer received say that forced fold
+				}
 				BettingOperations playerAction = actualPlayer.GetBettingAction();                                                                                //Hier muss gewartet werden!!!
 				//--------------------------
 				if (playerAction != BettingOperations.FOLD) {                                                                                                                        //Spieler foldet nicht
