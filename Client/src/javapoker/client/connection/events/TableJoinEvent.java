@@ -35,12 +35,16 @@ public class TableJoinEvent extends ConnectionEvent{
 	@Override
 	public void Build()
 	{
-		table = Table.Build(GetData().getJSONObject("table"));
-				
-		JSONArray players = GetData().getJSONArray("players");
-		
-		for(int i = 0; i < players.length(); i++){
-			table.players.add(Player.Build(players.getJSONObject(i)));
+		if(GetData().getBoolean("success")) {
+			table = Table.Build(GetData().getJSONObject("table"));
+
+			JSONArray players = GetData().getJSONArray("players");
+
+			for(int i = 0; i < players.length(); i++){
+				table.players.add(Player.Build(players.getJSONObject(i)));
+			}
+		} else {
+			table = null;
 		}
 	}
 }

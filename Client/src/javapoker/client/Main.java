@@ -76,6 +76,10 @@ class Listener extends ConnectionEventListener {
 	@Override
 	public void OnTableJoinEvent(TableJoinEvent event)
 	{
+		if (event.table == null) {
+			System.out.println("Error - Cannot connect to table");
+			return;
+		}
 		table = event.table;
 		
 		System.out.println("table id:" + table.tableId);
