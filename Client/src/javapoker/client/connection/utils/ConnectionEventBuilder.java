@@ -82,6 +82,9 @@ public class ConnectionEventBuilder {
 			case "LOGIN_ACCEPTED_PLAYER_SETUP":
 				connectionEventManager.handle((new LoginAcceptedPlayerSetup(socketConnection, data)));
 				break;
+			case "ROUND_UPDATE_NEWBOARDCARD":
+				connectionEventManager.handle((new RoundUpdateNewBoardCard(socketConnection, data)));
+				break;
 			default:
 				System.out.println("Unknown event type: " + obj.getString("type") + " not implemented or spelling mistake");
 				break;

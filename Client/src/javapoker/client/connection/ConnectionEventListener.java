@@ -34,6 +34,7 @@ public abstract class ConnectionEventListener {
 	public void OnRoundUpdatePlayerEvent(RoundUpdatePlayerEvent event) {}
 	public void OnRoundUpdateChooserPlayer(RoundUpdateChooserPlayer event) {}
 	public void OnLoginAcceptedPlayerSetup(LoginAcceptedPlayerSetup event) {}
+	public void OnRoundUpdateNewBoardCard(RoundUpdateNewBoardCard event) {}
 
 	public void OnConnectionEvent(ConnectionEvent e)
 	{
@@ -67,6 +68,8 @@ public abstract class ConnectionEventListener {
 			OnRoundUpdateChooserPlayer((RoundUpdateChooserPlayer) e);
 		} else if (e instanceof  LoginAcceptedPlayerSetup) {
 			OnLoginAcceptedPlayerSetup((LoginAcceptedPlayerSetup) e);
+		} else if (e instanceof RoundUpdateNewBoardCard) {
+			OnRoundUpdateNewBoardCard((RoundUpdateNewBoardCard) e);
 		}
 	}
 }

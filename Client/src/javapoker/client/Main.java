@@ -131,11 +131,23 @@ class Listener extends ConnectionEventListener {
 		System.out.println("Your MaxBet is: " + event.maximumBetAmount);
 		System.out.print("Choose Action ");
 		for(BettingOperations op : event.operations) {System.out.print(op.name() + " ");}
-		Scanner scanner = new Scanner(System.in);
-		String operation = scanner.nextLine();
 
-		System.out.println("Input Betamount: ");
-		int amount = scanner.nextInt();
+		Scanner scanner = new Scanner(System.in);;
+		String operation = null;
+		int amount = 0;
+
+		byte isCorrect = 0;
+		while(isCorrect != 1) {
+			operation = scanner.nextLine();
+
+			System.out.println("Input Betamount: ");
+			amount = scanner.nextInt();
+
+			System.out.println("Correct Input: 0 || 1");
+			if (scanner.nextInt() == 1) {
+				isCorrect = 1;
+			}
+		}
 
 		event.GetConnection().SendMessage(new JSONObject().put("op", 1)
 								.put("type", "PLAYER_ACTION_ANSWER")
@@ -190,9 +202,11 @@ class Listener extends ConnectionEventListener {
 		System.out.println(event.playerId + " did " + event.action);
 
 		//TODO BettingOperation
-		System.out.print(table.SetPlayerMoneyAmount(event.playerId, event.playerMoney));
-		System.out.print(table.SetPlayerTotalBetAmount(event.playerId, event.totalPlayerBetAmount));
-		System.out.print(table.SetPlayerCurrentBetAmount(event.playerId, event.currentRoundBet));
+		table.SetPlayerMoneyAmount(event.playerId, event.playerMoney);
+		table.SetPlayerTotalBetAmount(event.playerId, event.totalPlayerBetAmount);
+		table.SetPlayerCurrentBetAmount(event.playerId, event.currentRoundBet);
+
+		System.out.println("New Pot: " + table.pot);
 
 		table.roundBet = event.currentRoundBet;
 		table.pot = event.tablePotValue;
@@ -211,5 +225,16 @@ class Listener extends ConnectionEventListener {
 		tempClientUntilTableIsReceived.money = event.money;
 		System.out.println("Welcome on our Server, " + event.playerId);
 		System.out.println("Your money amount is " + event.money);
+	}
+
+	@Override
+	public void OnRoundUpdateNewBoardCard(RoundUpdateNewBoardCard event) {
+		System.out.println("New Boardcard received " + event.card);
+		table.boardCards.add(event.card);
+		System.out.print("Table Cards: ");
+		for(String card : table.boardCards) {
+			System.out.print(card + "   ");
+		}
+		System.out.println();
 	}
 }

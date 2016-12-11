@@ -276,6 +276,19 @@ information.
         "type": "ROUND_UPDATE_TURN"
     }
 
+==== ROUND_UPDATE_NEWBOARDCARD
+
+Sends client information with new Boardcard
+
+[source/json]
+    {
+        "op":1,
+        "data":
+        {
+            "newBoardCard": CARD
+        }
+        "type": "ROUND_UPDATE_NEWBOARDCARD"
+    }
 
 ==== ROUND_UPDATE_SHOWDOWN_PRE_PAYMENT
 

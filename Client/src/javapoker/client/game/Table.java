@@ -21,8 +21,8 @@ import java.util.ArrayList;
 
 public class Table {
 	
-	public ArrayList<Player> players = new ArrayList<>();
-
+	public ArrayList<Player> players;
+	public ArrayList<String> boardCards;
 	public int neededPlayers;
 	public String dealerId;
 	public String smallBlindId;
@@ -37,6 +37,7 @@ public class Table {
 	public Table(){
 		players = new ArrayList<>();
 		clientPlayer = new Player();
+		boardCards = new ArrayList<>();
 	}
 
 

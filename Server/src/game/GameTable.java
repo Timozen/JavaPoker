@@ -208,7 +208,17 @@ public class GameTable {
 	{
 		deck.Draw();                                                        //Burn first
 		for (int i = 0; i < amount; i++) {
-			table.AddBoardCard(deck.Draw());
+			Card newCard = deck.Draw();
+			table.AddBoardCard(newCard);
+			for (Player p : playersInRound) {
+				p.GetConnectionClient().SendMessage(new JSONObject()
+						.put("op", "1")
+						.put("type", "ROUND_UPDATE_NEWBOARDCARD")
+						.put("data", new JSONObject()
+								.put("card", newCard.toString())
+						)
+				);
+			}
 		}
 	}
 	
