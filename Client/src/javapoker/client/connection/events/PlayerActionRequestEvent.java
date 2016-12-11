@@ -34,7 +34,6 @@ public class PlayerActionRequestEvent extends ConnectionEvent{
 	@Override
 	public void Build()
 	{
-
 		if (GetData().getInt("actions") == 0) {
 			operations = betOptionsPreBet;
 		} else {

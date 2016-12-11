@@ -19,6 +19,7 @@ import connection.ConnectionEventManager;
 import connection.events.*;
 import connection.client.Client;
 import game.Table;
+import game.models.BettingOperations;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -124,6 +125,8 @@ public class ConnectionServer extends Server {
 	{
 		Table t = tables.get(event.tableId);
 		t.receivedAnswer = true;
+		event.GetClient().GetPlayer().SetBettingAction(event.action);
+		event.GetClient().GetPlayer().SetBetAmount(event.betAmount);
 	}
 
 	@Override
@@ -161,9 +164,9 @@ public class ConnectionServer extends Server {
 		Thread thread = new Thread(table);
 		thread.start();
 
-		table.AddPlayerToTable("Vogel");
-		table.AddPlayerToTable("Grajetzki");
-		table.AddPlayerToTable("Neumann");
+		//table.AddPlayerToTable("Vogel");
+		//table.AddPlayerToTable("Grajetzki");
+		//table.AddPlayerToTable("Neumann");
 	}
 	
 }

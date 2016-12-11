@@ -392,5 +392,9 @@ public class Player {
 		return isElective;
 	}
 	//endregion
+
+	public void SetBetAmount(int amount) {
+		betAmountFromInput = amount;
+	}
 	//endregion
 }

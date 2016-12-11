@@ -191,7 +191,7 @@ public class Table implements Runnable {
 		
 		*/
 		
-		BettingOperations[] options = IsPreBet() ?  betOptionsPreBet : betOptionsPostBet;
+		int options = IsPreBet() ?  0 : 1;
 		
 		if(player.GetConnectionClient() != null){
 			receivedAnswer = false;
@@ -217,13 +217,12 @@ public class Table implements Runnable {
 				player.SetBettingAction(BettingOperations.FOLD);
 				player.SetBetAmountFromInput(0);
 			} else {
-				//TODO Do Stuff here?
-				System.out.println("got an answer");
+				System.out.println(player.GetNickname() + " answered.");
 			}
 			
 		} else {
 			Scanner scanner = new Scanner(System.in);
-			List<BettingOperations> operationsList = Arrays.asList(options);
+			List<BettingOperations> operationsList = Arrays.asList(options == 0 ? betOptionsPreBet : betOptionsPostBet);
 			
 			System.out.println("Turn of " + player.GetNickname() + "(" + player.GetMoney() + ")");
 			System.out.print("Options: ");
@@ -358,7 +357,7 @@ public class Table implements Runnable {
 		}
 	}
 	
-	private void playerActionRequest(Player player, BettingOperations[] bettingOperations)
+	private void playerActionRequest(Player player, int bettingOperations)
 	{
 		int maximumBet = player.GetMoney() - (actualRoundBet - player.GetRoundBetCurrent());
 		if (maximumBet < 0) {
@@ -370,14 +369,14 @@ public class Table implements Runnable {
 		
 		obj.put("op", 1);
 		obj.put("type", "PLAYER_ACTION_REQUEST");
-		obj.put("data", new JSONObject().put("actions", new JSONArray().put(bettingOperations))
+		obj.put("data", new JSONObject().put("actions", bettingOperations)
 						.put("currentPlayerBet", player.GetRoundBetCurrent())
 						.put("currentTableBet", GetRoundBetCurrent())
 						.put("maximumPlayerBet", maximumBet)
 		);
 		
 		
-		System.out.println("Send request to client!!!!!");
+		System.out.println("Send request to " + player.GetNickname());
 		
 		player.GetConnectionClient().SendMessage(obj);
 	}

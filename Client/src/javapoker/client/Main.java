@@ -25,6 +25,7 @@ import javapoker.client.game.Table;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
 	public static void main(String[] args)
@@ -51,9 +52,14 @@ class Listener extends ConnectionEventListener {
 	public void OnLoginRequest(LoginRequestEvent event)
 	{
 		System.out.println("Received LoginRequest");
+		Scanner scanner = new Scanner(System.in);
+
+		System.out.print("Username: ");
+		String uName = scanner.nextLine();
+
 		event.GetConnection().SendMessage(new JSONObject().put("op", 1)
 								  .put("type", "LOGIN_REQUEST_ANSWER")
-								  .put("data", new JSONObject().put("username", "Test")
+								  .put("data", new JSONObject().put("username", uName)
 											       .put("password", "1234")
 								  )
 				//TODO implement pwd and uname set by client
