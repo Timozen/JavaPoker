@@ -131,11 +131,16 @@ public class Client extends Thread {
 		return player;
 	}
 	
+	public String GetPlayerId()
+	{
+		return username;
+	}
+
 	public String GetUsername()
 	{
 		return username;
 	}
-	
+
 	public void SetUsername(String username)
 	{
 		this.username = username;

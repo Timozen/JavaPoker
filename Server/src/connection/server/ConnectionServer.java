@@ -16,11 +16,8 @@
 package connection.server;
 
 import connection.ConnectionEventManager;
-import connection.events.ClientConnectEvent;
+import connection.events.*;
 import connection.client.Client;
-import connection.events.ClientDisconnectEvent;
-import connection.events.LoginRequestAnswerEvent;
-import connection.events.PlayerActionAnswerEvent;
 import game.Table;
 import org.json.JSONObject;
 
@@ -117,26 +114,38 @@ public class ConnectionServer extends Server {
 		tables.get(0).AddPlayerToTable(event.GetClient().GetPlayer());
 	}
 	
-	public void CreateNewTable(int playerCount)
-	{
-		Table table = new Table(tables.size(), playerCount);
-		tables.put(idCounter, table);
-		idCounter++;
-		
-		Thread thread = new Thread(table);
-		thread.start();
-		
-		table.AddPlayerToTable("Amme");
-		table.AddPlayerToTable("Vogel");
-		table.AddPlayerToTable("Grajetzki");
-		table.AddPlayerToTable("Neumann");
-	}
-	
 	@Override
 	public void OnPlayerActionAnswerEvent(PlayerActionAnswerEvent event)
 	{
 		Table t = tables.get(event.tableId);
 		t.receivedAnswer = true;
+	}
+
+	@Override
+	public void OnOpenTablesRefreshEvent(OpenTablesRefreshEvent event)
+	{
+		//todo
+	}
+
+	@Override
+	public void OnTableJoinRequestEvent(TableJoinRequestEvent event)
+	{
+		//todo
+	}
+
+	public void CreateNewTable(int playerCount)
+	{
+		Table table = new Table(tables.size(), playerCount);
+		tables.put(idCounter, table);
+		idCounter++;
+
+		Thread thread = new Thread(table);
+		thread.start();
+
+		table.AddPlayerToTable("Amme");
+		table.AddPlayerToTable("Vogel");
+		table.AddPlayerToTable("Grajetzki");
+		table.AddPlayerToTable("Neumann");
 	}
 	
 }

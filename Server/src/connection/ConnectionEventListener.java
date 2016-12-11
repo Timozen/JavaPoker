@@ -17,7 +17,6 @@ package connection;
 
 
 import connection.events.*;
-import game.Player;
 
 public abstract class ConnectionEventListener {
 	
@@ -25,6 +24,8 @@ public abstract class ConnectionEventListener {
 	public void OnClientDisconnectEvent(ClientDisconnectEvent event){}
 	public void OnLoginRequestAnswerEvent(LoginRequestAnswerEvent event) {}
 	public void OnPlayerActionAnswerEvent(PlayerActionAnswerEvent event){}
+	public void OnTableJoinRequestEvent(TableJoinRequestEvent event) {}
+	public void OnOpenTablesRefreshEvent(OpenTablesRefreshEvent event) {}
 	
 	public void OnConnectionEvent(ConnectionEvent e)
 	{
@@ -36,6 +37,10 @@ public abstract class ConnectionEventListener {
 			OnLoginRequestAnswerEvent((LoginRequestAnswerEvent) e);
 		} else if (e instanceof PlayerActionAnswerEvent) {
 			OnPlayerActionAnswerEvent((PlayerActionAnswerEvent) e);
+		} else if (e instanceof TableJoinRequestEvent) {
+			OnTableJoinRequestEvent((TableJoinRequestEvent) e);
+		} else if (e instanceof OpenTablesRefreshEvent) {
+			OnOpenTablesRefreshEvent((OpenTablesRefreshEvent) e);
 		}
 	}
 }

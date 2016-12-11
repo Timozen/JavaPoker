@@ -165,7 +165,6 @@ public class Table implements Runnable {
 			}
 			//---- Nach jeder Stufe muss eine Notification an die Player erfolgen
 			//Post-Showdown
-			//There is a workaround in need too, bc dealer index sucks after this
 			RemovePlayersWithZeroMoneyAndRecalculateDealerIndex();
 		}
 		System.out.println("\n\nMaximum 1 Player left => Ending");
@@ -213,6 +212,7 @@ public class Table implements Runnable {
 				player.SetBettingAction(BettingOperations.FOLD);
 				player.SetBetAmountFromInput(0);
 			} else {
+				//TODO Do Stuff here?
 				System.out.println("got an answer");
 			}
 			
