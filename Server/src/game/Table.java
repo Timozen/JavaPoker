@@ -217,6 +217,7 @@ public class Table implements Runnable {
 				player.SetBettingAction(BettingOperations.FOLD);
 				player.SetBetAmountFromInput(0);
 			} else {
+				//Tables needs to fire Update Event
 				System.out.println(player.GetNickname() + " answered.");
 			}
 			

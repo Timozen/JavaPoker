@@ -23,7 +23,9 @@ import org.json.JSONObject;
  * Created by Tim on 04.12.2016.
  */
 public class PlayerActionRequestEvent extends ConnectionEvent{
+	public int maximumBetAmount;
 	public BettingOperations[] operations;
+
 	private final BettingOperations[] betOptionsPreBet = {BettingOperations.FOLD, BettingOperations.BET, BettingOperations.CHECK};
 	private final BettingOperations[] betOptionsPostBet = {BettingOperations.FOLD, BettingOperations.RAISE, BettingOperations.CALL};
 	public PlayerActionRequestEvent(SocketConnection socketConnection, JSONObject data)
@@ -36,8 +38,10 @@ public class PlayerActionRequestEvent extends ConnectionEvent{
 	{
 		if (GetData().getInt("actions") == 0) {
 			operations = betOptionsPreBet;
+			//also needs max input
 		} else {
 			operations = betOptionsPostBet;
 		}
+		maximumBetAmount = GetData().getInt("maximumPlayerBet");
 	}
 }

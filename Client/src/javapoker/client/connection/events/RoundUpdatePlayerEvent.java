@@ -28,6 +28,7 @@ public class RoundUpdatePlayerEvent extends ConnectionEvent{
 	public int tablePotValue;
 	public String playerId;
 	public int playerMoney;
+	public String action;
 	public RoundUpdatePlayerEvent(SocketConnection socketConnection, JSONObject data)
 	{
 		super(socketConnection, data);
@@ -43,5 +44,6 @@ public class RoundUpdatePlayerEvent extends ConnectionEvent{
 		tablePotValue = data.getInt("pot");
 		playerId = data.getString("playerId");
 		playerMoney = data.getInt("money");
+		action = data.getString("action");
 	}
 }

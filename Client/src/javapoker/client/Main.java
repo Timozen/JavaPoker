@@ -124,13 +124,21 @@ class Listener extends ConnectionEventListener {
 	@Override
 	public void OnPlayerActionRequestEvent(PlayerActionRequestEvent event)
 	{
-		//TODO Eingabe
+		System.out.println("Your MaxBet is: " + event.maximumBetAmount);
+		System.out.print("Choose Action ");
+		for(BettingOperations op : event.operations) {System.out.print(op.name() + " ");}
+		Scanner scanner = new Scanner(System.in);
+		String operation = scanner.nextLine();
+
+		System.out.println("Input Betamount: ");
+		int amount = scanner.nextInt();
+
 		event.GetConnection().SendMessage(new JSONObject().put("op", 1)
 								.put("type", "PLAYER_ACTION_ANSWER")
 								.put("data", new JSONObject()
 									.put("tableId", table.tableId)
-									.put("action", BettingOperations.FOLD)
-									.put("betAmount", 0)
+									.put("action", operation)
+									.put("betAmount", amount)
 									.put("isAllIn", false)
 								));
 	}
@@ -170,19 +178,17 @@ class Listener extends ConnectionEventListener {
 	
 	@Override
 	public void OnRoundUpdatePlayerEvent(RoundUpdatePlayerEvent event)
-	{	//TODO new Datatype
+	{
 		System.out.println("Triggered " + (new Object() {}.getClass().getEnclosingMethod().getName()));
 		System.out.println(event.playerId + " paid " + event.playerBetAmount);
+		System.out.println(event.playerId + " did " + event.action);
 
-		//TODO Print betting Operation & if fold then set state fold
-		//TODO Set player GameState
-		System.out.println(event.playerId + " put " + event.playerBetAmount);
-		table.SetPlayerMoneyAmount(event.playerId, event.playerMoney);
-		table.SetPlayerTotalBetAmount(event.playerId, event.totalPlayerBetAmount);
-
+		//TODO BettingOperation
+		System.out.print(table.SetPlayerMoneyAmount(event.playerId, event.playerMoney));
+		System.out.print(table.SetPlayerTotalBetAmount(event.playerId, event.totalPlayerBetAmount));
+		System.out.print(table.SetPlayerCurrentBetAmount(event.playerId, event.currentRoundBet));
 
 		table.roundBet = event.currentRoundBet;
 		table.pot = event.tablePotValue;
-
 	}
 }

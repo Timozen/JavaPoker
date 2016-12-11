@@ -109,6 +109,16 @@ public class Table {
 		Player p = GetPlayerById(playerId);
 		if (p != null) {
 			p.roundBetAll = totalBetAmount;
+			return 1;
+		}
+		return -1;
+	}
+
+	public int SetPlayerCurrentBetAmount(String playerid, int currentBetAmount) {
+		Player p = GetPlayerById(playerId);
+		if (p != null) {
+			p.roundBetCurrent = currentBetAmount;
+			return 1;
 		}
 		return -1;
 	}

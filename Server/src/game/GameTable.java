@@ -19,6 +19,7 @@ import game.models.BettingOperations;
 import game.models.CircularList;
 import game.models.PlayerState;
 import game.models.RoundState;
+import org.json.JSONObject;
 
 import java.util.List;
 import java.util.Random;
@@ -327,6 +328,25 @@ public class GameTable {
 						System.out.println("Earlier showdown set");
 						isShowdown = true;
 					}
+				}
+			}
+			//Time to inform everybody what happened
+			for(Player p : playersInRound) {
+				if (!p.GetConnectionClient().GetPlayerId().equals(actualPlayer.GetConnectionClient().GetPlayerId())) {
+					JSONObject RoundUpdatePlayerJSON = new JSONObject();
+					RoundUpdatePlayerJSON.put("op", "1");
+					RoundUpdatePlayerJSON.put("type", "ROUND_UPDATE_PLAYER");
+					RoundUpdatePlayerJSON.put("data", new JSONObject()
+							.put("betAmount", p.GetBetAmount())					//In this move
+							.put("totalBetAmount", p.GetRoundBetAll())			//In total for this round
+							.put("currentRoundBet", p.GetRoundBetCurrent())		//His Roundbet in this Setzrunde
+							.put("pot", table.GetPotValue())
+							.put("playerId", actualPlayer.GetConnectionClient().GetPlayerId())
+							.put("money", actualPlayer.GetMoney())
+							.put("action", actualPlayer.GetBettingAction().toString())
+					);
+
+					p.GetConnectionClient().SendMessage(RoundUpdatePlayerJSON);
 				}
 			}
 			//--------------------------

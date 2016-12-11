@@ -396,5 +396,9 @@ public class Player {
 	public void SetBetAmount(int amount) {
 		betAmountFromInput = amount;
 	}
+
+	public int GetBetAmount() {
+		return betAmountFromInput;
+	}
 	//endregion
 }
