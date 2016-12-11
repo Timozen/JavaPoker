@@ -19,10 +19,12 @@ import connection.ConnectionEventManager;
 import connection.events.*;
 import connection.client.Client;
 import game.Table;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ConnectionServer extends Server {
@@ -124,13 +126,20 @@ public class ConnectionServer extends Server {
 	@Override
 	public void OnOpenTablesRefreshEvent(OpenTablesRefreshEvent event)
 	{
-		//todo
+		ArrayList<Integer> tableList = new ArrayList<>();
+		for(HashMap.Entry<Integer, Table> entry : tables.entrySet()) {
+			if (!entry.getValue().HasStarted()) {
+				tableList.add(entry.getKey());
+			}
+		}
+		event.GetClient().OpenTablesAnswer(new JSONArray(tableList));
 	}
 
 	@Override
 	public void OnTableJoinRequestEvent(TableJoinRequestEvent event)
 	{
-		//todo
+		//TODO
+		//Send
 	}
 
 	public void CreateNewTable(int playerCount)

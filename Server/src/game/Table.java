@@ -59,6 +59,9 @@ public class Table implements Runnable {
 	
 	private int neededPlayerCount = 5;
 	private int id;
+
+	private boolean started;
+
 	public boolean receivedAnswer;
 	
 	public Table(String filePath){
@@ -100,6 +103,7 @@ public class Table implements Runnable {
 		
 		gameTable = new GameTable(this);
 		firstRound = true;
+		started = false;
 		this.id = id;
 	}
 	
@@ -127,6 +131,7 @@ public class Table implements Runnable {
 				ex.printStackTrace();
 			}
 		}
+		started = true;
 
 		System.out.println("The seed for this Table is: " + seed);
 		
@@ -380,7 +385,7 @@ public class Table implements Runnable {
 	public void AddPlayerToTable(Player player)
 	{
 		if(!playersOnTable.contains(player)){
-			
+
 			//send PLAYER_JOINS_TABLE Event to every already connected player
 			playersOnTable.forEach(p -> {
 				if (p.GetConnectionClient() != null) {
@@ -687,6 +692,9 @@ public class Table implements Runnable {
 	{
 		this.preBet = preBet;
 	}
-	
+
+	public boolean HasStarted() {
+		return started;
+	}
 	//endregion
 }

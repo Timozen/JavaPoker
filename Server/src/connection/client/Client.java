@@ -20,6 +20,7 @@ import connection.events.ClientConnectEvent;
 import connection.events.ClientDisconnectEvent;
 import connection.utils.ConnectionEventBuilder;
 import game.Player;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -122,7 +123,15 @@ public class Client extends Thread {
 		this.player = new Player(username);
 		this.player.SetConnectionClient(this);
 	}
-	
+
+	public void OpenTablesAnswer(JSONArray tables)
+	{
+		SendMessage(new JSONObject()
+		.put("op", 1)
+		.put("data", new JSONObject().put("tables", tables))
+		.put("type", "OPEN_TABLES")
+		);
+	}
 	//region Getter and Setter
 	
 	
