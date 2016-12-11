@@ -22,7 +22,8 @@ import org.json.JSONObject;
  * Created by Tim on 04.12.2016.
  */
 public class RoundUpdateRoundEvent extends ConnectionEvent{
-	
+	public String newTurn;
+
 	public RoundUpdateRoundEvent(SocketConnection socketConnection, JSONObject data)
 	{
 		super(socketConnection, data);
@@ -31,7 +32,7 @@ public class RoundUpdateRoundEvent extends ConnectionEvent{
 	@Override
 	public void Build()
 	{
-		
+		newTurn = GetData().getString("newTurn");
 	}
 }
 

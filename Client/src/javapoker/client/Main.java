@@ -180,7 +180,9 @@ class Listener extends ConnectionEventListener {
 	@Override
 	public void OnRoundUpdateRoundEvent(RoundUpdateRoundEvent event)
 	{
-		System.out.println("Not implemented " + (new Object() {}.getClass().getEnclosingMethod().getName()));
+		System.out.println("Triggered " + (new Object() {}.getClass().getEnclosingMethod().getName()));
+		System.out.println("---------------------------");
+		System.out.println("ROUND: " + event.newTurn);
 		
 	}
 	

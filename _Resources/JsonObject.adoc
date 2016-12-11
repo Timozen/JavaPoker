@@ -269,12 +269,11 @@ information.
         "op":1,
         "data":
         {
-            "oldTurn": "PREFLOP" || "FLOP" || "TURN" || ...,
-            "newTurn": "PREFLOP" || "FLOP" || "TURN" || ...,
-            "newBoardCard": CARD
+            "newTurn": PREFLOP, FLOP, ...
         }
         "type": "ROUND_UPDATE_TURN"
     }
+//done
 
 ==== ROUND_UPDATE_NEWBOARDCARD
 
@@ -289,6 +288,7 @@ Sends client information with new Boardcard
         }
         "type": "ROUND_UPDATE_NEWBOARDCARD"
     }
+//Done
 
 ==== ROUND_UPDATE_SHOWDOWN_PRE_PAYMENT
 

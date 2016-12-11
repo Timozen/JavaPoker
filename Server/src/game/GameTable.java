@@ -67,7 +67,6 @@ public class GameTable {
 			(Learn to)
 			Love our code <3
 		 */
-		
 		if (!table.IsPreDef()) {
 			deck.CreateAndShuffle();
 		} else {
@@ -80,9 +79,11 @@ public class GameTable {
 		isShowdown = false;
 		
 		playersInRound.forEach((Player p) -> p.SetPlayerState(PlayerState.PLAYING));
-		
+
+
 		electivePlayersCount = playersInRound.size();                //Counts Players who have the right to vote
-		
+
+
 		//DealerIndexWorkaround
 		if (table.IsFirstRound()) {
 			dealerIndex = roundRNG.nextInt(playersInRound.size());
@@ -95,6 +96,11 @@ public class GameTable {
 		}
 		
 		SelectStartPlayerPreFlop();
+		//ENDREGION of calculating IDs
+
+		SendRoundUpdateStartEvent();
+		SendRoundUpdateRoundEvent("PREFLOP");
+
 		PayBlinds();
 		SpreadPlayerCards();
 		table.GetBigBlind().SetIsCalledHighestBet(true);
@@ -110,7 +116,7 @@ public class GameTable {
 						   + tmpCards.get(0).toString() + ","
 						   + tmpCards.get(1).toString());
 		}
-		
+
 		PokerRound();
 		
 		return 0;
@@ -124,7 +130,8 @@ public class GameTable {
 	public int Flop()
 	{
 		table.SetRoundState(RoundState.FLOP);
-		
+		SendRoundUpdateRoundEvent("FLOP");
+
 		AddBoardCard(3);
 		SelectStartPlayerPostFlop();
 		PokerRound();
@@ -140,6 +147,7 @@ public class GameTable {
 	public int Turn()
 	{
 		table.SetRoundState(RoundState.TURN);
+		SendRoundUpdateRoundEvent("TURN");
 		
 		AddBoardCard(1);
 		SelectStartPlayerPostFlop();
@@ -156,6 +164,7 @@ public class GameTable {
 	public int River()
 	{
 		table.SetRoundState(RoundState.RIVER);
+		SendRoundUpdateRoundEvent("RIVER");
 		
 		AddBoardCard(1);
 		SelectStartPlayerPostFlop();
@@ -514,6 +523,34 @@ public class GameTable {
 	{
 		for (Player p : playersInRound) {
 			p.SetRoundBetCurrent(0);
+		}
+	}
+
+	private void SendRoundUpdateRoundEvent(String roundName) {
+		JSONObject RoundUpdateRoundEvent = new JSONObject()
+				.put("op", "1")
+				.put("type", "ROUND_UPDATE_ROUND")
+				.put("data", new JSONObject()
+						.put("newTurn", roundName)
+				);
+		for (Player p : playersInRound) {
+			p.GetConnectionClient().SendMessage(RoundUpdateRoundEvent);
+		}
+	}
+
+	private void SendRoundUpdateStartEvent() {
+		JSONObject RoundUpdateStartEvent = new JSONObject()
+				.put("op", "1")
+				.put("type", "ROUND_UPDATE_START")
+				.put("data", new JSONObject()
+						.put("dealerId", table.GetDealer().GetConnectionClient().GetPlayerId())
+						.put("smallBlind", table.GetSmallBlind().GetConnectionClient().GetPlayerId())
+						.put("bigBlind", table.GetBigBlind().GetConnectionClient().GetPlayerId())
+				);
+
+
+		for (Player p : playersInRound) {
+			p.GetConnectionClient().SendMessage(RoundUpdateStartEvent);
 		}
 	}
 }
