@@ -70,8 +70,8 @@ public class ConnectionEventBuilder {
 			case "ROUND_UPDATE_ROUND":
 				connectionEventManager.handle((new RoundUpdateRoundEvent(socketConnection, data)));
 				break;
-			case "ROUND_UPDATE_SHOWDOWN":
-				connectionEventManager.handle((new RoundUpdateShowdownEvent(socketConnection, data)));
+			case "ROUND_UPDATE_SHOWDOWN_PRE_PAYMENT":
+				connectionEventManager.handle((new RoundUpdateShowdownPrePaymentEvent(socketConnection, data)));
 				break;
 			case "ROUND_UPDATE_PLAYER":
 				connectionEventManager.handle((new RoundUpdatePlayerEvent(socketConnection, data)));

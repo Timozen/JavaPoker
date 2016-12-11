@@ -30,7 +30,7 @@ public abstract class ConnectionEventListener {
 	public void OnRoundUpdateStartEvent(RoundUpdateStartEvent event) {}
 	public void OnRoundUpdateCardDrawEvent(RoundUpdateCardDrawEvent event) {}
 	public void OnRoundUpdateRoundEvent(RoundUpdateRoundEvent event) {}
-	public void OnRoundUpdateShowdownEvent(RoundUpdateShowdownEvent event) {}
+	public void OnRoundUpdateShowdownPrePaymentEvent(RoundUpdateShowdownPrePaymentEvent event) {}
 	public void OnRoundUpdatePlayerEvent(RoundUpdatePlayerEvent event) {}
 	public void OnRoundUpdateChooserPlayer(RoundUpdateChooserPlayer event) {}
 	public void OnLoginAcceptedPlayerSetup(LoginAcceptedPlayerSetup event) {}
@@ -60,8 +60,8 @@ public abstract class ConnectionEventListener {
 			OnRoundUpdateCardDrawEvent((RoundUpdateCardDrawEvent) e);
 		} else if (e instanceof RoundUpdateRoundEvent) {
 			OnRoundUpdateRoundEvent((RoundUpdateRoundEvent) e);
-		} else if (e instanceof RoundUpdateShowdownEvent) {
-			OnRoundUpdateShowdownEvent((RoundUpdateShowdownEvent) e);
+		} else if (e instanceof RoundUpdateShowdownPrePaymentEvent) {
+			OnRoundUpdateShowdownPrePaymentEvent((RoundUpdateShowdownPrePaymentEvent) e);
 		} else if (e instanceof RoundUpdatePlayerEvent) {
 			OnRoundUpdatePlayerEvent((RoundUpdatePlayerEvent) e);
 		} else if (e instanceof RoundUpdateChooserPlayer) {

@@ -16,14 +16,20 @@
 package javapoker.client.connection.events;
 
 import javapoker.client.connection.SocketConnection;
+import javapoker.client.game.Player;
+import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Tim on 04.12.2016.
  */
-public class RoundUpdateShowdownEvent extends ConnectionEvent{
-	
-	public RoundUpdateShowdownEvent(SocketConnection socketConnection, JSONObject data)
+public class RoundUpdateShowdownPrePaymentEvent extends ConnectionEvent{
+	public ArrayList<String[]> playerData;
+
+	public RoundUpdateShowdownPrePaymentEvent(SocketConnection socketConnection, JSONObject data)
 	{
 		super(socketConnection, data);
 	}
@@ -31,6 +37,15 @@ public class RoundUpdateShowdownEvent extends ConnectionEvent{
 	@Override
 	public void Build()
 	{
-		
+		playerData = new ArrayList<>();
+		JSONArray information = GetData().getJSONArray("information");
+
+		for(int i = 0; i < information.length(); i++) {
+			playerData.add(new String[]{
+					information.getJSONObject(i).getString("playerId"),
+					information.getJSONObject(i).getString("card1"),
+					information.getJSONObject(i).getString("card2")
+			});
+		}
 	}
 }

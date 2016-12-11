@@ -19,6 +19,7 @@ import game.models.BettingOperations;
 import game.models.CircularList;
 import game.models.PlayerState;
 import game.models.RoundState;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -98,8 +99,8 @@ public class GameTable {
 		SelectStartPlayerPreFlop();
 		//ENDREGION of calculating IDs
 
-		SendRoundUpdateStartEvent();
 		SendRoundUpdateRoundEvent("PREFLOP");
+		SendRoundUpdateStartEvent();
 
 		PayBlinds();
 		SpreadPlayerCards();
@@ -181,9 +182,12 @@ public class GameTable {
 	public int Showdown()
 	{
 		table.SetRoundState(RoundState.SHOWDOWN);
-		
+		SendRoundUpdateRoundEvent("SHOWDOWN");
+
+		//Serverside Debugging
 		roundBeginOutput();
-		
+		//Even if written 2 times, we should do it anyway
+		SendRoundUpdateShowdownPrePayment();
 		
 		WinnerHandler winner = new WinnerHandler(table);
 		CircularList<WinnerPlayer> winners;
@@ -551,6 +555,30 @@ public class GameTable {
 
 		for (Player p : playersInRound) {
 			p.GetConnectionClient().SendMessage(RoundUpdateStartEvent);
+		}
+	}
+
+	private void SendRoundUpdateShowdownPrePayment() {
+		JSONObject RoundUpdateShowdownPrePayment = new JSONObject();
+		JSONArray information = new JSONArray();
+		for (Player p : playersInRound) {
+			if (p.GetPlayerState() != PlayerState.FOLD) {
+				information.put(new JSONObject()
+						.put("playerId", p.GetConnectionClient().GetPlayerId())
+						.put("card1", p.GetCards().get(0))
+						.put("card2", p.GetCards().get(1))
+				);
+			}
+		}
+		RoundUpdateShowdownPrePayment
+				.put("op", "1")
+				.put("type", "ROUND_UPDATE_SHOWDOWN_PRE_PAYMENT")
+				.put("data", new JSONObject()
+					.put("information", information)
+				);
+
+		for (Player p : playersInRound) {
+			p.GetConnectionClient().SendMessage(RoundUpdateShowdownPrePayment);
 		}
 	}
 }

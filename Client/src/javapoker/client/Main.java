@@ -140,11 +140,14 @@ class Listener extends ConnectionEventListener {
 		while(isCorrect != 1) {
 			operation = scanner.nextLine();
 
-			System.out.println("Input Betamount: ");
-			amount = scanner.nextInt();
-
-			System.out.println("Correct Input: 0 || 1");
-			if (scanner.nextInt() == 1) {
+			if (!(operation.equals("FOLD") || operation.equals("CHECK") || operation.equals("CALL"))) {
+				System.out.println("Input Betamount: ");
+				amount = scanner.nextInt();
+				System.out.println("Correct Input: 0 || 1");
+				if (scanner.nextInt() == 1) {
+					isCorrect = 1;
+				}
+			} else {
 				isCorrect = 1;
 			}
 		}
@@ -166,6 +169,7 @@ class Listener extends ConnectionEventListener {
 		table.dealerId = event.dealerId;
 		table.smallBlindId = event.smallBlindId;
 		table.bigBlindId = event.bigBlindId;
+		//Später mit UI: Anpassung der Leute die das sind im GUI
 	}
 	
 	@Override
@@ -187,12 +191,17 @@ class Listener extends ConnectionEventListener {
 	}
 	
 	@Override
-	public void OnRoundUpdateShowdownEvent(RoundUpdateShowdownEvent event)
+	public void OnRoundUpdateShowdownPrePaymentEvent(RoundUpdateShowdownPrePaymentEvent event)
 	{
 		//Late
 		//TODO will be implemented first in the server...
 		//also see last commit, needs refactor
-		System.out.println("Not implemented " + (new Object() {}.getClass().getEnclosingMethod().getName()));
+		System.out.println("Triggered " + (new Object() {}.getClass().getEnclosingMethod().getName()));
+		for(String[] s : event.playerData) {
+			System.out.print(s[0] + " with ");
+			System.out.print(s[1] + " and ");
+			System.out.println(s[2]);
+		}
 		
 	}
 	
