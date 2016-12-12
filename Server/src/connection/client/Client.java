@@ -40,6 +40,7 @@ public class Client extends Thread {
 	private String username;
 	private boolean loggedIn;
 	private Player player;
+
 	public Client(Socket socket, ConnectionEventManager connectionEventManager)
 	{
 		this.socket = socket;

@@ -345,7 +345,10 @@ public class Table implements Runnable {
 			System.out.println(p.GetNickname() + " money is " + p.GetMoney());
 			if (p.GetMoney() == 0 && p != oldDealer) {
 				System.out.println(p.GetNickname() + " will be removed.");
-				RemovePlayerFromTable(p);
+				RemovePlayerFromTable(p, p.GetHasDisconnected(), "Zero Money");
+			} else if (p.GetHasDisconnected() && p != oldDealer) {
+				//Client definitely is not part of the game anymore
+				RemovePlayerFromTable(p, p.GetHasDisconnected(), "Player disconnected.");
 			}
 		}
 		int nextDealerIndex = playersOnTable.indexOf(oldDealer) + 1;
@@ -354,7 +357,10 @@ public class Table implements Runnable {
 		System.out.println("New Dealer will be " + playersOnTable.get(nextDealerIndex).GetNickname());
 		if (oldDealer.GetMoney() == 0) {
 			System.out.println("Old dealer (" + oldDealer.GetNickname() + ") got removed bc 0 money.");
-			RemovePlayerFromTable(oldDealer);
+			RemovePlayerFromTable(oldDealer, oldDealer.GetHasDisconnected(), "Zero Money");
+		} else if (oldDealer.GetHasDisconnected()) {
+			System.out.println("Old dealer (" + oldDealer.GetNickname() + ") got removed bc 0 money.");
+			RemovePlayerFromTable(oldDealer, oldDealer.GetHasDisconnected(), "Player disconnected.");
 		}
 	}
 	
@@ -478,10 +484,28 @@ public class Table implements Runnable {
 	 *               Removes a player from the game
 	 *               TODO: Add return value if everyting went fine
 	 */
-	public void RemovePlayerFromTable(Player player)
+	public void RemovePlayerFromTable(Player player, boolean hasDisconnected, String reason)
 	{
 		//TODO notify clients
-		this.playersOnTable.remove(player);
+		playersOnTable.remove(player);
+		JSONObject OnPlayerLeavesTableEvent = new JSONObject()
+				.put("op", "1")
+				.put("type", "PLAYER_LEAVES_TABLE")
+				.put("data", new JSONObject()
+						.put("playerId", player.GetConnectionClient().GetPlayerId())
+						.put("reason", reason)
+				);
+		for (Player p : playersOnTable) {
+			p.GetConnectionClient().SendMessage(OnPlayerLeavesTableEvent);
+		}
+		if (!hasDisconnected) {
+			JSONObject OnTableLeave = new JSONObject()
+					.put("op", "1")
+					.put("type", "ON_TABLE_LEAVE")
+					.put("data", new JSONObject()
+							.put("reason", reason)
+					);
+		}
 	}
 	
 	/**

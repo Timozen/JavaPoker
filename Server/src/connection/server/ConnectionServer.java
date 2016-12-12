@@ -92,6 +92,10 @@ public class ConnectionServer extends Server {
 	public void OnClientDisconnectEvent(ClientDisconnectEvent event)
 	{
 		System.out.println("A client has disconnected!");
+		if (event.GetClient().IsLoggedIn()) {
+			System.out.println("Player was logged in.");
+			event.GetClient().GetPlayer().SetHasDisconnected(true);
+		}
 	}
 	
 	@Override

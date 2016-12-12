@@ -32,6 +32,7 @@ public class Player {
 	private String nickname;
 	private String id;
 	private PlayerState playerState;                //Gives information about what Player did (Fold / AllIn / Normal)
+    private boolean hasDisconnected;
 	
 	//Field for the sum of all bet of all Setzrunden
 	private int roundBetAll;
@@ -412,5 +413,15 @@ public class Player {
 	public void SetTotalWinAmount(int totalWinAmount) {
 		this.totalWinAmount = totalWinAmount;
 	}
+
+	public void SetHasDisconnected(boolean hasDisconnected)
+    {
+        this.hasDisconnected = hasDisconnected;
+    }
+
+    public boolean GetHasDisconnected()
+    {
+        return hasDisconnected;
+    }
 	//endregion
 }
