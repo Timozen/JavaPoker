@@ -85,6 +85,9 @@ public class ConnectionEventBuilder {
 			case "ROUND_UPDATE_NEWBOARDCARD":
 				connectionEventManager.handle((new RoundUpdateNewBoardCard(socketConnection, data)));
 				break;
+			case "ROUND_UPDATE_SHOWDOWN_POST_PAYMENT":
+				connectionEventManager.handle((new RoundUpdateShowdownPostPaymentEvent(socketConnection, data)));
+				break;
 			default:
 				System.out.println("Unknown event type: " + obj.getString("type") + " not implemented or spelling mistake");
 				break;

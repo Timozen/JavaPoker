@@ -318,10 +318,10 @@ Will contain the information for the showdown.
         "op":1,
         "data":
         {
-            "winners": [{
+            "information": [{
                 "playerId":playerId,
                 "winAmount": value,
-                "money"}
+                "money" : value}
                ]
         },
         "type": "ROUND_UPDATE_SHOWDOWN"

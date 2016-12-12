@@ -198,6 +198,7 @@ public class GameTable {
 			for (WinnerPlayer wp : winners) {
 				System.out.println("Paying " + wp.GetPlayerHandle().GetNickname() + ". Old amount: " + wp.GetPlayerHandle().GetMoney());
 				wp.GetPlayerHandle().IncreaseMoney(wp.GetWinAmount());
+				wp.GetPlayerHandle().IncreaseTotalWinAmount(wp.GetWinAmount());
 				table.DecreasePot(wp.GetWinAmount());
 				System.out.println("New player amount: " + wp.GetPlayerHandle().GetMoney());
 				System.out.println("New pot value: " + table.GetPotValue());
@@ -208,7 +209,8 @@ public class GameTable {
 				table.SetPot(0);
 			}
 		}
-		
+
+		SendRoundUpdateShowdownPostPayment();
 		/**
 		 * Everything needed for showdown comes here
 		 */
@@ -579,6 +581,30 @@ public class GameTable {
 
 		for (Player p : playersInRound) {
 			p.GetConnectionClient().SendMessage(RoundUpdateShowdownPrePayment);
+		}
+	}
+
+	private void SendRoundUpdateShowdownPostPayment() {
+		JSONObject RoundUpdateShowdownPostPayment = new JSONObject();
+		JSONArray information = new JSONArray();
+		for (Player p : playersInRound) {
+			if (p.GetPlayerState() != PlayerState.FOLD) {
+				information.put(new JSONObject()
+						.put("playerId", p.GetConnectionClient().GetPlayerId())
+						.put("winAmount", Integer.toString(p.GetTotalWinAmount()))
+						.put("money", Integer.toString(p.GetMoney()))
+				);
+			}
+		}
+		RoundUpdateShowdownPostPayment
+				.put("op", "1")
+				.put("type", "ROUND_UPDATE_SHOWDOWN_POST_PAYMENT")
+				.put("data", new JSONObject()
+						.put("information", information)
+				);
+
+		for (Player p : playersInRound) {
+			p.GetConnectionClient().SendMessage(RoundUpdateShowdownPostPayment);
 		}
 	}
 }

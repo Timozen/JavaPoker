@@ -42,7 +42,7 @@ public class Player {
 	private int betAmountFromInput;                                        //zu setzender Betrag
 	private BettingOperations bettingAction;
 	
-	
+	private int totalWinAmount;
 	private boolean isElective;
 	private boolean calledHighestBet;
 	
@@ -63,6 +63,7 @@ public class Player {
 		this.cards = new LinkedList<>();
 		this.roundBetAll = 0;
 		this.betAmountFromInput = 0;
+		this.totalWinAmount = 0;
 		this.isElective = true;
 	}
 	
@@ -74,6 +75,7 @@ public class Player {
 	 */
 	public Player(String nickname, int money)
 	{
+		this(nickname);
 		this.nickname = nickname;
 		this.money = money;
 		this.cards = new LinkedList<>();
@@ -399,6 +401,16 @@ public class Player {
 
 	public int GetBetAmount() {
 		return betAmountFromInput;
+	}
+
+	public int GetTotalWinAmount() { return totalWinAmount;}
+
+	public void IncreaseTotalWinAmount(int totalWinAmount) {
+		this.totalWinAmount += totalWinAmount;
+	}
+
+	public void SetTotalWinAmount(int totalWinAmount) {
+		this.totalWinAmount = totalWinAmount;
 	}
 	//endregion
 }

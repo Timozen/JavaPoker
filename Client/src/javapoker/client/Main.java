@@ -189,7 +189,7 @@ class Listener extends ConnectionEventListener {
 		System.out.println("ROUND: " + event.newTurn);
 		
 	}
-	
+
 	@Override
 	public void OnRoundUpdateShowdownPrePaymentEvent(RoundUpdateShowdownPrePaymentEvent event)
 	{
@@ -202,9 +202,25 @@ class Listener extends ConnectionEventListener {
 			System.out.print(s[1] + " and ");
 			System.out.println(s[2]);
 		}
-		
+
 	}
-	
+
+
+	@Override
+	public void OnRoundUpdateShowdownPostPaymentEvent(RoundUpdateShowdownPostPaymentEvent event)
+	{
+		//Late
+		//TODO will be implemented first in the server...
+		//also see last commit, needs refactor
+		System.out.println("Triggered " + (new Object() {}.getClass().getEnclosingMethod().getName()));
+		for(String[] s : event.winnerData) {
+			System.out.print(s[0] + " wins ");
+			System.out.print(s[1] + " and newAmount ");
+			System.out.println(s[2]);
+		}
+
+	}
+
 	@Override
 	public void OnRoundUpdatePlayerEvent(RoundUpdatePlayerEvent event)
 	{
