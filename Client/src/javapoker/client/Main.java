@@ -125,14 +125,17 @@ class Listener extends ConnectionEventListener {
 		System.out.println("Triggered " + (new Object() {}.getClass().getEnclosingMethod().getName()));
 		System.out.println("Player " + event.playerId + " left table because " + event.reason);
 		table.RemovePlayer(event.playerId);
+		System.out.println(table.players.size());
+		if (table.players.size() == 1) {
+			System.out.print("You were the last man standing. Good Job, time to say goodbye.");
+			System.exit(420);
+		}
 	}
 	
 	@Override
 	public void OnPlayerActionRequestEvent(PlayerActionRequestEvent event)
 	{
 		System.out.println("Your MaxBet is: " + event.maximumBetAmount);
-		System.out.print("Choose Action ");
-		for(BettingOperations op : event.operations) {System.out.print(op.name() + " ");}
 
 		Scanner scanner = new Scanner(System.in);;
 		String operation = null;
@@ -140,13 +143,19 @@ class Listener extends ConnectionEventListener {
 
 		byte isCorrect = 0;
 		while(isCorrect != 1) {
+			System.out.print("Choose Action ");
+			for(BettingOperations op : event.operations) {System.out.print(op.name() + " ");}
 			operation = scanner.nextLine();
 
 			if (!(operation.equals("FOLD") || operation.equals("CHECK") || operation.equals("CALL"))) {
 				System.out.println("Input Betamount: ");
-				amount = scanner.nextInt();
+				amount = Integer.parseInt(scanner.nextLine());
+				if (amount > event.maximumBetAmount || amount < 0) {
+					System.out.println("Incorrect amount.");
+					continue;
+				}
 				System.out.println("Correct Input: 0 || 1");
-				if (scanner.nextInt() == 1) {
+				if (Integer.parseInt(scanner.nextLine()) == 1) {
 					isCorrect = 1;
 				}
 			} else {
