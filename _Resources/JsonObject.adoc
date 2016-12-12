@@ -270,6 +270,7 @@ information.
         "data":
         {
             "newTurn": PREFLOP, FLOP, ...
+            "pot" : value
         }
         "type": "ROUND_UPDATE_TURN"
     }
@@ -361,7 +362,8 @@ Informs other clients which client has to take his choice.
         "op":1,
         "data":
         {
-            "playerId": playerId
+            "playerId": playerId,
+            "pot" : value
         }
         "type": "ROUND_UPDATE_CHOOSER_PLAYER"
     }

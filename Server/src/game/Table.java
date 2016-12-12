@@ -505,6 +505,7 @@ public class Table implements Runnable {
 					.put("data", new JSONObject()
 							.put("reason", reason)
 					);
+			player.GetConnectionClient().SendMessage(OnTableLeave);
 		}
 	}
 	

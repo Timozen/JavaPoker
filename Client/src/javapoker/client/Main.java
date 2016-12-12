@@ -105,7 +105,8 @@ class Listener extends ConnectionEventListener {
 	public void OnTableLeaveEvent(TableLeaveEvent event)
 	{
 		System.out.println("Triggered " + (new Object() {}.getClass().getEnclosingMethod().getName()));
-		System.out.println("Reason: " + event.reason);
+		System.out.println("You got disconnected from table: " + event.reason);
+		System.exit(1);
 	}
 		
 	@Override
@@ -122,6 +123,7 @@ class Listener extends ConnectionEventListener {
 	public void OnPlayerLeavesTableEvent(PlayerLeavesTableEvent event)
 	{
 		System.out.println("Triggered " + (new Object() {}.getClass().getEnclosingMethod().getName()));
+		System.out.println("Player " + event.playerId + " left table because " + event.reason);
 		table.RemovePlayer(event.playerId);
 	}
 	
@@ -169,6 +171,7 @@ class Listener extends ConnectionEventListener {
 		table.dealerId = event.dealerId;
 		table.smallBlindId = event.smallBlindId;
 		table.bigBlindId = event.bigBlindId;
+		table.boardCards = new ArrayList<>();
 		//Später mit UI: Anpassung der Leute die das sind im GUI
 	}
 	
@@ -187,6 +190,7 @@ class Listener extends ConnectionEventListener {
 		System.out.println("Triggered " + (new Object() {}.getClass().getEnclosingMethod().getName()));
 		System.out.println("---------------------------");
 		System.out.println("ROUND: " + event.newTurn);
+		System.out.println("Pot: " + event.pot);
 		
 	}
 
@@ -232,16 +236,16 @@ class Listener extends ConnectionEventListener {
 		table.SetPlayerMoneyAmount(event.playerId, event.playerMoney);
 		table.SetPlayerTotalBetAmount(event.playerId, event.totalPlayerBetAmount);
 		table.SetPlayerCurrentBetAmount(event.playerId, event.currentRoundBet);
+		table.pot = event.tablePotValue;
+		table.roundBet = event.currentRoundBet;
 
 		System.out.println("New Pot: " + table.pot);
-
-		table.roundBet = event.currentRoundBet;
-		table.pot = event.tablePotValue;
 	}
 
 	@Override
 	public void OnRoundUpdateChooserPlayer(RoundUpdateChooserPlayer event) {
 		System.out.println("Triggered " + (new Object() {}.getClass().getEnclosingMethod().getName()));
+		System.out.println("Pot Value: " + event.pot);
 		System.out.println(table.GetPlayerById(event.playerId).nickname + " makes choice...");
 	}
 

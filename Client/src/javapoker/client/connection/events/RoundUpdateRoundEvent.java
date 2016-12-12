@@ -23,6 +23,7 @@ import org.json.JSONObject;
  */
 public class RoundUpdateRoundEvent extends ConnectionEvent{
 	public String newTurn;
+	public int pot;
 
 	public RoundUpdateRoundEvent(SocketConnection socketConnection, JSONObject data)
 	{
@@ -33,6 +34,7 @@ public class RoundUpdateRoundEvent extends ConnectionEvent{
 	public void Build()
 	{
 		newTurn = GetData().getString("newTurn");
+		pot = GetData().getInt("pot");
 	}
 }
 

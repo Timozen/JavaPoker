@@ -324,7 +324,8 @@ public class GameTable {
 								.put("op", "1")
 								.put("type", "ROUND_UPDATE_CHOOSER_PLAYER")
 								.put("data", new JSONObject()
-									.put("playerId", actualPlayer.GetConnectionClient().GetPlayerId())
+										.put("playerId", actualPlayer.GetConnectionClient().GetPlayerId())
+										.put("pot", table.GetPotValue())
 								)
 						);
 					}
@@ -538,6 +539,7 @@ public class GameTable {
 				.put("type", "ROUND_UPDATE_ROUND")
 				.put("data", new JSONObject()
 						.put("newTurn", roundName)
+						.put("pot", table.GetPotValue())
 				);
 		for (Player p : playersInRound) {
 			p.GetConnectionClient().SendMessage(RoundUpdateRoundEvent);

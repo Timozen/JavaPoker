@@ -23,6 +23,7 @@ import org.json.JSONObject;
  */
 public class RoundUpdateChooserPlayer extends ConnectionEvent{
     public String playerId;
+    public int pot;
     public RoundUpdateChooserPlayer(SocketConnection socketConnection, JSONObject data)
     {
         super(socketConnection, data);
@@ -32,5 +33,6 @@ public class RoundUpdateChooserPlayer extends ConnectionEvent{
     public void Build()
     {
         playerId = GetData().getString("playerId");
+        pot = GetData().getInt("pot");
     }
 }
