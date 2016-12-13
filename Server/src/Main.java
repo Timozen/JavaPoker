@@ -18,7 +18,7 @@ import connection.server.ConnectionServer;
 public class Main {
 	public static void main(String[] args)
 	{
-		ConnectionServer connectionServer = new ConnectionServer(9090);
+		ConnectionServer connectionServer = new ConnectionServer(46337);
 		
 		Thread mainThread = new Thread(connectionServer);
 		mainThread.start();

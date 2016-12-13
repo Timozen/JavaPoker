@@ -35,18 +35,13 @@ public class SocketConnection extends Thread {
 	
 	private ConnectionEventManager connectionEventManager;
 	private ConnectionEventBuilder connectionEventBuilder;
+	
 	public SocketConnection(String adr, int port, ConnectionEventManager connectionEventManager)
 	{
 		this.adr = adr;
 		this.port = port;
 		this.connectionEventManager = connectionEventManager;
 		this.connectionEventBuilder = new ConnectionEventBuilder(this.connectionEventManager, this);
-	}
-	
-	public SocketConnection SetConnectionEventManager(ConnectionEventManager connectionEventManager)
-	{
-		this.connectionEventManager = connectionEventManager;
-		return this;
 	}
 	
 	@Override

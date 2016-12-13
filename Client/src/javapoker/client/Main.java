@@ -25,6 +25,8 @@ import javapoker.client.game.Player;
 import javapoker.client.game.Table;
 import org.json.JSONObject;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -34,7 +36,7 @@ public class Main {
 		ConnectionEventManager connectionEventManager = new ConnectionEventManager();
 		connectionEventManager.AddListener(new Listener());
 		
-		SocketConnection socketConnection = new SocketConnection("localhost", 9090, connectionEventManager);
+		SocketConnection socketConnection = new SocketConnection("localhost", 46337, connectionEventManager);
 		socketConnection.start();
 	}
 }
@@ -53,19 +55,41 @@ class Listener extends ConnectionEventListener {
 	@Override
 	public void OnLoginRequest(LoginRequestEvent event)
 	{
-		System.out.println("Received LoginRequest");
 		Scanner scanner = new Scanner(System.in);
+		
+		System.out.println("Received LoginRequest");
 
 		System.out.print("Username: ");
-		String uName = scanner.nextLine();
-
-		event.GetConnection().SendMessage(new JSONObject().put("op", 1)
+		String userName = scanner.nextLine();
+		
+		System.out.print("Password: ");
+		String password = scanner.nextLine();
+		
+		//hash the password
+		try {
+			MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+			messageDigest.update(password.getBytes());
+			byte[] digest = messageDigest.digest();
+			StringBuilder stringBuffer = new StringBuilder();
+			
+			for(byte b : digest){
+				stringBuffer.append(String.format("%02x", b & 0xef));
+			}
+			
+			password = stringBuffer.toString();
+			
+			event.GetConnection().SendMessage(new JSONObject().put("op", 1)
 								  .put("type", "LOGIN_REQUEST_ANSWER")
-								  .put("data", new JSONObject().put("username", uName)
-											       .put("password", "1234")
+								  .put("data", new JSONObject().put("username", userName)
+									  		       .put("password", password)
 								  )
-				//TODO implement pwd and uname set by client
-						 );
+			);
+			
+		} catch (NoSuchAlgorithmException ex) {
+			ex.printStackTrace();
+		} finally {
+			scanner.close();
+		}
 	}
 	
 	@Override
