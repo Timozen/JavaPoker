@@ -391,6 +391,9 @@ public class Table implements Runnable {
 	public void AddPlayerToTable(Player player)
 	{
 		if(!playersOnTable.contains(player)){
+			
+			player.SetTable(this);
+			
 			//send PLAYER_JOINS_TABLE Event to every already connected player
 			playersOnTable.forEach(p -> {
 				if (p.GetConnectionClient() != null) {

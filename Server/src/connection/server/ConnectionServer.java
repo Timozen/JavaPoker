@@ -92,9 +92,22 @@ public class ConnectionServer extends Server {
 	public void OnClientDisconnectEvent(ClientDisconnectEvent event)
 	{
 		System.out.println("A client has disconnected!");
-		if (event.GetClient().IsLoggedIn()) {
+		Client client = event.GetClient();
+		
+		if (client.IsLoggedIn()) {
 			System.out.println("Player was logged in.");
-			event.GetClient().GetPlayer().SetHasDisconnected(true);
+			client.GetPlayer().SetHasDisconnected(true);
+			
+			Table table = event.GetClient().GetPlayer().GetTable();
+			if(table == null) {
+				System.out.println("The player is not part of a table");
+			} else {
+				if(!table.HasStarted()) {
+					System.out.println("The player was part of table, remove from table, because it" +
+							   " didnt started yet");
+					table.RemovePlayerFromTable(client.GetPlayer(), true, "Disconnected by client");
+				}
+			}
 		}
 	}
 	

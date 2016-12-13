@@ -32,7 +32,7 @@ public class Player {
 	private String nickname;
 	private String id;
 	private PlayerState playerState;                //Gives information about what Player did (Fold / AllIn / Normal)
-    private boolean hasDisconnected;
+    	private boolean hasDisconnected;
 	
 	//Field for the sum of all bet of all Setzrunden
 	private int roundBetAll;
@@ -51,7 +51,7 @@ public class Player {
 	private int winnerNumber;
 	
 	private Client connectionClient;
-	
+	private Table table;
 	
 	/**
 	 * game.Player constructor with std value for money
@@ -415,13 +415,24 @@ public class Player {
 	}
 
 	public void SetHasDisconnected(boolean hasDisconnected)
-    {
-        this.hasDisconnected = hasDisconnected;
-    }
+    	{
+		this.hasDisconnected = hasDisconnected;
+    	}
 
-    public boolean GetHasDisconnected()
-    {
-        return hasDisconnected;
-    }
+    	public boolean GetHasDisconnected()
+    	{
+        	return hasDisconnected;
+    	}
+	
+	public Table GetTable()
+	{
+		return table;
+	}
+	
+	public void SetTable(Table table)
+	{
+		this.table = table;
+	}
+	
 	//endregion
 }
