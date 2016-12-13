@@ -24,7 +24,12 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.Socket;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -114,27 +119,100 @@ public class ConnectionServer extends Server {
 	@Override
 	public void OnLoginRequestAnswerEvent(LoginRequestAnswerEvent event)
 	{
+		boolean valid = false;
+		String reason = "";
+		
 		System.out.println("A client has send its login information");
-		System.out.println("The information is:");
-		System.out.println("Username: " + event.username);
-		System.out.println("Password: " + event.password);
-
-		//TODO check if valid
+		
+		try {
+			String fileString = readFile("src/users.json", StandardCharsets.UTF_8);
+			JSONArray obj = new JSONArray(fileString);
+			JSONObject userObj = obj.getJSONObject(0);
+			boolean found = false;
+			for(int i = 0; i < obj.length(); i++) {
+				userObj = obj.getJSONObject(i);
+				
+				if (userObj.getString("username").equals(event.username)) {
+					found = true;
+					break;
+				}
+			}
+			if(found) {
+				if(userObj.getString("passwordHash").equals(event.password)) {
+					valid = true;
+				} else {
+					reason = "Wrong password";
+				}
+				
+			} else {
+				reason = "Wrong username";
+			}
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
 		
 		event.GetClient().SendMessage( new JSONObject().put("op", 1)
 								.put("type", "LOGIN_RESULT")
 								.put("data", new JSONObject()
-										.put("valid", true)
+										.put("valid", valid)
 										.put("playerId", event.username)
-										.put("reason", "correct")
+										.put("reason", reason)
 								)
 					     );
-		//setup player and add client to hashmap
-		event.GetClient().SetUpAfterLogIn(event.username, true);
-		connectedClients.put(event.username, event.GetClient());
+		if(valid) {
+			System.out.println("Log in was successfull");
+			//setup player and add client to hashmap
+			event.GetClient().SetUpAfterLogIn(event.username, true);
+			connectedClients.put(event.username, event.GetClient());
+			
+			//TODO fill the first not full table
+			tables.get(0).AddPlayerToTable(event.GetClient().GetPlayer());
+		} else {
+			System.out.println("Log in was unsuccessfull");
+			//todo ggf neues login request senden?
+		}
+	}
 	
-		//TODO fill the first not full table
-		tables.get(0).AddPlayerToTable(event.GetClient().GetPlayer());
+	@Override
+	public void OnRegisterRequestEvent(RegisterRequestEvent event)
+	{
+		try {
+			String fileString = readFile("src/users.json", StandardCharsets.UTF_8);
+			JSONArray array = new JSONArray(fileString);
+			
+			//TODO check for username already in use!!!
+			
+			JSONObject newUser = new JSONObject().put("username", event.username)
+								.put("passwordHash", event.password)
+								.put("loggedIn", false);
+			array.put(newUser);
+			
+			try(  PrintWriter out = new PrintWriter("src/users.json")  ){
+				out.println(array.toString(1));
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+			
+			event.GetClient().SendMessage( new JSONObject().put("op", 1)
+							       .put("type", "LOGIN_RESULT")
+							       .put("data", new JSONObject()
+								       .put("valid", true)
+								       .put("playerId", event.username)
+								       .put("reason", "Register successfull")
+							       )
+			);
+			
+			
+			System.out.println("Register was successfull");
+			//setup player and add client to hashmap
+			event.GetClient().SetUpAfterLogIn(event.username, true);
+			connectedClients.put(event.username, event.GetClient());
+			
+			//TODO fill the first not full table
+			tables.get(0).AddPlayerToTable(event.GetClient().GetPlayer());
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
 	}
 	
 	@Override
@@ -180,10 +258,12 @@ public class ConnectionServer extends Server {
 
 		Thread thread = new Thread(table);
 		thread.start();
-
-		//table.AddPlayerToTable("Vogel");
-		//table.AddPlayerToTable("Grajetzki");
-		//table.AddPlayerToTable("Neumann");
 	}
 	
+	
+	private String readFile(String path, Charset encoding)throws IOException
+	{
+		byte[] encoded = Files.readAllBytes(Paths.get(path));
+		return new String(encoded, encoding);
+	}
 }

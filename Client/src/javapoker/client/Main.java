@@ -58,6 +58,16 @@ class Listener extends ConnectionEventListener {
 		Scanner scanner = new Scanner(System.in);
 		
 		System.out.println("Received LoginRequest");
+		
+		System.out.print("Login(L) or Register(R): ");
+		
+		String type = scanner.nextLine();
+		//todo check input
+		if(type.equals("R")) {
+			type = "REGISTER_REQUEST";
+		} else {
+			type = "LOGIN_REQUEST_ANSWER";
+		}
 
 		System.out.print("Username: ");
 		String userName = scanner.nextLine();
@@ -79,7 +89,7 @@ class Listener extends ConnectionEventListener {
 			password = stringBuffer.toString();
 			
 			event.GetConnection().SendMessage(new JSONObject().put("op", 1)
-								  .put("type", "LOGIN_REQUEST_ANSWER")
+								  .put("type", type)
 								  .put("data", new JSONObject().put("username", userName)
 									  		       .put("password", password)
 								  )
