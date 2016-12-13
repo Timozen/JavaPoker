@@ -52,8 +52,23 @@ public class SocketConnection extends Thread {
 	@Override
 	public void run()
 	{
+		boolean connected = false;
 		try {
-			socket = new Socket(adr, port);
+			while(!connected) {
+				try {
+					socket = new Socket(adr, port);
+					connected = true;
+				} catch (java.net.ConnectException ex) {
+					System.out.println("Server is not available - Automatic retry in 5 seconds");
+					connected = false;
+					try {
+						sleep(5000);
+					} catch (InterruptedException ex2) {
+						ex2.printStackTrace();
+					}
+				}
+			}
+			
 			input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			output = new PrintWriter(socket.getOutputStream(), true);
 			
