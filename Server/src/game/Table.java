@@ -732,5 +732,11 @@ public class Table implements Runnable {
 	public boolean HasStarted() {
 		return started;
 	}
+	
+	public int GetNeededPlayerCount()
+	{
+		return neededPlayerCount;
+	}
+	
 	//endregion
 }

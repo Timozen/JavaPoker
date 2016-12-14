@@ -50,6 +50,10 @@ public class ConnectionEventBuilder {
 				break;
 			case "CREATE_TABLE_REQUEST":
 				connectionEventManager.handle(new CreateTableRequestEvent(client, data));
+				break;
+			case "OPEN_TABLES_REFRESH":
+				connectionEventManager.handle(new OpenTablesRefreshEvent(client, data));
+				break;
 			default:
 				System.out.println("Unknown event type: " + obj.getString("type"));
 				break;

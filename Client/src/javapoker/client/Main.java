@@ -43,25 +43,26 @@ public class Main {
 
 
 class Listener extends ConnectionEventListener {
-	Player tempClientUntilTableIsReceived;
-	Table table;
-	ArrayList<OpenTable> openTables;
+	private Player tempClientUntilTableIsReceived;
+	private Table table;
+	private ArrayList<OpenTable> openTables;
 
+	private Scanner scanner;
+	
 	Listener() {
 		table = new Table();
 		openTables = new ArrayList<>();
+		scanner = new Scanner(System.in);
 	}
 
 	@Override
 	public void OnLoginRequest(LoginRequestEvent event)
 	{
-		Scanner scanner = new Scanner(System.in);
-		
 		System.out.println("Received LoginRequest");
 		
 		System.out.print("Login(L) or Register(R): ");
 		
-		String type = scanner.nextLine();
+		String type = scanner.nextLine().toUpperCase();
 		//todo check input
 		if(type.equals("R")) {
 			type = "REGISTER_REQUEST";
@@ -97,8 +98,6 @@ class Listener extends ConnectionEventListener {
 			
 		} catch (NoSuchAlgorithmException ex) {
 			ex.printStackTrace();
-		} finally {
-			scanner.close();
 		}
 	}
 	
@@ -106,10 +105,14 @@ class Listener extends ConnectionEventListener {
 	public void OnLoginResult(LoginResultEvent event)
 	{
 		System.out.println("Received LoginResult");
-		System.out.println("Information is: " + event.validLogin);
+		
 		if (event.validLogin) {
+			System.out.println("Login was successfull");
 			tempClientUntilTableIsReceived = new Player();
 			tempClientUntilTableIsReceived.id = event.playerId;
+		} else {
+			System.out.println("Login failed!");
+			System.out.println("Reason: " + event.reason);
 		}
 	}
 	
@@ -118,6 +121,42 @@ class Listener extends ConnectionEventListener {
 	{
 		System.out.println("Triggered " + (new Object() {}.getClass().getEnclosingMethod().getName()));
 		this.openTables = event.openTables;
+		
+		if(openTables.size() != 0){
+			for(OpenTable table : openTables) {
+				System.out.println("Table: " + table.tableId + " with " + table.currentPlayers + "/" + table.neededPlayers
+							   + " players");
+			}
+		} else {
+			System.out.println("Currently no open tables. Create(C) one or wait for other players(R).");
+		}
+		
+		
+		
+		System.out.print("Join(J) a table, create(C) a new table or refresh list(R): ");
+		
+		String input = scanner.nextLine().toUpperCase();
+		
+		if(input.equals("J")){
+			System.out.print("Which table you want to join(TableId): ");
+			int tableId = scanner.nextInt();
+			
+			event.GetConnection().SendMessage(new JSONObject().put("op", 1)
+									.put("type", "TABLE_JOIN_REQUEST")
+									.put("data", new JSONObject().put("tableId", tableId)));
+		} else if (input.equals("C")){
+			System.out.print("How many player shall play on the table: ");
+			int neededPlayers = scanner.nextInt();
+			
+			event.GetConnection().SendMessage(new JSONObject().put("op", 1)
+								  .put("type", "CREATE_TABLE_REQUEST")
+								  .put("data", new JSONObject().put("neededPlayers", neededPlayers)));
+		} else if (input.equals("R")){
+			event.GetConnection().SendMessage(new JSONObject().put("op", 1)
+								  .put("type", "OPEN_TABLES_REFRESH")
+								  .put("data", new JSONObject()));
+		}
+				
 	}
 	
 	@Override
@@ -171,7 +210,6 @@ class Listener extends ConnectionEventListener {
 	{
 		System.out.println("Your MaxBet is: " + event.maximumBetAmount);
 
-		Scanner scanner = new Scanner(System.in);;
 		String operation = null;
 		int amount = 0;
 

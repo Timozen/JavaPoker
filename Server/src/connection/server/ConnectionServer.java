@@ -166,7 +166,11 @@ public class ConnectionServer extends Server {
 			connectedClients.put(event.username, event.GetClient());
 			
 			//TODO fill the first not full table
-			tables.get(0).AddPlayerToTable(event.GetClient().GetPlayer());
+			//tables.get(0).AddPlayerToTable(event.GetClient().GetPlayer());
+			
+			//send list of open tables
+			sendOpenTables(event.GetClient());
+			
 		} else {
 			System.out.println("Log in was unsuccessfull");
 			//todo ggf neues login request senden?
@@ -209,7 +213,10 @@ public class ConnectionServer extends Server {
 			connectedClients.put(event.username, event.GetClient());
 			
 			//TODO fill the first not full table
-			tables.get(0).AddPlayerToTable(event.GetClient().GetPlayer());
+			//tables.get(0).AddPlayerToTable(event.GetClient().GetPlayer());
+			
+			//todo send open tables
+			sendOpenTables(event.GetClient());
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
@@ -227,13 +234,7 @@ public class ConnectionServer extends Server {
 	@Override
 	public void OnOpenTablesRefreshEvent(OpenTablesRefreshEvent event)
 	{
-		ArrayList<Integer> tableList = new ArrayList<>();
-		for(HashMap.Entry<Integer, Table> entry : tables.entrySet()) {
-			if (!entry.getValue().HasStarted()) {
-				tableList.add(entry.getKey());
-			}
-		}
-		event.GetClient().OpenTablesAnswer(new JSONArray(tableList));
+		sendOpenTables(event.GetClient());
 	}
 
 	@Override
@@ -267,11 +268,32 @@ public class ConnectionServer extends Server {
 	
 		return table;
 	}
-	
-	
+		
 	private String readFile(String path, Charset encoding)throws IOException
 	{
 		byte[] encoded = Files.readAllBytes(Paths.get(path));
 		return new String(encoded, encoding);
+	}
+	
+	private void sendOpenTables(Client client)
+	{
+		client.OpenTablesAnswer(createOpenTablesList());
+	}
+	
+	private JSONArray createOpenTablesList()
+	{
+		JSONArray tableList = new JSONArray();
+		for(HashMap.Entry<Integer, Table> entry : tables.entrySet()) {
+			if (!entry.getValue().HasStarted()) {
+				
+				JSONObject table = new JSONObject();
+				table.put("tableId", entry.getKey().toString());
+				table.put("currentPlayers", entry.getValue().GetPlayersOnTable().size());
+				table.put("neededPlayers", entry.getValue().GetNeededPlayerCount());
+				
+				tableList.put(table);
+			}
+		}
+		return tableList;
 	}
 }

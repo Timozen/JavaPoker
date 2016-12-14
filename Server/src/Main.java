@@ -30,7 +30,6 @@ public class Main {
 			ex.printStackTrace();
 		}
 		
-		connectionServer.CreateNewTable(3);
 		
 		/**
 		Scanner scanner = new Scanner(System.in);

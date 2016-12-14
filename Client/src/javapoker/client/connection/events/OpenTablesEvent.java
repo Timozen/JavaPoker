@@ -35,8 +35,9 @@ public class OpenTablesEvent extends ConnectionEvent {
 	@Override
 	public void Build()
 	{
-		JSONArray openTables = GetData().getJSONArray("table");
+		JSONArray openTables = GetData().getJSONArray("tables");
 		this.openTables = new ArrayList<>();
+		
 		for(int i = 0; i < openTables.length(); i++) {
 			JSONObject itTable = openTables.getJSONObject(i);
 			String tableId = itTable.getString("tableId");
@@ -48,7 +49,6 @@ public class OpenTablesEvent extends ConnectionEvent {
 							neededPlayers
 					)
 			);
-			System.out.println("Received OpenTable " + tableId + " with " + currentPlayers + " of " + neededPlayers);
 		}
 	}
 }

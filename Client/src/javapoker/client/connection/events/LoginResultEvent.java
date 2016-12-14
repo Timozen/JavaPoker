@@ -21,6 +21,7 @@ import org.json.JSONObject;
 public class LoginResultEvent extends ConnectionEvent {
 	public String playerId;
 	public boolean validLogin;
+	public String reason;
 	
 	public LoginResultEvent(SocketConnection socketConnection, JSONObject data)
 	{
@@ -31,5 +32,6 @@ public class LoginResultEvent extends ConnectionEvent {
 	{
 		validLogin = GetData().getBoolean("valid");
 		playerId = GetData().getString("playerId");
+		reason = GetData().getString("reason");
 	}
 }

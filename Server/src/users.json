@@ -6,21 +6,6 @@
  },
  {
   "loggedIn": false,
-  "passwordHash": "asdfasdfasdf",
-  "username": "skankhunt43"
- },
- {
-  "loggedIn": false,
-  "passwordHash": "asdfasdfasdf",
-  "username": "skankhunt44"
- },
- {
-  "loggedIn": false,
-  "passwordHash": "asdfasdfasdf",
-  "username": "skankhunt45"
- },
- {
-  "loggedIn": false,
   "passwordHash": "498d4c200461a80522a3228565c24f6c",
   "username": "tim"
  },
@@ -28,5 +13,10 @@
   "loggedIn": false,
   "passwordHash": "c2c363e400afaa02a7ef8d6720e3e3ab",
   "username": "Mattse"
+ },
+ {
+  "loggedIn": false,
+  "passwordHash": "0cc165a9c0e1a6a821c389e269672661",
+  "username": "a"
  }
 ]
