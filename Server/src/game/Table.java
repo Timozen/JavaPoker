@@ -422,8 +422,8 @@ public class Table implements Runnable {
 		
 		playersOnTable.forEach(p -> players.put(p.ToJSON()));
 
-		JSONObject data = new JSONObject()
-				.put("tableId", id);
+		JSONObject data = new JSONObject().put("tableId", id);
+		
 		if (success) {
 			data.put("players", players);
 		}else {

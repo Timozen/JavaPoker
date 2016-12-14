@@ -247,10 +247,16 @@ public class ConnectionServer extends Server {
 		} else {
 			event.GetClient().SendMessage(tables.get(event.tableId).GenerateJoinAnswer(false));
 		}
-
 	}
-
-	public void CreateNewTable(int playerCount)
+	
+	@Override
+	public void OnCreateTableRequestEvent(CreateTableRequestEvent event)
+	{
+		Table table = CreateNewTable(event.neededPlayers);
+		table.AddPlayerToTable(event.GetClient().GetPlayer());
+	}
+	
+	public Table CreateNewTable(int playerCount)
 	{
 		Table table = new Table(tables.size(), playerCount);
 		tables.put(idCounter, table);
@@ -258,6 +264,8 @@ public class ConnectionServer extends Server {
 
 		Thread thread = new Thread(table);
 		thread.start();
+	
+		return table;
 	}
 	
 	

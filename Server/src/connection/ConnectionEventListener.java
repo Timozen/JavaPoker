@@ -27,8 +27,9 @@ public abstract class ConnectionEventListener {
 	public void OnTableJoinRequestEvent(TableJoinRequestEvent event) {}
 	public void OnOpenTablesRefreshEvent(OpenTablesRefreshEvent event) {}
 	public void OnRegisterRequestEvent(RegisterRequestEvent event) {}
-		
-	public void OnConnectionEvent(ConnectionEvent e)
+	public void OnCreateTableRequestEvent(CreateTableRequestEvent event) {}
+	
+	void OnConnectionEvent(ConnectionEvent e)
 	{
 		if(e instanceof ClientConnectEvent){
 			OnClientConnectEvent((ClientConnectEvent) e);
@@ -44,6 +45,8 @@ public abstract class ConnectionEventListener {
 			OnOpenTablesRefreshEvent((OpenTablesRefreshEvent) e);
 		} else if (e instanceof RegisterRequestEvent) {
 			OnRegisterRequestEvent((RegisterRequestEvent) e);
+		} else if (e instanceof CreateTableRequestEvent) {
+			OnCreateTableRequestEvent((CreateTableRequestEvent) e);
 		}
 	}
 }

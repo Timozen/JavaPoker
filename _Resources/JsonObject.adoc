@@ -5,8 +5,7 @@ Communication-Protocol
 ==== LOGIN_REQUEST_ANSWER
 
 The object the clients sends to identify itself at the server.
-``
-``[source/json]
+[source/json]
 	{
 	    "op" : 1,
 	    "data" :
@@ -59,8 +58,21 @@ Sends the open tables information.
         "type": "OPEN_TABLES_REFRESH"
     }
 
-== Client Events
 
+==== CREATE_TABLE_REQUEST
+
+If a clients request to create a new table. Client will auto-join this table.
+
+[source/java]
+    {
+        "op":1,
+        "data": {
+            "neededPlayers": value
+        },
+        "type": "CREATE_TABLE_REQUEST"
+    }
+
+== Client Events
 ==== LOGIN_REQUEST
 
 If a client connects to the server, a login request is send.

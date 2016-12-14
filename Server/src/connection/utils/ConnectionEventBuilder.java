@@ -17,10 +17,7 @@ package connection.utils;
 
 import connection.ConnectionEventManager;
 import connection.client.Client;
-import connection.events.LoginRequestAnswerEvent;
-import connection.events.PlayerActionAnswerEvent;
-import connection.events.RegisterRequestEvent;
-import connection.events.TableJoinRequestEvent;
+import connection.events.*;
 import org.json.JSONObject;
 
 public class ConnectionEventBuilder {
@@ -51,6 +48,8 @@ public class ConnectionEventBuilder {
 			case "REGISTER_REQUEST":
 				connectionEventManager.handle(new RegisterRequestEvent(client, data));
 				break;
+			case "CREATE_TABLE_REQUEST":
+				connectionEventManager.handle(new CreateTableRequestEvent(client, data));
 			default:
 				System.out.println("Unknown event type: " + obj.getString("type"));
 				break;
