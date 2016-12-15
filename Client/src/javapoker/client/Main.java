@@ -28,11 +28,23 @@ import org.json.JSONObject;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.Scanner;
 
 public class Main {
 	public static void main(String[] args)
 	{
+		
+		System.out.printf( "       _                  _____      _             \n" +
+				   "      | |                |  __ \\    | |            \n" +
+				   "      | | __ ___   ____ _| |__) |__ | | _____ _ __ \n" +
+				   "  _   | |/ _` \\ \\ / / _` |  ___/ _ \\| |/ / _ \\ '__|\n" +
+				   " | |__| | (_| |\\ V / (_| | |  | (_) |   <  __/ |   \n" +
+				   "  \\____/ \\__,_| \\_/ \\__,_|_|   \\___/|_|\\_\\___|_|   \n" +
+				   "                                                   \n");
+		
+		
 		ConnectionEventManager connectionEventManager = new ConnectionEventManager();
 		connectionEventManager.AddListener(new Listener());
 		
@@ -46,34 +58,64 @@ class Listener extends ConnectionEventListener {
 	private Player tempClientUntilTableIsReceived;
 	private Table table;
 	private ArrayList<OpenTable> openTables;
-
 	private Scanner scanner;
 	
-	Listener() {
+	private final String SEPERATOR = "######################################################################";
+	
+	private ResourceBundle messages;
+	
+	Listener()
+	{
 		table = new Table();
 		openTables = new ArrayList<>();
 		scanner = new Scanner(System.in);
+		
+		Locale local_de_DE = new Locale("de", "DE");
+		Locale local_en_US = new Locale("en", "US");
+		
+		messages = ResourceBundle.getBundle("Bundle", local_en_US);
 	}
-
+	
+	private void printHeadLine(String headLine)
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+		
+		int neededHashs = (SEPERATOR.length() - headLine.length())/2 - 1;
+		
+		for(int i = 0; i < neededHashs; i++)
+			stringBuilder.append("#");
+		
+		stringBuilder.append(" " + headLine + " ");
+		
+		for(int i = 0; i < neededHashs; i++)
+			stringBuilder.append("#");
+		
+		System.out.println("\n" + stringBuilder.toString() + "\n");
+	}
+	
 	@Override
 	public void OnLoginRequest(LoginRequestEvent event)
 	{
-		System.out.println("Received LoginRequest");
-		
-		System.out.print("Login(L) or Register(R): ");
-		
-		String type = scanner.nextLine().toUpperCase();
-		//todo check input
-		if(type.equals("R")) {
-			type = "REGISTER_REQUEST";
-		} else {
-			type = "LOGIN_REQUEST_ANSWER";
+		printHeadLine(messages.getString("LOGIN_headline"));
+				
+		String type = "";
+		String typePhrase = "";
+		while(!type.equals("R") && !type.equals("L")) {
+			System.out.print(messages.getString("LOGIN_question"));
+			type = scanner.nextLine().toUpperCase();
+			if (type.equals("R")) {
+				typePhrase = "REGISTER_REQUEST";
+			} else if (type.equals("L")) {
+				typePhrase = "LOGIN_REQUEST_ANSWER";
+			} else {
+				System.out.println(messages.getString("LOGIN_invalid"));
+			}
 		}
-
-		System.out.print("Username: ");
+		
+		System.out.print(messages.getString("LOGIN_user"));
 		String userName = scanner.nextLine();
 		
-		System.out.print("Password: ");
+		System.out.print(messages.getString("LOGIN_password"));
 		String password = scanner.nextLine();
 		
 		//hash the password
@@ -83,16 +125,16 @@ class Listener extends ConnectionEventListener {
 			byte[] digest = messageDigest.digest();
 			StringBuilder stringBuffer = new StringBuilder();
 			
-			for(byte b : digest){
+			for (byte b : digest) {
 				stringBuffer.append(String.format("%02x", b & 0xef));
 			}
 			
 			password = stringBuffer.toString();
 			
 			event.GetConnection().SendMessage(new JSONObject().put("op", 1)
-								  .put("type", type)
+								  .put("type", typePhrase)
 								  .put("data", new JSONObject().put("username", userName)
-									  		       .put("password", password)
+									  .put("password", password)
 								  )
 			);
 			
@@ -104,90 +146,111 @@ class Listener extends ConnectionEventListener {
 	@Override
 	public void OnLoginResult(LoginResultEvent event)
 	{
-		System.out.println("Received LoginResult");
+		printHeadLine(messages.getString("LOGINRESULT_headline"));
 		
 		if (event.validLogin) {
-			System.out.println("Login was successfull");
+			System.out.println(messages.getString("LOGINRESULT_success"));
 			tempClientUntilTableIsReceived = new Player();
 			tempClientUntilTableIsReceived.id = event.playerId;
 		} else {
-			System.out.println("Login failed!");
-			System.out.println("Reason: " + event.reason);
+			System.out.println(messages.getString("LOGINRESULT_fail"));
+			System.out.println(messages.getString("LOGINRESULT_reason_"+event.reason));
 		}
+	}
+	
+	@Override
+	public void OnLoginAcceptedPlayerSetup(LoginAcceptedPlayerSetup event)
+	{
+		printHeadLine(messages.getString("LOGINACCEPT_headline"));
+		
+		tempClientUntilTableIsReceived.id = event.playerId;
+		tempClientUntilTableIsReceived.money = event.money;
+		System.out.println(messages.getString("LOGINACCEPT_msg_server") + " " + event.playerId);
+		System.out.println(messages.getString("LOGINACCEPT_msg_money") + " " + event.money);
 	}
 	
 	@Override
 	public void OnOpenTables(OpenTablesEvent event)
 	{
-		System.out.println("Triggered " + (new Object() {}.getClass().getEnclosingMethod().getName()));
+		printHeadLine(messages.getString("OPENTABLES_headline"));
 		this.openTables = event.openTables;
 		
-		if(openTables.size() != 0){
-			for(OpenTable table : openTables) {
-				System.out.println("Table: " + table.tableId + " with " + table.currentPlayers + "/" + table.neededPlayers
-							   + " players");
+		String leftAlignFormat = "| %-15s | %-4d | %-4d |%n";
+				
+		if (openTables.size() != 0) {
+			System.out.format("+-----------------+------+------+%n");
+			System.out.format( "| "  + messages.getString("OPENTABLES_table") + "        "
+					   +"| CUR  "
+					   +"| MAX  |%n");
+			System.out.format("+-----------------+------+------+%n");
+			
+			for (OpenTable table : openTables) {
+				System.out.format(leftAlignFormat, table.tableId , table.currentPlayers, table.neededPlayers);
 			}
+			System.out.format("+-----------------+------+------+%n%n");
 		} else {
-			System.out.println("Currently no open tables. Create(C) one or wait for other players(R).");
+			System.out.println(messages.getString("OPENTABLES_notables"));
 		}
 		
 		
-		
-		System.out.print("Join(J) a table, create(C) a new table or refresh list(R): ");
+		System.out.print(messages.getString("OPENTABLES_question"));
 		
 		String input = scanner.nextLine().toUpperCase();
 		
-		if(input.equals("J")){
-			System.out.print("Which table you want to join(TableId): ");
+		if (input.equals("J")) {
+			System.out.print(messages.getString("OPENTABLES_join"));
 			int tableId = scanner.nextInt();
-			
+			scanner.nextLine();
 			event.GetConnection().SendMessage(new JSONObject().put("op", 1)
-									.put("type", "TABLE_JOIN_REQUEST")
-									.put("data", new JSONObject().put("tableId", tableId)));
-		} else if (input.equals("C")){
-			System.out.print("How many player shall play on the table: ");
+								  .put("type", "TABLE_JOIN_REQUEST")
+								  .put("data", new JSONObject().put("tableId", tableId)));
+		} else if (input.equals("C")) {
+			System.out.print(messages.getString("OPENTABLES_create"));
 			int neededPlayers = scanner.nextInt();
 			
 			event.GetConnection().SendMessage(new JSONObject().put("op", 1)
 								  .put("type", "CREATE_TABLE_REQUEST")
 								  .put("data", new JSONObject().put("neededPlayers", neededPlayers)));
-		} else if (input.equals("R")){
+		} else if (input.equals("R")) {
 			event.GetConnection().SendMessage(new JSONObject().put("op", 1)
 								  .put("type", "OPEN_TABLES_REFRESH")
 								  .put("data", new JSONObject()));
 		}
-				
+		
 	}
 	
 	@Override
 	public void OnTableJoinEvent(TableJoinEvent event)
 	{
-		System.out.println("Received TableJoin");
+		printHeadLine(messages.getString("TABLEJOIN_headline"));
+		
 		if (event.table == null) {
-			System.out.println("Error - Cannot connect to table");
+			System.out.println(messages.getString("TABLEJOIN_error"));
 			return;
 		}
 		table = event.table;
 		table.clientPlayer = tempClientUntilTableIsReceived;
 		
-		System.out.println("table id:" + table.tableId);
-		System.out.println("with " + table.players.size() + " players");
+		System.out.print(messages.getString("TABLEJOIN_table") + " " + table.tableId + " ");
+		System.out.println(messages.getString("TABLEJOIN_with")+ " " + table.players.size() + " "
+				   + messages.getString("TABLEJOIN_player"));
 	}
 	
 	@Override
 	public void OnTableLeaveEvent(TableLeaveEvent event)
 	{
-		System.out.println("Triggered " + (new Object() {}.getClass().getEnclosingMethod().getName()));
-		System.out.println("You got disconnected from table: " + event.reason);
+		printHeadLine(messages.getString("TABLELEAVE_headline"));
+		System.out.println(messages.getString("TABLELEAVE_msg") + event.reason);
 		System.exit(1);
 	}
-		
+	
 	@Override
 	public void OnPlayerJoinsTableEvent(PlayerJoinsTableEvent event)
 	{
-		System.out.println("Triggered " + (new Object() {}.getClass().getEnclosingMethod().getName()));
+		printHeadLine(messages.getString("PLAYERJOINSTABLE_headline"));
+		
 		if (!event.player.id.equals(table.clientPlayer.id)) {
-			System.out.println("Player with id " + event.player.id + " joined.");
+			System.out.println(event.player.id + messages.getString("PLAYERJOINSTABLE_msg"));
 			table.AddPlayer(event.player);
 		}
 	}
@@ -195,12 +258,14 @@ class Listener extends ConnectionEventListener {
 	@Override
 	public void OnPlayerLeavesTableEvent(PlayerLeavesTableEvent event)
 	{
-		System.out.println("Triggered " + (new Object() {}.getClass().getEnclosingMethod().getName()));
-		System.out.println("Player " + event.playerId + " left table because " + event.reason);
+		printHeadLine(messages.getString("PLAYERLEAVESTABLE_headline"));
+		
+		System.out.println(event.playerId + messages.getString("PLAYERLEAVESTABLE_msg_leave"));
 		table.RemovePlayer(event.playerId);
 		System.out.println(table.players.size());
+		
 		if (table.players.size() == 1) {
-			System.out.print("You were the last man standing. Good Job, time to say goodbye.");
+			System.out.print(messages.getString("PLAYERLEAVESTABLE_msg_win"));
 			System.exit(420);
 		}
 	}
@@ -208,25 +273,32 @@ class Listener extends ConnectionEventListener {
 	@Override
 	public void OnPlayerActionRequestEvent(PlayerActionRequestEvent event)
 	{
-		System.out.println("Your MaxBet is: " + event.maximumBetAmount);
-
-		String operation = null;
+		printHeadLine(messages.getString("PLAYERACTION_headline"));
+		System.out.println(messages.getString("PLAYERACTION_maxbet") + event.maximumBetAmount);
+		
+		String operation = "";
 		int amount = 0;
-
+		
 		byte isCorrect = 0;
-		while(isCorrect != 1) {
-			System.out.print("Choose Action ");
-			for(BettingOperations op : event.operations) {System.out.print(op.name() + " ");}
-			operation = scanner.nextLine();
-
+		while (isCorrect != 1) {
+			
+			System.out.print(messages.getString("PLAYERACTION_options"));
+			
+			for (BettingOperations op : event.operations) {
+				System.out.print(op.name() + " ");
+			}
+			
+			System.out.print("\n" + messages.getString("PLAYERACTION_choose") + " ");
+			operation = scanner.nextLine().toUpperCase();
+			
 			if (!(operation.equals("FOLD") || operation.equals("CHECK") || operation.equals("CALL"))) {
-				System.out.println("Input Betamount: ");
+				System.out.println(messages.getString("PLAYERACTION_betamount"));
 				amount = Integer.parseInt(scanner.nextLine());
 				if (amount > event.maximumBetAmount || amount < 0) {
-					System.out.println("Incorrect amount.");
+					System.out.println(messages.getString("PLAYERACTION_invalid"));
 					continue;
 				}
-				System.out.println("Correct Input: 0 || 1");
+				System.out.println(messages.getString("PLAYERACTION_correct"));
 				if (Integer.parseInt(scanner.nextLine()) == 1) {
 					isCorrect = 1;
 				}
@@ -234,21 +306,22 @@ class Listener extends ConnectionEventListener {
 				isCorrect = 1;
 			}
 		}
-
+		
 		event.GetConnection().SendMessage(new JSONObject().put("op", 1)
-								.put("type", "PLAYER_ACTION_ANSWER")
-								.put("data", new JSONObject()
-									.put("tableId", table.tableId)
-									.put("action", operation)
-									.put("betAmount", amount)
-									.put("isAllIn", false)
-								));
+							  .put("type", "PLAYER_ACTION_ANSWER")
+							  .put("data", new JSONObject()
+								  .put("tableId", table.tableId)
+								  .put("action", operation)
+								  .put("betAmount", amount)
+								  .put("isAllIn", false)
+							  ));
 	}
 	
 	@Override
 	public void OnRoundUpdateStartEvent(RoundUpdateStartEvent event)
 	{
-		System.out.println("Triggered " + (new Object() {}.getClass().getEnclosingMethod().getName()));
+		printHeadLine(messages.getString("ROUNDUPDATESTART_headline"));
+		
 		table.dealerId = event.dealerId;
 		table.smallBlindId = event.smallBlindId;
 		table.bigBlindId = event.bigBlindId;
@@ -259,8 +332,9 @@ class Listener extends ConnectionEventListener {
 	@Override
 	public void OnRoundUpdateCardDrawEvent(RoundUpdateCardDrawEvent event)
 	{
-		System.out.println("Triggered " + (new Object() {}.getClass().getEnclosingMethod().getName()));
-		System.out.println("Player received " + event.card);
+		printHeadLine(messages.getString("ROUNDUPDATECARD_headline"));
+		
+		System.out.println(messages.getString("ROUNDUPDATECARD_msg") + " " + event.card);
 		table.clientPlayer.cards.add(event.card);
 		//TODO with GUI: Show other players retreived one too
 	}
@@ -268,83 +342,77 @@ class Listener extends ConnectionEventListener {
 	@Override
 	public void OnRoundUpdateRoundEvent(RoundUpdateRoundEvent event)
 	{
-		System.out.println("Triggered " + (new Object() {}.getClass().getEnclosingMethod().getName()));
-		System.out.println("---------------------------");
-		System.out.println("ROUND: " + event.newTurn);
-		System.out.println("Pot: " + event.pot);
-		
+		printHeadLine(messages.getString("ROUNDUPDATEROUND_headline"));
+		System.out.println(messages.getString("ROUNDUPDATEROUND_round") + " " + event.newTurn);
+		System.out.println(messages.getString("ROUNDUPDATEROUND_pot") + " " + event.pot);
 	}
-
+	
 	@Override
 	public void OnRoundUpdateShowdownPrePaymentEvent(RoundUpdateShowdownPrePaymentEvent event)
 	{
 		//Late
 		//TODO will be implemented first in the server...
 		//also see last commit, needs refactor
-		System.out.println("Triggered " + (new Object() {}.getClass().getEnclosingMethod().getName()));
-		for(String[] s : event.playerData) {
+		printHeadLine(messages.getString("ROUNDUPDATESHOWDOWN1_headline"));
+		
+		for (String[] s : event.playerData) {
 			System.out.print(s[0] + " with ");
 			System.out.print(s[1] + " and ");
 			System.out.println(s[2]);
 		}
-
+		
 	}
-
-
+	
 	@Override
 	public void OnRoundUpdateShowdownPostPaymentEvent(RoundUpdateShowdownPostPaymentEvent event)
 	{
 		//Late
 		//TODO will be implemented first in the server...
 		//also see last commit, needs refactor
-		System.out.println("Triggered " + (new Object() {}.getClass().getEnclosingMethod().getName()));
-		for(String[] s : event.winnerData) {
+		printHeadLine(messages.getString("ROUNDUPDATESHOWDOWN2_headline"));
+		
+		for (String[] s : event.winnerData) {
 			System.out.print(s[0] + " wins ");
 			System.out.print(s[1] + " and newAmount ");
 			System.out.println(s[2]);
 		}
-
+		
 	}
-
+	
 	@Override
 	public void OnRoundUpdatePlayerEvent(RoundUpdatePlayerEvent event)
 	{
-		System.out.println("Triggered " + (new Object() {}.getClass().getEnclosingMethod().getName()));
-		System.out.println(event.playerId + " paid " + event.playerBetAmount);
-		System.out.println(event.playerId + " did " + event.action);
-
+		printHeadLine(messages.getString("ROUNDUPDATEPLAYER_headline"));
+		System.out.println(event.playerId + " " + messages.getString("ROUNDUPDATEPLAYER_action") + " " + event.action);
+		System.out.println(event.playerId + " " + messages.getString("ROUNDUPDATEPLAYER_paid") + " "+ event.playerBetAmount);
+		
 		//TODO BettingOperation
 		table.SetPlayerMoneyAmount(event.playerId, event.playerMoney);
 		table.SetPlayerTotalBetAmount(event.playerId, event.totalPlayerBetAmount);
 		table.SetPlayerCurrentBetAmount(event.playerId, event.currentRoundBet);
 		table.pot = event.tablePotValue;
 		table.roundBet = event.currentRoundBet;
-
-		System.out.println("New Pot: " + table.pot);
+		
+		System.out.println(messages.getString("ROUNDUPDATEPLAYER_pot") + " " + table.pot);
 	}
-
+	
 	@Override
-	public void OnRoundUpdateChooserPlayer(RoundUpdateChooserPlayer event) {
-		System.out.println("Triggered " + (new Object() {}.getClass().getEnclosingMethod().getName()));
-		System.out.println("Pot Value: " + event.pot);
-		System.out.println(table.GetPlayerById(event.playerId).nickname + " makes choice...");
+	public void OnRoundUpdateChooserPlayer(RoundUpdateChooserPlayer event)
+	{
+		printHeadLine(messages.getString("ROUNDUPDATECHOOSER_headline"));
+		System.out.println(messages.getString("ROUNDUPDATECHOOSER_pot") + " " + event.pot);
+		System.out.println(table.GetPlayerById(event.playerId).nickname + " " + messages.getString("ROUNDUPDATECHOOSER_msg"));
 	}
-
+		
 	@Override
-	public void OnLoginAcceptedPlayerSetup(LoginAcceptedPlayerSetup event) {
-		System.out.println("Triggered " + (new Object() {}.getClass().getEnclosingMethod().getName()));
-		tempClientUntilTableIsReceived.id = event.playerId;
-		tempClientUntilTableIsReceived.money = event.money;
-		System.out.println("Welcome on our Server, " + event.playerId);
-		System.out.println("Your money amount is " + event.money);
-	}
-
-	@Override
-	public void OnRoundUpdateNewBoardCard(RoundUpdateNewBoardCard event) {
-		System.out.println("New Boardcard received " + event.card);
+	public void OnRoundUpdateNewBoardCard(RoundUpdateNewBoardCard event)
+	{
+		printHeadLine(messages.getString("ROUNDUPDATEBOARDCARD_headline"));
+		
+		System.out.println(messages.getString("ROUNDUPDATEBOARDCARD_card") + " " + event.card);
 		table.boardCards.add(event.card);
-		System.out.print("Table Cards: ");
-		for(String card : table.boardCards) {
+		System.out.print(messages.getString("ROUNDUPDATEBOARDCARD_allcards"));
+		for (String card : table.boardCards) {
 			System.out.print(card + "   ");
 		}
 		System.out.println();

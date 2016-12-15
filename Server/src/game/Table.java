@@ -61,7 +61,6 @@ public class Table implements Runnable {
 	private int id;
 
 	private boolean started;
-
 	public boolean receivedAnswer;
 	
 	public Table(String filePath){
@@ -190,6 +189,7 @@ public class Table implements Runnable {
 		}
 		
 		*/
+		int MAX_WAIT_TIME = 60000;
 		
 		int options = IsPreBet() ?  0 : 1;
 		
@@ -201,7 +201,7 @@ public class Table implements Runnable {
 			long initTime = System.currentTimeMillis();
 			//wait for answer from the client
 			while(!receivedAnswer && !timeElapsed){
-				if(System.currentTimeMillis() - initTime > 30000){
+				if(System.currentTimeMillis() - initTime > MAX_WAIT_TIME){
 					timeElapsed = true;
 					System.out.println("wait for response has stopped!");
 				} else {

@@ -141,11 +141,11 @@ public class ConnectionServer extends Server {
 				if(userObj.getString("passwordHash").equals(event.password)) {
 					valid = true;
 				} else {
-					reason = "Wrong password";
+					reason = "password";
 				}
 				
 			} else {
-				reason = "Wrong username";
+				reason = "username";
 			}
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -265,7 +265,7 @@ public class ConnectionServer extends Server {
 
 		Thread thread = new Thread(table);
 		thread.start();
-	
+		
 		return table;
 	}
 		
