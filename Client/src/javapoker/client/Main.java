@@ -409,6 +409,8 @@ class Listener extends ConnectionEventListener {
 			System.out.print(s[0] + " with ");
 			System.out.print(s[1] + " and ");
 			System.out.println(s[2]);
+
+			table.b.GetPlayerByName(s[0]).SetCards(s[1] + " " + s[2]);
 		}
 		
 	}

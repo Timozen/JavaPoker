@@ -17,6 +17,8 @@ package javapoker.client.pokerui;
 
 import javapoker.client.game.Player;
 import javapoker.client.game.Table;
+import javapoker.client.messageconsole.MessageConsole;
+import sun.plugin2.message.Message;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -52,7 +54,7 @@ public class PokerGUIBuilder {
         this.playerCount = playerCount;
         int windowWidth = 800;
         int infoHeight = 20;
-        f = new AbsoluteLayoutFrame(windowWidth, infoHeight * (playerCount + 1) + 350);
+        f = new AbsoluteLayoutFrame(windowWidth + 20, infoHeight * (playerCount + 1) + 370);
         f.setTitle("Poker GUI - Client");
         f.add(new JLabel("Player Name"), 0, 0, windowWidth / 5, infoHeight);
         f.add(new JLabel("Player Money"), windowWidth / 5, 0, windowWidth / 5, infoHeight);
@@ -142,7 +144,10 @@ public class PokerGUIBuilder {
         relativeTop += infoHeight + 10;
         tLog = new JTextArea("Log:\n");
 
-        f.add(tLog, 0, relativeTop, windowWidth, 200);
+
+        f.add(new JScrollPane(tLog), 0, relativeTop, windowWidth, 200);
+        MessageConsole mc = new MessageConsole(tLog);
+        mc.redirectOut(null, System.out);
 
         //Done?
         SetPlayerChoice(false);

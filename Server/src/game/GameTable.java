@@ -619,7 +619,7 @@ public class GameTable {
 				.put("data", new JSONObject()
 						.put("information", information)
 				);
-
+		//TODO: Sleep
 		for (Player p : playersInRound) {
 			p.GetConnectionClient().SendMessage(RoundUpdateShowdownPostPayment);
 		}
