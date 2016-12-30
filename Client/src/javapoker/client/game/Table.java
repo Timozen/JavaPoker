@@ -15,6 +15,7 @@
 
 package javapoker.client.game;
 
+import javapoker.client.connection.SocketConnection;
 import javapoker.client.pokerui.PokerGUIBuilder;
 import org.json.JSONObject;
 
@@ -34,6 +35,7 @@ public class Table {
 	public int tableId;
 	public int roundBet;
 	public Player clientPlayer;
+	public SocketConnection connection;
 	
 	public Table(){
 		players = new ArrayList<>();
@@ -128,6 +130,24 @@ public class Table {
 			return 1;
 		}
 		return -1;
+	}
+
+	public void SendPlayerActionPerformed(String action, int amount)
+	{
+		b.SetPlayerChoice(false);
+		connection.SendMessage(new JSONObject().put("op", 1)
+				.put("type", "PLAYER_ACTION_ANSWER")
+				.put("data", new JSONObject()
+						.put("tableId", tableId)
+						.put("action", action)
+						.put("betAmount", amount)
+						.put("isAllIn", false)
+				));
+	}
+
+	public void SetEventConnection(SocketConnection connection)
+	{
+		this.connection = connection;
 	}
 
 }

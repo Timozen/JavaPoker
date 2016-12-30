@@ -25,6 +25,8 @@ import javapoker.client.game.Player;
 import javapoker.client.game.Table;
 import org.json.JSONObject;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -229,9 +231,8 @@ class Listener extends ConnectionEventListener {
 			return;
 		}
 		table = event.table;
-
 		table.clientPlayer = tempClientUntilTableIsReceived;
-		
+
 		System.out.print(messages.getString("TABLEJOIN_table") + " " + table.tableId + " ");
 		System.out.println(messages.getString("TABLEJOIN_with")+ " " + table.players.size() + " "
 				   + messages.getString("TABLEJOIN_player"));
@@ -274,7 +275,7 @@ class Listener extends ConnectionEventListener {
 	@Override
 	public void OnPlayerActionRequestEvent(PlayerActionRequestEvent event)
 	{
-		///*
+		/*
 		// printHeadLine(messages.getString("PLAYERACTION_headline"));
 		System.out.println(messages.getString("PLAYERACTION_maxbet") + event.maximumBetAmount);
 
@@ -317,8 +318,9 @@ class Listener extends ConnectionEventListener {
 								  .put("betAmount", amount)
 								  .put("isAllIn", false)
 							  ));
-	  	//*/
-		//table.b.SetPlayerChoice(true);
+	  	*/
+		table.b.SetPlayerChoice(true);
+		table.SetEventConnection(event.GetConnection());
 	}
 	
 	@Override

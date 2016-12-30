@@ -40,7 +40,7 @@ public class TableJoinEvent extends ConnectionEvent{
 			table = new Table();
 			table.tableId = GetData().getInt("tableId");
 			table.neededPlayers = GetData().getInt("neededplayercount");
-			table.b = new PokerGUIBuilder(table.neededPlayers);
+			table.b = new PokerGUIBuilder(table.neededPlayers, table);
 
 			JSONArray players = GetData().getJSONArray("players");
 

@@ -16,6 +16,7 @@
 package javapoker.client.pokerui;
 
 import javapoker.client.game.Player;
+import javapoker.client.game.Table;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -31,6 +32,7 @@ public class PokerGUIBuilder {
     private JLabel lTableCards;
     private JLabel lPlayerPerformingAction;
     private JLabel lTablePot;
+    private Table table;
 
     private JLabel lSmallBlind;
     private JLabel lBigBlind;
@@ -43,7 +45,8 @@ public class PokerGUIBuilder {
     private String action;
     private int betAmount;
 
-    public PokerGUIBuilder(int playerCount) {
+    public PokerGUIBuilder(int playerCount, Table table) {
+        this.table = table;
         this.builtPlayers = 0;
         this.playerCount = playerCount;
         int windowWidth = 800;
@@ -97,8 +100,35 @@ public class PokerGUIBuilder {
 
         iAmount = new JTextField("0");
         bCheck = new JButton("CHECK");
+        bCheck.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                table.SendPlayerActionPerformed(
+                        "CHECK",
+                        0)
+                ;
+            }
+        });
         bBet = new JButton("BET");
+        bBet.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                table.SendPlayerActionPerformed(
+                        "BET",
+                        Integer.parseInt(iAmount.getText())
+                );
+            }
+        });
         bFold = new JButton("FOLD");
+        bFold.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                table.SendPlayerActionPerformed(
+                        "FOLD",
+                        0
+                );
+            }
+        });
 
         f.add(bCheck, 0, relativeTop, windowWidth / 4, infoHeight);
         f.add(bBet, windowWidth / 4, relativeTop, windowWidth / 4, infoHeight);
