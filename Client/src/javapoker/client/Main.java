@@ -23,6 +23,7 @@ import javapoker.client.game.BettingOperations;
 import javapoker.client.game.OpenTable;
 import javapoker.client.game.Player;
 import javapoker.client.game.Table;
+import javapoker.client.pokerui.PokerLoginGUIBuilder;
 import org.json.JSONObject;
 
 import java.awt.event.ActionEvent;
@@ -61,6 +62,7 @@ class Listener extends ConnectionEventListener {
 	private Table table;
 	private ArrayList<OpenTable> openTables;
 	private Scanner scanner;
+	private PokerLoginGUIBuilder fLogin;
 	
 	private final String SEPERATOR = "######################################################################";
 	
@@ -98,6 +100,8 @@ class Listener extends ConnectionEventListener {
 	@Override
 	public void OnLoginRequest(LoginRequestEvent event)
 	{
+		fLogin = new PokerLoginGUIBuilder(event.GetConnection());
+		/*
 		printHeadLine(messages.getString("LOGIN_headline"));
 				
 		String type = "";
@@ -143,6 +147,7 @@ class Listener extends ConnectionEventListener {
 		} catch (NoSuchAlgorithmException ex) {
 			ex.printStackTrace();
 		}
+		*/
 	}
 	
 	@Override
@@ -154,9 +159,11 @@ class Listener extends ConnectionEventListener {
 			System.out.println(messages.getString("LOGINRESULT_success"));
 			tempClientUntilTableIsReceived = new Player();
 			tempClientUntilTableIsReceived.id = event.playerId;
+			fLogin.lResult.setText("Login Successful.");
 		} else {
 			System.out.println(messages.getString("LOGINRESULT_fail"));
 			System.out.println(messages.getString("LOGINRESULT_reason_"+event.reason));
+			fLogin.lResult.setText("Login failed: " + event.reason);
 		}
 	}
 	
@@ -174,6 +181,7 @@ class Listener extends ConnectionEventListener {
 	@Override
 	public void OnOpenTables(OpenTablesEvent event)
 	{
+		//User is definitely logged in
 		printHeadLine(messages.getString("OPENTABLES_headline"));
 		this.openTables = event.openTables;
 		
