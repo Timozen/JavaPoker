@@ -24,20 +24,21 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class TableJoinEvent extends ConnectionEvent{
-	
+
 	public Table table;
-	
+
 	public TableJoinEvent(SocketConnection socketConnection, JSONObject data)
 	{
 		super(socketConnection, data);
 	}
-	
+
 	@Override
 	public void Build()
 	{
 		if(GetData().getBoolean("success")) {
 			table = new Table();
 			table.tableId = GetData().getInt("tableId");
+			table.neededPlayers = GetData().getInt("neededplayercount");
 
 			JSONArray players = GetData().getJSONArray("players");
 

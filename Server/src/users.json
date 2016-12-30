@@ -28,5 +28,15 @@
   "loggedIn": false,
   "passwordHash": "24a7ca664b21c288ef206d04c8052dc5",
   "username": "Tom"
+ },
+ {
+  "loggedIn": false,
+  "passwordHash": "202ca962ac49074b864b07052d234b60",
+  "username": "test"
+ },
+ {
+  "loggedIn": false,
+  "passwordHash": "202ca962ac49074b864b07052d234b60",
+  "username": "test2"
  }
 ]

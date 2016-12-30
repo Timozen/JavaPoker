@@ -430,6 +430,7 @@ public class Table implements Runnable {
 			data.put("players", "");
 		}
 		data.put("success", success);
+		data.put("neededplayercount", neededPlayerCount);
 
 		ob.put("op", 1);
 		ob.put("type", "ON_TABLE_JOIN");

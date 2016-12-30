@@ -23,6 +23,7 @@ import javapoker.client.game.BettingOperations;
 import javapoker.client.game.OpenTable;
 import javapoker.client.game.Player;
 import javapoker.client.game.Table;
+import javapoker.client.pokerui.PokerGUIBuilder;
 import org.json.JSONObject;
 
 import java.security.MessageDigest;
@@ -229,6 +230,7 @@ class Listener extends ConnectionEventListener {
 			return;
 		}
 		table = event.table;
+		table.b = new PokerGUIBuilder(table.neededPlayers);
 		table.clientPlayer = tempClientUntilTableIsReceived;
 		
 		System.out.print(messages.getString("TABLEJOIN_table") + " " + table.tableId + " ");

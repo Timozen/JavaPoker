@@ -15,12 +15,13 @@
 
 package javapoker.client.game;
 
+import javapoker.client.pokerui.PokerGUIBuilder;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 public class Table {
-	
+	public PokerGUIBuilder b;
 	public ArrayList<Player> players;
 	public ArrayList<String> boardCards;
 	public int neededPlayers;
