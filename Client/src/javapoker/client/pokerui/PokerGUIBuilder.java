@@ -32,6 +32,7 @@ public class PokerGUIBuilder {
     private JLabel lTableCards;
     private JLabel lPlayerPerformingAction;
     private JLabel lTablePot;
+    private JLabel lTableRoundBetCurrent;
     private Table table;
 
     private JLabel lSmallBlind;
@@ -78,11 +79,13 @@ public class PokerGUIBuilder {
         //TableCards & Player Info
         int relativeTop = (playerCount + 1) * infoHeight + 30;
         lTableCards = new JLabel("Table Cards: ");
-        lTablePot = new JLabel("Table Pot: ");
+        lTablePot = new JLabel("Pot: ");
+        lTableRoundBetCurrent = new JLabel("Bet: ");
         lPlayerPerformingAction = new JLabel("Watiting for Table");
 
         f.add(lTableCards, 0, relativeTop, windowWidth / 3, infoHeight);
-        f.add(lTablePot, windowWidth / 3, relativeTop, windowWidth / 3, infoHeight);
+        f.add(lTablePot, windowWidth / 3, relativeTop, windowWidth / 3 / 2, infoHeight);
+        f.add(lTableRoundBetCurrent, windowWidth / 3 + windowWidth / 3 / 2, relativeTop, windowWidth / 3 / 2, infoHeight);
         f.add(lPlayerPerformingAction, windowWidth / 3 * 2, relativeTop, windowWidth / 3, infoHeight);
 
         //Small, Big, Dealer
@@ -207,12 +210,17 @@ public class PokerGUIBuilder {
 
     public void SetTablePot(int pot)
     {
-        lTableCards.setText("Table Pot: " + Integer.toString(pot));
+        lTablePot.setText("Table Pot: " + Integer.toString(pot));
     }
 
     public void SetPerformingPlayer(String player)
     {
-        lPlayerPerformingAction.setText(player + " is makes action...");
+        lPlayerPerformingAction.setText(player + " makes a choice...");
+    }
+
+    public void SetPerformingPlayer()
+    {
+        lPlayerPerformingAction.setText("It's your turn.");
     }
 
     public void ResetPlayerCards()
@@ -230,5 +238,18 @@ public class PokerGUIBuilder {
                 aPlayers[i].AddCard(" | ");
             }
         }
+    }
+
+    public void ResetPlayerCurrentBet()
+    {
+        for (int i = 0; i < playerCount; i++)
+        {
+            aPlayers[i].SetCurrentBet(0);
+        }
+    }
+
+    public void SetRoundBetCurrent(int roundBet)
+    {
+        lTableRoundBetCurrent.setText("Bet: " + Integer.toString(roundBet));
     }
 }

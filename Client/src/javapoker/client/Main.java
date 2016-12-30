@@ -58,6 +58,8 @@ public class Main {
 
 
 class Listener extends ConnectionEventListener {
+	//TODO: Ask User
+	private int playerTableAmount = 2;
 	private Player tempClientUntilTableIsReceived;
 	private Table table;
 	private ArrayList<OpenTable> openTables;
@@ -160,6 +162,7 @@ class Listener extends ConnectionEventListener {
 			tempClientUntilTableIsReceived = new Player();
 			tempClientUntilTableIsReceived.id = event.playerId;
 			fLogin.lResult.setText("Login Successful.");
+			fLogin.Dispose();
 		} else {
 			System.out.println(messages.getString("LOGINRESULT_fail"));
 			System.out.println(messages.getString("LOGINRESULT_reason_"+event.reason));
@@ -182,6 +185,19 @@ class Listener extends ConnectionEventListener {
 	public void OnOpenTables(OpenTablesEvent event)
 	{
 		//User is definitely logged in
+		if (event.openTables.size() == 0) {
+			//TODO: Ask player about size
+			event.GetConnection().SendMessage(new JSONObject().put("op", 1)
+					.put("type", "CREATE_TABLE_REQUEST")
+					.put("data", new JSONObject().put("neededPlayers", playerTableAmount)));
+		} else {
+			event.GetConnection().SendMessage(new JSONObject().put("op", 1)
+					.put("type", "TABLE_JOIN_REQUEST")
+					.put("data", new JSONObject().put("tableId", event.openTables.get(0).tableId)));
+			//TODO Give player chance to choose
+		}
+
+		/*
 		printHeadLine(messages.getString("OPENTABLES_headline"));
 		this.openTables = event.openTables;
 		
@@ -226,6 +242,7 @@ class Listener extends ConnectionEventListener {
 								  .put("type", "OPEN_TABLES_REFRESH")
 								  .put("data", new JSONObject()));
 		}
+		*/
 		
 	}
 	
@@ -327,6 +344,7 @@ class Listener extends ConnectionEventListener {
 								  .put("isAllIn", false)
 							  ));
 	  	*/
+		table.b.SetPerformingPlayer();
 		table.b.SetPlayerChoice(true);
 		table.SetEventConnection(event.GetConnection());
 	}
@@ -375,6 +393,8 @@ class Listener extends ConnectionEventListener {
 		printHeadLine(messages.getString("ROUNDUPDATEROUND_headline"));
 		System.out.println(messages.getString("ROUNDUPDATEROUND_round") + " " + event.newTurn);
 		System.out.println(messages.getString("ROUNDUPDATEROUND_pot") + " " + event.pot);
+		table.b.ResetPlayerCurrentBet();
+		table.b.SetRoundBetCurrent(0);
 	}
 	
 	@Override
@@ -421,9 +441,10 @@ class Listener extends ConnectionEventListener {
 		table.SetPlayerTotalBetAmount(event.playerId, event.totalPlayerBetAmount);
 		table.SetPlayerCurrentBetAmount(event.playerId, event.currentRoundBet);
 
-
 		table.pot = event.tablePotValue;
 		table.b.SetTablePot(table.pot);
+		table.b.SetRoundBetCurrent(event.currentRoundBet);
+
 
 		table.roundBet = event.currentRoundBet;
 		//Whooops missing in GUI, comes l8r
@@ -452,5 +473,7 @@ class Listener extends ConnectionEventListener {
 			System.out.print(card + "   ");
 		}
 		System.out.println();
+
+		table.b.AddBoardCard(event.card);
 	}
 }

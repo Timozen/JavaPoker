@@ -69,7 +69,10 @@ public class PokerLoginGUIBuilder {
 
         f.setVisible(true);
     }
-
+    public void Dispose()
+    {
+        f.dispose();
+    }
     private void PerformLoginRegisterRequest(String userName, String password, String type)
     {
         try {
