@@ -445,6 +445,10 @@ class Listener extends ConnectionEventListener {
 		table.b.SetTablePot(table.pot);
 		table.b.SetRoundBetCurrent(event.currentRoundBet);
 
+		if (event.action.equals("FOLD")) {
+			table.b.GetPlayerByName(event.playerId).SetCards("FOLD");
+		}
+
 
 		table.roundBet = event.currentRoundBet;
 		//Whooops missing in GUI, comes l8r
