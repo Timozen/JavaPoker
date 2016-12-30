@@ -1,0 +1,5 @@
+Those 2 classes used in this package are under - idk - license of "tips4java"
+They can be found here:
+
+https://tips4java.wordpress.com/2008/11/08/message-console/
+https://tips4java.wordpress.com/2008/10/15/limit-lines-in-document/
