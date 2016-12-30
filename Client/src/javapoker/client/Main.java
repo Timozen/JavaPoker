@@ -380,6 +380,7 @@ class Listener extends ConnectionEventListener {
 			}
 		}
 		table.b.SetRoundBetCurrent(bigBlindValue);
+		table.b.SetTablePot(0);
 		table.boardCards = new ArrayList<>();
 	}
 	
