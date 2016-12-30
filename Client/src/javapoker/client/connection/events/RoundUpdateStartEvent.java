@@ -16,7 +16,11 @@
 package javapoker.client.connection.events;
 
 import javapoker.client.connection.SocketConnection;
+import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 /**
  * Created by Tim on 04.12.2016.
@@ -25,6 +29,7 @@ public class RoundUpdateStartEvent extends ConnectionEvent{
 	public String dealerId;
 	public String smallBlindId;
 	public String bigBlindId;
+	public ArrayList<String[]> players;
 
 	public RoundUpdateStartEvent(SocketConnection socketConnection, JSONObject data)
 	{
@@ -37,5 +42,16 @@ public class RoundUpdateStartEvent extends ConnectionEvent{
 		this.dealerId = GetData().getString("dealerId");
 		this.smallBlindId = GetData().getString("smallBlind");
 		this.bigBlindId = GetData().getString("bigBlind");
+
+		JSONArray information = GetData().getJSONArray("information");
+		players = new ArrayList<>();
+		for(int i = 0; i < information.length(); i++) {
+			players.add(new String[]{
+					information.getJSONObject(i).getString("playerId"),
+					Integer.toString(information.getJSONObject(i).getInt("money")),
+					//Definitely total, bc round start
+					Integer.toString(information.getJSONObject(i).getInt("roundBet"))
+			});
+		}
 	}
 }

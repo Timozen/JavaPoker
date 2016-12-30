@@ -20,7 +20,7 @@ import javax.swing.*;
 /**
  * Created by Derpie on 30.12.2016.
  */
-class PokerGUIPlayer {
+public class PokerGUIPlayer {
     private JLabel[] lPlayerInfo;
     //0 = Name
     //1 = Money
@@ -55,6 +55,11 @@ class PokerGUIPlayer {
 
     public void SetCards(String cards) {
         lPlayerInfo[4].setText(cards);
+    }
+
+    public void AddCard(String card)
+    {
+        lPlayerInfo[4].setText(lPlayerInfo[4].getText() + " " + card);
     }
 
     public JLabel[] dumpLabels() {

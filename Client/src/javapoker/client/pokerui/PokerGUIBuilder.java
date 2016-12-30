@@ -18,6 +18,8 @@ package javapoker.client.pokerui;
 import javapoker.client.game.Player;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created by Derpie on 30.12.2016.
@@ -38,6 +40,8 @@ public class PokerGUIBuilder {
     private JTextArea tLog;
     public JButton bCheck, bBet, bFold;
     private AbsoluteLayoutFrame f;
+    private String action;
+    private int betAmount;
 
     public PokerGUIBuilder(int playerCount) {
         this.builtPlayers = 0;
@@ -90,9 +94,10 @@ public class PokerGUIBuilder {
 
         //Player Actions
         relativeTop += infoHeight + 10;
+
+        iAmount = new JTextField("0");
         bCheck = new JButton("CHECK");
         bBet = new JButton("BET");
-        iAmount = new JTextField("0");
         bFold = new JButton("FOLD");
 
         f.add(bCheck, 0, relativeTop, windowWidth / 4, infoHeight);
@@ -107,6 +112,7 @@ public class PokerGUIBuilder {
         f.add(tLog, 0, relativeTop, windowWidth, 200);
 
         //Done?
+        SetPlayerChoice(false);
         f.setVisible(true);
     }
 
@@ -115,6 +121,9 @@ public class PokerGUIBuilder {
     }
 
     public void SetPlayerChoice(boolean b) {
+        if (b) {
+            action = null;
+        }
         bCheck.setEnabled(b);
         bBet.setEnabled(b);
         iAmount.setEnabled(b);
@@ -154,5 +163,42 @@ public class PokerGUIBuilder {
     {
         aPlayers[builtPlayers].SetName(p.id);
         builtPlayers += 1;
+    }
+
+    public void AddBoardCard(String card)
+    {
+        lTableCards.setText(lTableCards.getText() + card + " ");
+    }
+
+    public void ResetBoardCards()
+    {
+        lTableCards.setText("Table Cards: ");
+    }
+
+    public void SetTablePot(int pot)
+    {
+        lTableCards.setText("Table Pot: " + Integer.toString(pot));
+    }
+
+    public void SetPerformingPlayer(String player)
+    {
+        lPlayerPerformingAction.setText(player + " is makes action...");
+    }
+
+    public void ResetPlayerCards()
+    {
+        for (int i = 0; i < playerCount; i++) {
+            aPlayers[i].SetCards("");
+        }
+    }
+
+    public void AddDummyCards(String id)
+    {
+        for (int i = 0; i < playerCount; i++)
+        {
+            if (aPlayers[i] != GetPlayerByName(id)) {
+                aPlayers[i].AddCard(" | ");
+            }
+        }
     }
 }

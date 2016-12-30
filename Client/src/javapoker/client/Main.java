@@ -23,7 +23,6 @@ import javapoker.client.game.BettingOperations;
 import javapoker.client.game.OpenTable;
 import javapoker.client.game.Player;
 import javapoker.client.game.Table;
-import javapoker.client.pokerui.PokerGUIBuilder;
 import org.json.JSONObject;
 
 import java.security.MessageDigest;
@@ -230,7 +229,7 @@ class Listener extends ConnectionEventListener {
 			return;
 		}
 		table = event.table;
-		table.b = new PokerGUIBuilder(table.neededPlayers);
+
 		table.clientPlayer = tempClientUntilTableIsReceived;
 		
 		System.out.print(messages.getString("TABLEJOIN_table") + " " + table.tableId + " ");
@@ -275,24 +274,25 @@ class Listener extends ConnectionEventListener {
 	@Override
 	public void OnPlayerActionRequestEvent(PlayerActionRequestEvent event)
 	{
-		printHeadLine(messages.getString("PLAYERACTION_headline"));
+		///*
+		// printHeadLine(messages.getString("PLAYERACTION_headline"));
 		System.out.println(messages.getString("PLAYERACTION_maxbet") + event.maximumBetAmount);
-		
+
 		String operation = "";
 		int amount = 0;
-		
+
 		byte isCorrect = 0;
 		while (isCorrect != 1) {
-			
+
 			System.out.print(messages.getString("PLAYERACTION_options"));
-			
+
 			for (BettingOperations op : event.operations) {
 				System.out.print(op.name() + " ");
 			}
-			
+
 			System.out.print("\n" + messages.getString("PLAYERACTION_choose") + " ");
 			operation = scanner.nextLine().toUpperCase();
-			
+
 			if (!(operation.equals("FOLD") || operation.equals("CHECK") || operation.equals("CALL"))) {
 				System.out.println(messages.getString("PLAYERACTION_betamount"));
 				amount = Integer.parseInt(scanner.nextLine());
@@ -308,7 +308,7 @@ class Listener extends ConnectionEventListener {
 				isCorrect = 1;
 			}
 		}
-		
+
 		event.GetConnection().SendMessage(new JSONObject().put("op", 1)
 							  .put("type", "PLAYER_ACTION_ANSWER")
 							  .put("data", new JSONObject()
@@ -317,6 +317,8 @@ class Listener extends ConnectionEventListener {
 								  .put("betAmount", amount)
 								  .put("isAllIn", false)
 							  ));
+	  	//*/
+		//table.b.SetPlayerChoice(true);
 	}
 	
 	@Override
@@ -325,10 +327,24 @@ class Listener extends ConnectionEventListener {
 		printHeadLine(messages.getString("ROUNDUPDATESTART_headline"));
 		
 		table.dealerId = event.dealerId;
+		table.b.SetDealer(table.dealerId);
+
 		table.smallBlindId = event.smallBlindId;
+		table.b.SetSmallBlind(table.smallBlindId);
+
 		table.bigBlindId = event.bigBlindId;
+		table.b.SetBigBlind(table.bigBlindId);
+
+		table.b.ResetBoardCards();
+		table.b.ResetPlayerCards();
+
+		for (String[] s : event.players) {
+			table.b.GetPlayerByName(s[0]).SetMoney(Integer.parseInt(s[1]));
+			table.b.GetPlayerByName(s[0]).SetRoundBet(Integer.parseInt(s[2]));
+			table.b.GetPlayerByName(s[0]).SetCurrentBet(Integer.parseInt(s[2]));
+		}
+
 		table.boardCards = new ArrayList<>();
-		//Später mit UI: Anpassung der Leute die das sind im GUI
 	}
 	
 	@Override
@@ -338,6 +354,8 @@ class Listener extends ConnectionEventListener {
 		
 		System.out.println(messages.getString("ROUNDUPDATECARD_msg") + " " + event.card);
 		table.clientPlayer.cards.add(event.card);
+		table.b.GetPlayerByName(table.clientPlayer.id).AddCard(event.card);
+		table.b.AddDummyCards(table.clientPlayer.id);
 		//TODO with GUI: Show other players retreived one too
 	}
 	
@@ -392,8 +410,13 @@ class Listener extends ConnectionEventListener {
 		table.SetPlayerMoneyAmount(event.playerId, event.playerMoney);
 		table.SetPlayerTotalBetAmount(event.playerId, event.totalPlayerBetAmount);
 		table.SetPlayerCurrentBetAmount(event.playerId, event.currentRoundBet);
+
+
 		table.pot = event.tablePotValue;
+		table.b.SetTablePot(table.pot);
+
 		table.roundBet = event.currentRoundBet;
+		//Whooops missing in GUI, comes l8r
 		
 		System.out.println(messages.getString("ROUNDUPDATEPLAYER_pot") + " " + table.pot);
 	}
@@ -404,6 +427,7 @@ class Listener extends ConnectionEventListener {
 		printHeadLine(messages.getString("ROUNDUPDATECHOOSER_headline"));
 		System.out.println(messages.getString("ROUNDUPDATECHOOSER_pot") + " " + event.pot);
 		System.out.println(table.GetPlayerById(event.playerId).nickname + " " + messages.getString("ROUNDUPDATECHOOSER_msg"));
+		table.b.SetPerformingPlayer(event.playerId);
 	}
 		
 	@Override

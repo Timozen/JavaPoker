@@ -18,6 +18,7 @@ package javapoker.client.connection.events;
 import javapoker.client.connection.SocketConnection;
 import javapoker.client.game.Player;
 import javapoker.client.game.Table;
+import javapoker.client.pokerui.PokerGUIBuilder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -39,11 +40,12 @@ public class TableJoinEvent extends ConnectionEvent{
 			table = new Table();
 			table.tableId = GetData().getInt("tableId");
 			table.neededPlayers = GetData().getInt("neededplayercount");
+			table.b = new PokerGUIBuilder(table.neededPlayers);
 
 			JSONArray players = GetData().getJSONArray("players");
 
 			for(int i = 0; i < players.length(); i++){
-				table.players.add(Player.Build(players.getJSONObject(i)));
+				table.AddPlayer(Player.Build(players.getJSONObject(i)));
 			}
 		} else {
 			table = null;

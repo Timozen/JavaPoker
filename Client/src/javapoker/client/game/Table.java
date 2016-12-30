@@ -70,6 +70,7 @@ public class Table {
 	public void AddPlayer(Player p)
 	{
 		this.players.add(p);
+		b.BuildPlayer(p);
 	}
 
 	public void RemovePlayer(String playerId)
@@ -93,6 +94,7 @@ public class Table {
 		Player p = GetPlayerById(playerId);
 		if (p != null) {
 			p.money = amount;
+			b.GetPlayerByName(playerId).SetMoney(amount);
 			return 1;
 		}
 		return -1;
@@ -112,6 +114,7 @@ public class Table {
 		Player p = GetPlayerById(playerId);
 		if (p != null) {
 			p.roundBetAll = totalBetAmount;
+			b.GetPlayerByName(playerId).SetRoundBet(totalBetAmount);
 			return 1;
 		}
 		return -1;
@@ -121,6 +124,7 @@ public class Table {
 		Player p = GetPlayerById(playerId);
 		if (p != null) {
 			p.roundBetCurrent = currentBetAmount;
+			b.GetPlayerByName(playerId).SetCurrentBet(currentBetAmount);
 			return 1;
 		}
 		return -1;

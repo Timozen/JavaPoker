@@ -386,14 +386,14 @@ public class GameTable {
 			}
 			//Time to inform everybody what happened
 			for(Player p : playersInRound) {
-				if (!p.GetConnectionClient().GetPlayerId().equals(actualPlayer.GetConnectionClient().GetPlayerId())) {
+				//if (!p.GetConnectionClient().GetPlayerId().equals(actualPlayer.GetConnectionClient().GetPlayerId())) {
 					JSONObject RoundUpdatePlayerJSON = new JSONObject();
 					RoundUpdatePlayerJSON.put("op", "1");
 					RoundUpdatePlayerJSON.put("type", "ROUND_UPDATE_PLAYER");
 					RoundUpdatePlayerJSON.put("data", new JSONObject()
-							.put("betAmount", p.GetBetAmount())					//In this move
-							.put("totalBetAmount", p.GetRoundBetAll())			//In total for this round
-							.put("currentRoundBet", p.GetRoundBetCurrent())		//His Roundbet in this Setzrunde
+							.put("betAmount", actualPlayer.GetBetAmount())					//In this move
+							.put("totalBetAmount", actualPlayer.GetRoundBetAll())			//In total for this round
+							.put("currentRoundBet", actualPlayer.GetRoundBetCurrent())		//His Roundbet in this Setzrunde
 							.put("pot", table.GetPotValue())
 							.put("playerId", actualPlayer.GetConnectionClient().GetPlayerId())
 							.put("money", actualPlayer.GetMoney())
@@ -401,7 +401,7 @@ public class GameTable {
 					);
 
 					p.GetConnectionClient().SendMessage(RoundUpdatePlayerJSON);
-				}
+				//}
 			}
 			//--------------------------
 			actualPlayer = playersInRound.get(playersInRound.indexOf(actualPlayer) + 1);
@@ -547,6 +547,20 @@ public class GameTable {
 	}
 
 	private void SendRoundUpdateStartEvent() {
+		JSONArray playerinfo = new JSONArray();
+		for (Player p : playersInRound) {
+			int roundBet = 0;
+			if (p == table.GetBigBlind()) {
+				roundBet = table.GetBigBlindValue();
+			} else if (p == table.GetSmallBlind()) {
+				roundBet = table.GetSmallBlindValue();
+			}
+			playerinfo.put(new JSONObject()
+					.put("playerId", p.GetNickname())
+					.put("money", p.GetMoney())
+					.put("roundBet", roundBet)
+			);
+		}
 		JSONObject RoundUpdateStartEvent = new JSONObject()
 				.put("op", "1")
 				.put("type", "ROUND_UPDATE_START")
@@ -554,6 +568,7 @@ public class GameTable {
 						.put("dealerId", table.GetDealer().GetConnectionClient().GetPlayerId())
 						.put("smallBlind", table.GetSmallBlind().GetConnectionClient().GetPlayerId())
 						.put("bigBlind", table.GetBigBlind().GetConnectionClient().GetPlayerId())
+						.put("information", playerinfo)
 				);
 
 

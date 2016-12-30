@@ -235,6 +235,7 @@ If a new round starts, the information will be send
             "dealer": PlayerId,
             "smallBlind": PlayerId,
             "bigBlind": PlayerId,
+            "information": [[playerId, money], ...
         },
         "type": "ROUND_UPDATE_START"
     }
