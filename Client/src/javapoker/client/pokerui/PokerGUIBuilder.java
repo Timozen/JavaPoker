@@ -28,9 +28,11 @@ import java.awt.event.ActionListener;
  * Created by Derpie on 30.12.2016.
  */
 public class PokerGUIBuilder {
+    private MessageConsole mc;
     private int playerCount;
     private int builtPlayers;
     private PokerGUIPlayer[] aPlayers;
+
     private JLabel lTableCards;
     private JLabel lPlayerPerformingAction;
     private JLabel lTablePot;
@@ -45,8 +47,6 @@ public class PokerGUIBuilder {
     private JTextArea tLog;
     public JButton bCheck, bBet, bFold;
     private AbsoluteLayoutFrame f;
-    private String action;
-    private int betAmount;
 
     public PokerGUIBuilder(int playerCount, Table table) {
         this.table = table;
@@ -146,7 +146,7 @@ public class PokerGUIBuilder {
 
 
         f.add(new JScrollPane(tLog), 0, relativeTop, windowWidth, 200);
-        MessageConsole mc = new MessageConsole(tLog);
+        mc = new MessageConsole(tLog);
         mc.redirectOut(null, System.out);
 
         //Done?
@@ -154,14 +154,13 @@ public class PokerGUIBuilder {
         f.setVisible(true);
     }
 
-    public void ChangeBettingOperations(boolean b) {
+    public void ChangeBettingOperations(boolean b)
+    {
         //TODO
     }
 
-    public void SetPlayerChoice(boolean b) {
-        if (b) {
-            action = null;
-        }
+    public void SetPlayerChoice(boolean b)
+    {
         bCheck.setEnabled(b);
         bBet.setEnabled(b);
         iAmount.setEnabled(b);

@@ -70,4 +70,11 @@ public class PokerGUIPlayer {
     {
         return lPlayerInfo[0].getText();
     }
+
+    public void Disable()
+    {
+        for(int i = 0; i < 5; i++){
+            lPlayerInfo[i].setVisible(false);
+        }
+    }
 }

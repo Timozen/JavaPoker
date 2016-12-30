@@ -59,6 +59,7 @@ public class Main {
 
 class Listener extends ConnectionEventListener {
 	//TODO: Ask User
+	private String playerId;
 	private int playerTableAmount = 2;
 	private Player tempClientUntilTableIsReceived;
 	private Table table;
@@ -161,6 +162,7 @@ class Listener extends ConnectionEventListener {
 			System.out.println(messages.getString("LOGINRESULT_success"));
 			tempClientUntilTableIsReceived = new Player();
 			tempClientUntilTableIsReceived.id = event.playerId;
+			this.playerId = event.playerId;
 			fLogin.lResult.setText("Login Successful.");
 			fLogin.Dispose();
 		} else {
@@ -289,6 +291,7 @@ class Listener extends ConnectionEventListener {
 		
 		System.out.println(event.playerId + messages.getString("PLAYERLEAVESTABLE_msg_leave"));
 		table.RemovePlayer(event.playerId);
+		table.b.GetPlayerByName(event.playerId).Disable();
 		System.out.println(table.players.size());
 		
 		if (table.players.size() == 1) {
@@ -437,11 +440,14 @@ class Listener extends ConnectionEventListener {
 		printHeadLine(messages.getString("ROUNDUPDATEPLAYER_headline"));
 		System.out.println(event.playerId + " " + messages.getString("ROUNDUPDATEPLAYER_action") + " " + event.action);
 		System.out.println(event.playerId + " " + messages.getString("ROUNDUPDATEPLAYER_paid") + " "+ event.playerBetAmount);
-		
+
 		//TODO BettingOperation
 		table.SetPlayerMoneyAmount(event.playerId, event.playerMoney);
 		table.SetPlayerTotalBetAmount(event.playerId, event.totalPlayerBetAmount);
 		table.SetPlayerCurrentBetAmount(event.playerId, event.currentRoundBet);
+		if (event.playerMoney == 0) {
+			table.b.GetPlayerByName(event.playerId).SetCards("ALLIN");
+		}
 
 		table.pot = event.tablePotValue;
 		table.b.SetTablePot(table.pot);
@@ -449,6 +455,8 @@ class Listener extends ConnectionEventListener {
 
 		if (event.action.equals("FOLD")) {
 			table.b.GetPlayerByName(event.playerId).SetCards("FOLD");
+		} else if (event.action.equals("ALLIN")) {
+			table.b.GetPlayerByName(event.playerId).SetCards("ALLIN");
 		}
 
 
