@@ -73,5 +73,10 @@
   "loggedIn": false,
   "passwordHash": "0a0dc90c806325c68261cde0c944ac62",
   "username": "test"
+ },
+ {
+  "loggedIn": false,
+  "passwordHash": "0a0dc90c806325c68261cde0c944ac62",
+  "username": "test"
  }
 ]

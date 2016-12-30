@@ -24,7 +24,8 @@ import org.json.JSONObject;
  */
 public class PlayerActionRequestEvent extends ConnectionEvent{
 	public int maximumBetAmount;
-	public BettingOperations[] operations;
+	public int operations;
+	//public BettingOperations[] operations;
 
 	private final BettingOperations[] betOptionsPreBet = {BettingOperations.FOLD, BettingOperations.BET, BettingOperations.CHECK};
 	private final BettingOperations[] betOptionsPostBet = {BettingOperations.FOLD, BettingOperations.RAISE, BettingOperations.CALL};
@@ -36,12 +37,13 @@ public class PlayerActionRequestEvent extends ConnectionEvent{
 	@Override
 	public void Build()
 	{
-		if (GetData().getInt("actions") == 0) {
-			operations = betOptionsPreBet;
-			//also needs max input
-		} else {
-			operations = betOptionsPostBet;
-		}
+		//if (GetData().getInt("actions") == 0) {
+		//	operations = betOptionsPreBet;
+		//	//also needs max input
+		//} else {
+		//	operations = betOptionsPostBet;
+		//}
+		operations = GetData().getInt("actions");
 		maximumBetAmount = GetData().getInt("maximumPlayerBet");
 	}
 }

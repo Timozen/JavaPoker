@@ -118,10 +118,17 @@ public class PokerGUIBuilder {
         bBet.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                table.SendPlayerActionPerformed(
-                        "BET",
-                        Integer.parseInt(iAmount.getText())
-                );
+                if (Integer.parseInt(iAmount.getText()) <= 0) {
+                    table.SendPlayerActionPerformed(
+                            "CHECK",
+                            0
+                    );
+                } else {
+                    table.SendPlayerActionPerformed(
+                            "BET",
+                            Integer.parseInt(iAmount.getText())
+                    );
+                }
             }
         });
         bFold = new JButton("FOLD");
@@ -154,17 +161,29 @@ public class PokerGUIBuilder {
         f.setVisible(true);
     }
 
-    public void ChangeBettingOperations(boolean b)
+    public void SetBettingOperations(int operations)
     {
-        //TODO
+        //0 = prebet
+        //1 = postbet
+        if (operations == 0) {
+            bCheck.setText("CHECK");
+            bBet.setText("BET");
+        } else {
+            bCheck.setText("CALL");
+            bBet.setText("RAISE");
+        }
     }
 
     public void SetPlayerChoice(boolean b)
     {
         bCheck.setEnabled(b);
+        bCheck.setVisible(b);
         bBet.setEnabled(b);
+        bBet.setVisible(b);
         iAmount.setEnabled(b);
+        iAmount.setVisible(b);
         bFold.setEnabled(b);
+        bFold.setVisible(b);
     }
 
     public void SetSmallBlind(String name) {
@@ -188,12 +207,6 @@ public class PokerGUIBuilder {
             }
         }
         return null;
-    }
-
-    public void WriteLog(String message)
-    {
-        //System.out.println(message);
-        tLog.append("\n" + message);
     }
 
     public void BuildPlayer(Player p)

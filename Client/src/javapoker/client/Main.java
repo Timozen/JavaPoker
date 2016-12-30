@@ -348,6 +348,7 @@ class Listener extends ConnectionEventListener {
 							  ));
 	  	*/
 		table.b.SetPerformingPlayer();
+		table.b.SetBettingOperations(event.operations);
 		table.b.SetPlayerChoice(true);
 		table.SetEventConnection(event.GetConnection());
 	}
@@ -369,12 +370,16 @@ class Listener extends ConnectionEventListener {
 		table.b.ResetBoardCards();
 		table.b.ResetPlayerCards();
 
+		int bigBlindValue = 0;
 		for (String[] s : event.players) {
 			table.b.GetPlayerByName(s[0]).SetMoney(Integer.parseInt(s[1]));
 			table.b.GetPlayerByName(s[0]).SetRoundBet(Integer.parseInt(s[2]));
 			table.b.GetPlayerByName(s[0]).SetCurrentBet(Integer.parseInt(s[2]));
+			if (Integer.parseInt(s[2]) > bigBlindValue) {
+				bigBlindValue = Integer.parseInt(s[2]);
+			}
 		}
-
+		table.b.SetRoundBetCurrent(bigBlindValue);
 		table.boardCards = new ArrayList<>();
 	}
 	
@@ -397,7 +402,12 @@ class Listener extends ConnectionEventListener {
 		System.out.println(messages.getString("ROUNDUPDATEROUND_round") + " " + event.newTurn);
 		System.out.println(messages.getString("ROUNDUPDATEROUND_pot") + " " + event.pot);
 		table.b.ResetPlayerCurrentBet();
-		table.b.SetRoundBetCurrent(0);
+		if (event.newTurn.equals("PREFLOP")) {
+			table.b.SetBettingOperations(1);
+		} else {
+			table.b.SetRoundBetCurrent(0);
+			table.b.SetBettingOperations(0);
+		}
 	}
 	
 	@Override
@@ -473,6 +483,7 @@ class Listener extends ConnectionEventListener {
 		System.out.println(messages.getString("ROUNDUPDATECHOOSER_pot") + " " + event.pot);
 		System.out.println(table.GetPlayerById(event.playerId).nickname + " " + messages.getString("ROUNDUPDATECHOOSER_msg"));
 		table.b.SetPerformingPlayer(event.playerId);
+		table.b.SetPlayerChoice(false);
 	}
 		
 	@Override
