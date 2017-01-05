@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Ellipse?>
+<?import javafx.scene.text.Font?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.components.tableObject.TableObjectController">
+   <children>
+      <Ellipse fill="#683600" layoutX="300.0" layoutY="150.0" radiusX="300.0" radiusY="150.0" stroke="BLACK" strokeType="INSIDE" />
+      <Ellipse fill="#039e15" layoutX="300.0" layoutY="150.0" radiusX="290.0" radiusY="140.0" stroke="BLACK" strokeType="INSIDE" />
+      <HBox layoutX="200.0" layoutY="66.0" prefHeight="50.0" prefWidth="200.0">
+         <children>
+            <ImageView fx:id="card1" fitHeight="50.0" fitWidth="40.0" onMouseEntered="#OnMouseEntered1" onMouseExited="#OnMouseExited1" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../profil.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="card2" fitHeight="50.0" fitWidth="40.0" onMouseEntered="#OnMouseEntered2" onMouseExited="#OnMouseExited2" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../profil.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="card3" fitHeight="50.0" fitWidth="40.0" onMouseEntered="#OnMouseEntered3" onMouseExited="#OnMouseExited3" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../profil.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="card4" fitHeight="50.0" fitWidth="40.0" onMouseEntered="#OnMouseEntered4" onMouseExited="#OnMouseExited4" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../profil.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="card5" fitHeight="50.0" fitWidth="40.0" onMouseEntered="#OnMouseEntered5" onMouseExited="#OnMouseExited5" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../profil.jpg" />
+               </image>
+            </ImageView>
+         </children>
+      </HBox>
+      <Label layoutX="200.0" layoutY="150.0" text="Pot:">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="label_pot" layoutX="259.0" layoutY="150.0" prefHeight="35.0" prefWidth="134.0" text="POT_VALUE">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="label_roundname" alignment="CENTER" contentDisplay="CENTER" layoutX="249.0" layoutY="19.0" text="Preflop">
+         <font>
+            <Font size="32.0" />
+         </font>
+      </Label>
+      <Label fx:id="label_minimumbet" layoutX="184.0" layoutY="238.0" prefHeight="17.0" prefWidth="190.0" text="PLACERHOLDER_minimumbet" />
+   </children>
+</Pane>

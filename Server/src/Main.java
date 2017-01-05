@@ -31,6 +31,8 @@ public class Main {
 		}
 		
 		connectionServer.CreateNewTable(3);
+		connectionServer.CreateNewTable(3);
+		connectionServer.CreateNewTable(3);
 		
 		/**
 		Scanner scanner = new Scanner(System.in);

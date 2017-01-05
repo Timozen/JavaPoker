@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #76b852;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ScrollPane layoutX="13.0" layoutY="11.0" prefHeight="373.0" prefWidth="383.0" style="-fx-background-color: #f4f4f4;">
+         <content>
+            <ListView fx:id="listview" onMouseClicked="#OnMouseClickedListView" prefHeight="371.0" prefWidth="381.0" />
+         </content></ScrollPane>
+      <AnchorPane layoutX="407.0" layoutY="11.0" prefHeight="373.0" prefWidth="180.0" style="-fx-background-color: #f4f4f4;">
+         <children>
+            <Button fx:id="button_join" disable="true" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#OnActionButtonJoin" prefHeight="25.0" prefWidth="155.0" style="-fx-background-color: #4CAF50;" text="Beitreten" textFill="WHITE">
+               <font>
+                  <Font name="Roboto" size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="button_refresh" layoutX="14.0" layoutY="60.0" mnemonicParsing="false" onAction="#OnActionButtonRefresh" prefHeight="25.0" prefWidth="155.0" style="-fx-background-color: #4CAF50;" text="Erneuern" textFill="WHITE">
+               <font>
+                  <Font name="Roboto" size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="button_create" layoutX="14.0" layoutY="107.0" mnemonicParsing="false" onAction="#OnActionButtonCreate" prefHeight="25.0" prefWidth="155.0" style="-fx-background-color: #4CAF50;" text="Neuer Tisch" textFill="WHITE">
+               <font>
+                  <Font name="Roboto" size="18.0" />
+               </font>
+            </Button>
+            <Pane fx:id="pane_createTable" disable="true" layoutY="152.0" opacity="0.0" prefHeight="164.0" prefWidth="180.0">
+               <children>
+                  <Button fx:id="button_createTable" layoutX="13.0" layoutY="93.0" mnemonicParsing="false" onAction="#OnActionButtonCreateTable" prefHeight="35.0" prefWidth="155.0" style="-fx-background-color: #4CAF50;" text="Erstellen" textFill="WHITE">
+                     <font>
+                        <Font name="Roboto" size="18.0" />
+                     </font>
+                  </Button>
+                  <TextField fx:id="txt_playercount" layoutX="13.0" layoutY="42.0" onKeyReleased="#OnTextPlayerCountInput" prefHeight="40.0" prefWidth="155.0" promptText="Spieleranzahl">
+                     <tooltip>
+                        <Tooltip text="Zwischen 2 und 12 Spielern!" />
+                     </tooltip>
+                  </TextField>
+               </children>
+            </Pane>
+         </children></AnchorPane>
+   </children>
+</AnchorPane>

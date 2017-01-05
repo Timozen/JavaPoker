@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Circle?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="300.0" style="-fx-background-color: pink; -fx-border-color: black;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.components.mainPlayerObject.MainPlayerObjectController">
+    <children>
+        <Label fx:id="name" alignment="CENTER" layoutX="8.0" layoutY="6.0" prefHeight="17.0" prefWidth="134.0" style="-fx-underline: true;" text="PLACEHOLDER NAME" />
+        <StackPane fx:id="dealer" disable="true" layoutX="14.0" layoutY="33.0" prefHeight="15.0" prefWidth="15.0">
+            <children>
+                <Circle accessibleText="D" fill="WHITE" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+                <Label text="D" />
+            </children>
+        </StackPane>
+        <StackPane fx:id="smallblind" disable="true" layoutX="14.0" layoutY="63.0" prefHeight="15.0" prefWidth="15.0">
+            <children>
+                <Circle accessibleText="D" fill="#aa70f2" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+                <Label text="SB" />
+            </children>
+        </StackPane>
+        <StackPane fx:id="bigblind" disable="true" layoutX="14.0" layoutY="93.0" prefHeight="15.0" prefWidth="15.0">
+            <children>
+                <Circle accessibleText="D" fill="#e1ff00" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+                <Label text="BB" />
+            </children>
+        </StackPane>
+        <GridPane layoutX="45.0" layoutY="30.0" prefHeight="60.0" prefWidth="152.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="72.0" minWidth="10.0" prefWidth="48.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="83.0" minWidth="2.0" prefWidth="77.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints maxHeight="20.0" minHeight="20.0" percentHeight="0.0" prefHeight="20.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="20.0" minHeight="20.0" percentHeight="0.0" prefHeight="20.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="20.0" minHeight="20.0" percentHeight="0.0" prefHeight="20.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <Label text="Geld:" />
+                <Label text="Einsatz:" GridPane.rowIndex="1" />
+                <Label text="Status:" GridPane.rowIndex="2" />
+                <Label fx:id="money" text="MONEY" GridPane.columnIndex="1" />
+                <Label fx:id="betamount" prefHeight="30.0" prefWidth="63.0" text="BETAMOUNT" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <Label fx:id="state" text="STATE" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            </children>
+        </GridPane>
+        <ImageView fx:id="card2" fitHeight="50.0" fitWidth="40.0" layoutX="237.0" layoutY="39.0" onMouseEntered="#MouseHoverStarted2" onMouseExited="#MouseHoverEnded2" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../../profil.jpg" />
+            </image>
+        </ImageView>
+        <ImageView fx:id="card1" fitHeight="50.0" fitWidth="40.0" layoutX="197.0" layoutY="39.0" onMouseEntered="#MouseHoverStarted1" onMouseExited="#MouseHoverEnded1" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../../profil.jpg" />
+            </image>
+        </ImageView>
+      <Circle fx:id="turn" fill="#25ff1f" layoutX="290.0" layoutY="6.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" />
+      <Pane fx:id="pane_bet" layoutX="39.0" layoutY="105.0" prefHeight="82.0" prefWidth="222.0">
+         <children>
+            <Slider fx:id="slider_money" blockIncrement="1.0" layoutX="41.0" layoutY="39.0" />
+            <HBox layoutX="21.0" layoutY="5.0" prefHeight="20.0" prefWidth="180.0">
+               <children>
+                  <Button fx:id="button_fold" mnemonicParsing="false" onAction="#OnButtonFold" prefHeight="25.0" prefWidth="60.0" text="Fold" />
+                  <Button fx:id="button_increase" mnemonicParsing="false" onAction="#OnButtonIncrease" prefWidth="60.0" text="Raise" />
+                  <Button fx:id="button_even" mnemonicParsing="false" onAction="#OnButtonEven" prefWidth="60.0" text="Call" />
+               </children>
+            </HBox>
+            <Label fx:id="label_slider_min" layoutX="10.0" layoutY="38.0" text="MIN" />
+            <Label fx:id="label_slider_max" layoutX="181.0" layoutY="38.0" text="MAX" />
+            <Label fx:id="label_slider_current" layoutX="87.0" layoutY="52.0" text="CUR_VAL" />
+         </children>
+      </Pane>
+    </children>
+</Pane>

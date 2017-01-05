@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #76b852;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Pane id="Login" fx:id="pane_login" layoutX="100.0" layoutY="75.0" prefHeight="250.0" prefWidth="400.0" style="-fx-background-color: white;">
+         <children>
+            <Button fx:id="button_login" disable="true" layoutX="75.0" layoutY="147.0" mnemonicParsing="false" onAction="#OnActionButtonLogin" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: #4CAF50;" text="Anmelden" textFill="WHITE">
+               <font>
+                  <Font name="Roboto" size="18.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <TextField fx:id="txt_login_username" layoutX="75.0" layoutY="46.0" onKeyReleased="#OnLoginUsernameInput" prefHeight="40.0" prefWidth="250.0" promptText="Benutzername">
+               <font>
+                  <Font name="Roboto" size="12.0" />
+               </font>
+            </TextField>
+            <PasswordField fx:id="txt_login_password" layoutX="75.0" layoutY="98.0" onKeyReleased="#OnLoginPasswordInput" prefHeight="40.0" prefWidth="250.0" promptText="Password" />
+            <Label layoutX="89.0" layoutY="194.0" text="Noch keinen Account?" />
+            <Label fx:id="label_toRegister" layoutX="208.0" layoutY="194.0" onMouseClicked="#OnClickLabelToRegister" text="Jetzt Registrieren!" textFill="#4caf50">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Label>
+         </children>
+      </Pane>
+      <Pane id="Register" fx:id="pane_register" disable="true" layoutX="100.0" layoutY="75.0" opacity="0.0" prefHeight="250.0" prefWidth="400.0" style="-fx-background-color: white;">
+         <children>
+            <Button fx:id="button_register" disable="true" layoutX="75.0" layoutY="171.0" mnemonicParsing="false" onAction="#OnActionButtonRegister" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: #4CAF50;" text="Registrieren" textFill="WHITE">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="Roboto" size="18.0" />
+               </font>
+            </Button>
+            <TextField fx:id="txt_register_username" layoutX="75.0" layoutY="22.0" onKeyReleased="#OnRegisterUsernameInput" prefHeight="40.0" prefWidth="250.0" promptText="Benutzername">
+               <font>
+                  <Font name="Roboto" size="12.0" />
+               </font>
+               <tooltip>
+                  <Tooltip text="Benutzername muss zwischen 4 uns 20 Zeichen lang sein." />
+               </tooltip>
+            </TextField>
+            <PasswordField fx:id="txt_register_password1" layoutX="75.0" layoutY="71.0" onKeyReleased="#OnTxtPassword1Input" prefHeight="40.0" prefWidth="250.0" promptText="Password">
+               <tooltip>
+                  <Tooltip text="Muss mindestens 8 Zeichen lang sein!" />
+               </tooltip>
+            </PasswordField>
+            <PasswordField fx:id="txt_register_password2" layoutX="75.0" layoutY="119.0" onKeyReleased="#OnTxtPassword2Input" prefHeight="40.0" prefWidth="250.0" promptText="Password wiederholen">
+               <tooltip>
+                  <Tooltip text="Die Passwört müssen übereinstimmen!" />
+               </tooltip>
+            </PasswordField>
+            <Label fx:id="label_backToLogin" layoutX="231.0" layoutY="220.0" onMouseClicked="#OnClickLabelBackToLogin" text="Zur Anmeldung!" textFill="#4caf50">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Label>
+            <Label layoutX="84.0" layoutY="220.0" text="Doch schon einen Account?" />
+         </children>
+      </Pane>
+      <Pane id="Register" fx:id="pane_status" disable="true" layoutX="100.0" layoutY="75.0" opacity="0.0" prefHeight="250.0" prefWidth="400.0" style="-fx-background-color: white;">
+         <children>
+            <Label fx:id="label_status" layoutX="49.0" layoutY="60.0" prefHeight="40.0" prefWidth="300.0" style="-fx-alignment: center;" text="TEXT" textAlignment="CENTER">
+               <font>
+                  <Font name="Roboto" size="19.0" />
+               </font>
+            </Label>
+            <ProgressBar fx:id="bar_status" layoutX="99.0" layoutY="184.0" prefWidth="200.0" progress="0.0" />
+            <Label layoutX="166.0" layoutY="167.0" text="Lade Daten..." />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
